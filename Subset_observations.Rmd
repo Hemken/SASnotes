@@ -1,0 +1,177 @@
+# Subsets:  Selecting Observations
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+knitr::opts_chunk$set(SASproctime=FALSE)
+```
+
+Another common task for the data analyst is to extract selected observations
+from a data set.  It may be that only a subgroup within the population is of
+analytical interst.  You may want to pull a random sample from a sampling
+frame.  Or you may simply want a smaller subset with which to test the SAS
+code that you are developing.
+
+## Conditional Observations
+You can conditionally select observations in DATA steps or in PROC steps.
+You can use both statements and data set options in either context.
+
+- WHERE statements
+- subsetting IF statements
+- WHERE data set options
+
+### WHERE statements
+A WHERE statement can be used in either a DATA step or a PROC step - any step
+that reads each observation.  It
+controls what data SAS reads for the step.  This makes it a very efficient
+method of extracting observations, because it skips reading some observations.
+It takes the form
+
+```sas
+WHERE expression
+```
+
+where `expression` is any [logical expression](Logical_data.html) that can be composed using
+the variables in the data set to be read.  The key NOTE here says "There were 7 observations read ...".
+
+#### DATA step WHERE
+```{saslog}
+data class;
+  set sashelp.class;
+  where age lt 13;
+run;
+```
+
+#### PROC step WHERE
+```{sas}
+proc freq data=sashelp.class;
+  where age lt 13;
+  tables sex / nocum;
+run;
+```
+
+#### PROC SORT WHERE
+If you need to work with a subset of observations, but also
+SORT your data for a later MERGE or BY group processing, it
+would be very efficient to subset at the start of the SORT
+procedure.
+
+```{saslog}
+proc sort data=sashelp.class out=class;
+  where age lt 13;
+  by sex;
+run;
+```
+
+### Subsetting IF
+A subsetting IF statement can only be used in a DATA step.  It is
+less efficient than WHERE because all the observations are read
+into the Program Data Vector before the condition is applied.
+The IF statement has been part of the SAS language longer than
+the WHERE statement, so it sometimes appears in old code, or
+code written by old coders.  It is useful where some value cannot
+be calculated from the input data set(s).
+
+#### Inefficient
+Here note that 19 observations are read.
+```{saslog}
+data class;
+  set sashelp.class;
+  if age lt 13;
+run;
+```
+
+#### Table Lookup
+One place a subsetting IF is often required is in a *table lookup*.
+When performing a many-to-one match merge, it is often the
+case that our secondary table includes observations which
+are not used and do not add anything to our analysis.  The
+variable which tells us whether an input data set contributes
+to the output data set does not exist beyond the PDV, so
+it cannot be used in a WHERE statement.
+
+This IF statement outputs only observations which had data
+contributed by the first data set.
+
+```sas
+data complete;
+  merge individual(in=ds1) county;
+  by location_id;
+  if ds1;
+  run;
+```
+
+### WHERE data set option
+As a data set option, the WHERE option can be used any
+time a data set is referenced.  For input data sets
+this is essentially the same as a WHERE statement.  However,
+it can also be used with output data sets.
+
+As a data set option the form is
+
+```sas
+data-set (WHERE=(logical-expression))
+```
+
+Here, the equals symbol and all the parentheses are required.
+
+For example, suppose we were interested in producing a table
+of mean city mpg by number of cylinders, but only for those
+categories with more than 5 observations (dropping the 3, 10,
+and 12 cylinder categories).  Using a WHERE option saves
+us a DATA step to drop the unwanted categories.
+
+```{sas, echo=-c(1,9)}
+ods listing close;
+ods output summary=mpg(where=(nobs > 5));
+
+proc means data=sashelp.cars n mean std;
+	class cylinders;
+	var mpg_city;
+	run;
+
+ods listing;
+proc print data=mpg noobs; run;
+```
+
+## Observation Ranges
+It can occasionally be useful to pick a subset of observations
+by observation number.  This is especially useful when creating
+small data sets with which to test code.  Two data set options,
+FIRSTOBS and OBS make this very easy to code.
+
+Both options reference **observation numbers** and not numbers of
+observations.  That is
+
+```sas
+data-set (firstobs=10 obs=20)
+```
+
+extracts observation 10 through 20 (11 observations), and not
+the twenty observations beginning with observation 10!
+
+```{saslog}
+data cars;
+  set sashelp.cars(firstobs=10 obs=20);
+  run;
+```
+
+Because these are data set options, these could equally be use
+with output data sets.
+
+## Random Sampling
+You could write a DATA step that selects a random sample or you
+can use PROC SURVEYSELECT.  This PROC has more than a dozen
+probability sampling methods (depending on how you count them)
+built in.
+
+A simple random sample:
+
+```{sas}
+proc surveyselect data=sashelp.cars(keep=make model invoice) 
+	out=carsample
+	method=srs
+	n=10;
+run;
+
+proc print noobs; run;
+```

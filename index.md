@@ -1,7 +1,5 @@
 ---
 title: "SAS Notes"
-author: "Doug Hemken"
-date: today
 toc-expand: 1
 ---
 
