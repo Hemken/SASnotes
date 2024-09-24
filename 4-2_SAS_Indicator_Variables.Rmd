@@ -1,0 +1,155 @@
+# Constructing Indicator Variables with SAS
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+## CLASS-less PROCs
+
+Most SAS estimation procedures let you declare classification 
+(aka categorical, factor)  variables
+using a `CLASS` statement. The CLASS statement
+lets SAS know that these variables should be represented by
+sets of **indicator** (binary, dummy) variables.
+
+However, some regression procedures (notably `PROC REG`) do
+not automatically generate indicator variables for
+classification variables, leaving this up to you.
+
+If you are working with just a few categorical variables and 
+just a few categories, you can code this in a DATA step and
+the extra work is manageable.  But
+with lots of variables, lots of categories, and/or higher
+order effects (interactions, polynomials) this can be quite a
+bit of work.
+
+### An Example
+
+For example, this PROC REG produces an error:
+
+```sas
+proc reg data=sashelp.class;
+  model weight = sex;
+  run;
+```
+
+```{saslog error, SASproctime=FALSE}
+proc reg data=sashelp.class;
+  model weight = sex;
+  run;
+```
+
+Although `sex` only has two categories in this small data set, the
+data are coded as a character variable.  PROC REG requires all
+variables to be numeric (a "type" error). While there are a variety
+of ways to encode sex numerically, the model will be easiest to interpret
+if this is an indicator variable.
+
+## Solutions
+
+There are at least three solutions to this problem.
+
+- Switch to a procedure like PROC GLM that handles classification variables.
+- Create your own indicators, so you can use the extra features of PROC REG
+(diagnostics, multiple model statements, extra plots, etc.).
+- Use PROC GLMMOD to create indicators, and then use PROC REG for analysis.
+
+### Switch to PROC GLM
+
+Perhaps the simplest solution is to switch to `PROC GLM`.  Using PROC
+GLM you can let the software create indicator variables for you, by
+declaring CLASS variables.
+
+```{sas glm}
+proc glm data=sashelp.class;
+  class sex;
+  model weight = sex / solution ss3;
+  run;
+```
+
+An advantage of PROC GLM is that it also allows you to easily
+create interaction and polynomial terms.
+
+```sas
+proc glm data=sashelp.class;
+  class sex;
+  model weight = sex | age;  /* sex by age interaction */
+  run;
+```
+### Create Indicators in a DATA Step
+
+This is straightforward if your don't have too many categories
+to create indicators for.
+
+```{sas by_hand}
+data class;
+  set sashelp.class;
+  female = (sex eq 'F');
+  run;
+
+proc reg data=class;
+  model weight = female;
+  run;
+```
+
+### Use PROC GLMMOD to create indicators
+
+This is useful where you would benefit
+from some special feature of PROC REG, and you have a lot of
+categories to encode as indicators.
+
+The GLMMOD procedure
+essentially constitutes the model-building front end for the GLM
+procedure; it constructs and saves the design matrix for the model
+you specify. You can take the output from the GLMMOD procedure and use
+it as input to PROC REG or other SAS procedures.
+
+```{sas glmmod}
+proc glmmod data=sashelp.class;
+  class sex;
+  model weight = sex;
+  run;
+```
+
+Model specification is the same as for PROC GLM.  The printed
+output describes the model matrix.  What we want is to save the
+design matrix ("Design Points" table) as a data set to be used as input for our
+analysis PROC.
+
+- The CLASS statement is where you identify the
+classification variables to be used in the analysis.
+- The MODEL statement names the dependent variable(s)
+and *all* the independent effects.
+
+SAS gives us two options for saving the design matrix:
+
+- an `OUTDESIGN` option on the PROC statement, or
+- an ODS data set.
+
+Each of these options has it's awkward points.  The OUTDESIGN
+option (usually paired with an OUTPARM option) uses column
+numbers to name it's design variables, making it more difficult
+to interpret your results.  The ODS data set uses intelligible
+variable names.  With either option, you would want to suppress
+the printed output for any large data set.
+
+```{sas ods, collectcode=TRUE, echo=-c(1, 9)}
+ods listing exclude all;
+ods html exclude all; /* pause printed output */
+ods output designpoints = classmatrix;
+proc glmmod data=sashelp.class;
+  class sex;
+  model weight = sex;
+  run;
+ods html select all; /* resume printed output */
+ods listing select all;
+```
+
+This creates indicators for both sexes, `sex_f` and `sex_m`.
+Pick one for your regression.
+
+```{sas reg}
+proc reg data=classmatrix;
+  model weight = sex_f;
+  run;
+```

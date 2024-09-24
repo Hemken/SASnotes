@@ -1,0 +1,156 @@
+# Output Data from SAS Procedures
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+Many SAS procedures make important statistics available
+as output data sets, either with an
+`OUTPUT` statement, or with an option on the PROC statement.
+With `ODS` commands (Output Delivery System), **every table
+produced by every procedure can be returned as a data set**.
+
+(This same group of `ODS` commands also makes it very simple to save your
+output in [many document formats](saveSASoutput.html) and
+also to create many [statistical graphs](https://www.ssc.wisc.edu/sscc/pubs/4-21.htm)
+with little effort.)
+
+## Creating Data Sets with ODS
+
+ODS divides procedure output into components called output objects. Look
+at the following default output from the TTEST procedure:
+
+```{sas golfdata, collectcode=TRUE}
+data scores;
+   input Gender $ Score @@;
+   datalines;
+f 75  f 76  f 80  f 77  f 80  f 77  f 73
+m 82  m 80  m 85  m 85  m 78  m 87  m 82
+;
+```
+
+```{sas ttest}
+proc ttest data=scores;
+  class Gender;
+  var Score;
+  run;
+```
+
+SAS produces four output tables: 
+
+- "Statistics" (wrapped as multiple lines)
+- "Confidence Limits" (also wrapped)
+- "T-Tests"
+- and "Equality of Variances"
+
+Any table can be saved as a SAS data set once you know the ODS name for
+the table.  But as you can see in the preceding output, these are not
+always obvious.
+
+### Determining the Names of Output Tables
+
+Use the `ODS TRACE ON` and `ODS TRACE OFF` statements to determine the names of
+procedure tables (you can also find them in the SAS Help documentation for each
+procedure, under "Details").  These give you the table names in the Log:
+
+```{sas tracecode, results="hide"}
+ods trace on;
+
+proc ttest data=scores;
+  class Gender;
+  var Score;
+  run;
+
+ods trace off;
+```
+
+```{saslog tracelog, results="hide", SASecho=FALSE, SASproctime=FALSE}
+ods trace on;
+
+proc ttest data=scores;
+  class Gender;
+  var Score;
+  run;
+
+ods trace off;
+```
+
+What we need are the "Names."
+
+### Redirecting the Output
+
+Once you know the name of the table you want to make a SAS data set
+from, use an `ODS OUTPUT` statement to save the results.
+
+The basic specification is
+
+```default
+ODS OUTPUT ods-table = dataset;
+```
+
+For example, to save the "T-tests" table as a data set:
+
+```{sas ttestdata, collectcode=TRUE, echo=-c(1,7), results="hide"}
+ods listing close;
+ods output ttests=tstats;
+proc ttest data=scores;
+  class Gender;
+  var Score;
+  run;
+ods listing;
+```
+
+Below is a listing of the six variables and two observations that
+got written to the TSTATS data set:
+
+```{sas print}
+proc print data=tstats;
+run;
+```
+
+## Creating Data Sets with PROC Options
+
+Many SAS statistical PROCs also provide options to save values calculated
+by the procedure into data sets.  This is typically done with an option
+on the main PROC statement, or by including an `OUTPUT` statement as part
+of the PROC.
+
+These are *not* options with `PROC TTEST`, but they are both options with
+`PROC GLM`.
+
+### Additional Stats with a PROC Option
+
+If we fit our t-test as a general linear model, we can save the fit statistics
+by adding the `OUTSTAT=dataset` option.
+
+This saves the F-test statistics.  (Notice that F is the square
+of the t value above, and the the probability is the same as the
+classic "pooled" results.)
+
+```{sas glm}
+proc glm data=scores noprint outstat=glmfit;
+  class Gender;
+  model score = Gender / ss3;
+  run;
+
+proc print data=glmfit;
+run;
+```
+
+### OUTPUT Statement
+
+Adding an OUTPUT statement to PROC GLM provides a method
+of saving fitted values and diagnostic measures.
+
+```{sas diagnostics}
+proc glm data=scores noprint;
+  class Gender;
+  model score = Gender / ss3;
+  output out=fitted predicted=scorehat residual=residual;
+  run;
+
+proc print data=fitted;
+run;
+```
+
+Last Revised: 7/11/2024

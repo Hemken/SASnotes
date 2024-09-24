@@ -1,0 +1,182 @@
+# Observations and Records
+
+In a SAS data set, each *observation* is represented by a row of data.  In
+a text file, each *record* (line of text) **might** represent an observation.
+It it also possible that the data for a single observation might be spread
+over more than one record.  Occasionally you will also see text data
+arranged with more than one observation per record (this is uncommon in
+social science data, but common in the SAS documentation).
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+knitr::opts_chunk$set(SASproctime=FALSE)
+```
+
+The INPUT statement in a SAS DATA step builds observations variable-by-variable.
+By default, SAS keeps reading records from the input file until it has filled
+in the values for the current observation.  When a record is too short to fulfill
+all the values in an observation, SAS inputs a new record (and puts a NOTE in the
+log).  However, this is not always what we want.  There are other options.
+
+## One Observation per Record
+The vast majority of data will be organized with one record representing one
+observation.  The data may or may not be aligned in columns - SAS will treat
+multiple spaces as a single data value delimiter by default.
+
+```{sas}
+data scores;
+  infile datalines;
+  input name $ score1 score2 score3 team $;
+datalines;
+Joe     11 32 76 red
+Mitchell 13 29 82 blue
+Susan 14   27 74 green
+;
+
+proc print; run;
+```
+
+## Multiple Records per Observation
+By default SAS will "flow over" to the next record, when a record is too short.
+
+```{sas}
+data scores;
+  infile datalines;
+  input team $ name $ score1 score2 score3;
+datalines;
+red
+Joe 11 32 76 
+blue
+Mitchell 13 29 82
+green
+Susan 14 27 74 
+;
+
+proc print; run;
+```
+
+The log includes the NOTE
+
+```
+NOTE: SAS went to a new line when INPUT statement reached past the end of 
+      a line.
+```
+
+It is not particularly important to SAS that every observation have the same
+number of records!
+
+```{sas}
+data scores;
+  infile datalines;
+  input team $ name $ score1 score2 score3;
+datalines;
+red
+Joe 
+11 32 76 
+blue Mitchell 13 29 82
+green
+Susan 14 27 74 
+;
+
+proc print; run;
+```
+
+It **is important** to SAS that **every observation have the same
+number of data values**!  Without placeholders for the missing values
+the data values become misaligned.  Luckily, text data are seldom
+this poorly organized, but it is instructive to see what goes
+wrong.
+
+```{sas}
+data scores;
+  infile datalines;
+  input team $ name $ score1 score2 score3;
+datalines;
+red
+Joe 
+blue Mitchell 13 29 82
+green
+Susan 14 27 74 
+;
+
+proc print; run;
+```
+
+The log tells us
+
+```
+NOTE: Invalid data for score1 in line 8 1-4.
+NOTE: Invalid data for score2 in line 8 6-12.
+RULE:      ----+----1----+----2----+----3----+----4----+----5----+----6----
+8          blue Mitchell 13 29 82
+team=red name=Joe score1=. score2=. score3=13 _ERROR_=1 _N_=1
+NOTE: SAS went to a new line when INPUT statement reached past the end of 
+      a line.
+```
+
+Because the first two lines were two short to fill an observation, three
+records were read.  When SAS tries to create `score1` from the text in
+the third data value encountered, "blue", it finds this isn't numeric,
+sets the value of `score1` to missing, and sets the \_ERROR\_ flag to 1.
+The same thing happens as SAS tries to use the text "Mitchell" to fill
+in the value of `score2`.  The next text, "13", is valid as `score3`.
+SAS writes NOTEs in the log, and writes the
+offending \_INFILE\_ to the log (along with a RULE to aid in counting
+characters).  Finally, because the \_ERROR\_ flag is 1, SAS writes the
+PDV to the log as well.
+
+Notice as well that SAS did not try to use the text "29 82" for anything.
+When the first observation was "complete", it was output.  Then
+SAS returned to the top of the DATA step and began by INPUTing a new
+record.  By default, each iteration of the DATA step begins with a newly
+read record.
+
+And notice that SAS did produce a data set!  Habitually checking the
+log is important!
+
+### Fixing FLOWOVER
+There are several alternatives to FLOWOVER, including MISSOVER and TRUNCOVER.
+These options are specified on the INFILE statement.
+
+In the case where each record represents an observation and missing data values
+are all at the end of each record, the MISSOVER option is useful.  With the
+MISSOVER option, when the end of a record is reached before all the INPUT
+variables have been encountered, SAS sets the remaining data values to missing.
+SAS will not automatically go to a new line.
+
+```{sas}
+data scores;
+  infile datalines missover;
+  input team $ name $ score1 score2 score3;
+datalines;
+red   Joe 
+blue  Mitchell 13 29 82
+green Susan 14 27 74 
+;
+
+proc print; run;
+```
+
+> This problem is avoided if your text data has placeholders for missing data!
+
+## Multiple Observations per Record
+Where the text data are arranged so that there are multiple observations
+per record (usually when there are only a very few variables), we don't
+want SAS to read a new record with every iteration of the DATA step.
+To change this behavior, we use `@@` at the end of the INPUT statement.
+
+```{sas}
+data scores;
+  infile datalines;
+  input name $ score1 score2 score3 team $ @@;
+datalines;
+Joe     11 32 76 red Mitchell 13 29 82 blue
+Susan 14   27 74 green
+;
+
+proc print; run;
+```
+
+SAS is still building observations data value by data value.  In FLOWOVER mode
+a short observation at the end of a line would cause the INPUT to go to
+a new line.

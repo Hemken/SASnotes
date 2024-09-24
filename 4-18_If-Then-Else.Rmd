@@ -1,0 +1,216 @@
+# Conditional Statements
+
+```{r setup}
+library(SASmarkdown)
+```
+
+Often we want to execute a statement or a group of
+statements for just selected observations in our
+data set.  In SAS this is accomplished with an
+`IF-THEN` statement.
+
+## If-Then
+
+The basic syntax for IF-THEN is just
+
+```sas
+IF condition THEN statement;
+```
+
+where *condition* is an expression that can
+be interpreted as a [logical value](Logical_data.html)
+and *statement* is any executable SAS statement.
+
+The `statement` is executed only if the
+`condition` is true.
+
+Two examples where this is frequently used are
+searching for unusual values
+in your data and recoding.
+
+### Unusual Value Search
+
+One use of IF-THEN is to identify data values of
+interest and
+
+- print those observations to the log (or a file)
+- save them in a data set
+
+For example, we might want to know which observations
+in the `cars` data are missing information about
+their number of cylinders.
+
+#### Log output
+```{saslog SASnotes=FALSE}
+data _null_;
+  set sashelp.cars;
+  if (cylinders eq .) then put make model cylinders;
+  run;
+```
+
+#### Data set output
+```{sas}
+data cyl_missing;
+  set sashelp.cars;
+  if (cylinders eq .) then output;
+  run;
+
+proc print data=cyl_missing noobs;
+  var make model cylinders;
+run;
+```
+
+This has an even simpler form, known as the "subsetting IF".
+With a subsetting IF, all statements that follow the IF are
+executed only for the observations for which the condition is
+true.  And only those observations are sent to the output
+data set.  (But note that using WHERE is more efficient.)
+
+```{sas}
+data cyl_missing;
+  set sashelp.cars;
+  if cylinders eq .;
+  run;
+
+proc print data=cyl_missing noobs;
+  var make model cylinders;
+run;
+```
+
+### If-Then Recodes
+:::{.callout-tip}
+## Recodes
+IF-THEN recodes are often better handles as IF-THEN/ELSE.
+This is both more computationaly efficient, but also
+less prone to logic errors.
+:::
+
+#### Indictor Coding
+One common approach to coding indicator variables is to
+*initialize* a variable with one value (typically 0), and
+use IF-THEN to *indicate* the other value.
+
+A problem with this approach is that people often forget
+to account for missing data.
+
+```{sas}
+data cars;
+  set sashelp.cars;
+  eightcyl = 0;
+  if (cylinders eq 8) then eightcyl = 1;
+  run;
+
+proc freq data=cars;
+  tables cylinders*eightcyl / nocol nopercent missing;
+run;
+```
+
+Another approach here might be to explicitly code both
+values of the indicator.
+
+```{sas}
+data cars;
+  set sashelp.cars;
+  if (cylinders ne .) then eightcyl = 0;
+  if (cylinders eq 8) then eightcyl = 1;
+  run;
+
+proc freq data=cars;
+  tables cylinders*eightcyl / nocol nopercent missing;
+run;
+```
+
+This second approach, while it gets us the desired
+result, would be more efficient if we add an ELSE
+statement.
+
+## If-Then/Else
+
+An ELSE statement tells SAS what to do if the condition is not true,
+and must be the next statement after an IF-THEN. Indentation is not
+required, but helps us humans see the statements as a group.
+
+The syntax is:
+
+```sas
+IF condition THEN statement1;
+  ELSE statement2;
+```
+
+If the `condition` is true, then `statement1`
+will execute. If it is not, `statement2` will execute. Note
+that `statement2` can also be an IF-THEN, which allows you
+to deal with many possibilities. Revising our recode
+example from above
+
+```{sas}
+data cars;
+  set sashelp.cars;
+  if (cylinders eq 8) then eightcyl = 1;
+    else if (cylinders ne .) then eightcyl = 0;
+  run;
+
+proc freq data=cars;
+  tables cylinders*eightcyl / nocol nopercent missing;
+run;
+```
+
+In another example, suppose we wanted to recode vehicle
+`weight` (a continous variable) into thousand pound categories.
+
+One approach might be to use a series of IF-THEN statements.
+Notice that this example assumes no missing data.  For
+each observation, five conditions are checked.
+
+```sas
+data cars;
+	set sashelp.cars;
+	if (weight lt 3000)                    then wgt = 2;
+	if (weight ge 3000 and weight lt 4000) then wgt = 3;
+	if (weight ge 4000 and weight lt 5000) then wgt = 4;
+	if (weight ge 5000 and weight lt 6000) then wgt = 5;
+	if (weight ge 6000)                    then wgt = 6;
+	run;
+```
+
+A more efficient approach is
+
+```{sas}
+data cars;
+	set sashelp.cars;
+	if weight lt 3000        then wgt = 2;
+		else if weight lt 4000 then wgt = 3;
+		else if weight lt 5000 then wgt = 4;
+		else if weight lt 6000 then wgt = 5;
+		else                        wgt = 6;
+	run;
+	
+proc freq data=cars;
+  tables wgt / nocum;
+run;
+```
+
+Here, only one condition is checked for 87 observations, and
+the majority of observations are handles with one or two checks.
+And the code is much more readable.
+
+## Select/When/Otherwise/End
+Like IF-THEN/ELSE, SELECT-WHEN stops processing subsequent
+statements once it encounters a true condition.
+```{sas}
+data cars;
+  set sashelp.cars;
+  select;
+  	when (weight lt 3000) wgt = 2;
+    when (weight lt 4000) wgt = 3;
+    when (weight lt 5000) wgt = 4;
+    when (weight lt 6000) wgt = 5;
+    otherwise wgt = 6;
+    end;
+run;
+
+proc freq data=cars;
+  tables wgt / nocum;
+run;
+```
+

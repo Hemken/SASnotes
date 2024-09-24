@@ -1,0 +1,126 @@
+# Subsets: Selecting Variables
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+When preparing your data for analysis it is generally a great idea to reduce
+your data set to just those variables (and observations) that you need.  This
+not only allows the computer to work more efficiently, but also reduces the
+clutter when you try and look at the data yourself.  When data cleaning is
+written into a SAS script, it is easy to revise later if you decide you
+need to look are more (or fewer!) variables.
+
+Extracting variables is generally something you do in a DATA step or in a
+utility PROC (COPY, SORT, STANDARDIZE).  In most statistical PROCs you
+already select variables with a VAR, TABLES, or MODEL statement.
+
+There are two main SAS language elements that you use to select variables:
+
+- [data set options](data_set_options.html) KEEP or DROP
+- KEEP or DROP statements
+
+You can pretty easily guess what these keywords mean.  The only
+subtlety is in whether you select the variables before SAS reads
+data **in** or before SAS writes data **out**.
+
+## KEEP or DROP statements
+
+Used as statements in a DATA step, KEEP and DROP control what variables
+a written to the **output** data set.  All of the variables that are
+SET are read into the Program Data Vector and are available in the DATA step
+but only the selected variables are saved in the new data set.
+
+While these statements could be written
+anywhere among your DATA step statements - they are only used during the
+[compile phase](https://users.ssc.wisc.edu/~hemken/SASworkshops/4-18_Understanding_DATA_Steps.html#compile-phase)
+of the DATA step - it aids in understanding your code when they are
+written at the bottom of the step, just before the (implied) OUTPUT.
+
+You should generally use either KEEP or DROP, and not both statements in the
+same step (although it is technically possible, albeit with a warning).
+You may use multiple KEEPs
+or multiple DROPS, but this tends to make your code hard to read.  You will generally prefer
+whichever allows you to write the shortest variable list.  However, for anyone who may
+read your code in the future, using KEEP makes it clear what variables will be
+in the result without having to be overly familiar with your data.
+
+If I have a data set with heights and weights, but I am interested in analyzing
+body mass index, I might be interesting in constructing the following data sets.
+
+- For a t-test, I might KEEP just the two variables needed
+
+```{sas ttest}
+data class;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+  keep sex bmi;
+  run;
+
+ods select conflimits ttests;
+proc ttest data=class;
+	class sex;
+	var bmi;
+	run;
+```
+
+- For a regression, I might DROP the variables I don't need.  Here you see
+that although we use `height` and `weight` to calculate `bmi`, dropping
+it only affects the **output** data set.
+
+```{sas glm}
+data class;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+  drop name height weight;
+  run;
+
+ods select parameterestimates;
+proc glm data=class;
+	class sex;
+	model bmi = sex age / solution;
+	run;
+```
+
+## KEEP or DROP data set options
+The keywords KEEP and DROP may also be used as data set options.  Data
+set options can be used with both input and output data sets, and they
+can be used in PROCs as well as in DATA steps.  The general form is
+
+```sas
+data-set (KEEP= var1|varlist <var2 ...>)
+data-set (DROP= var1|varlist <var2 ...>)
+```
+
+Used as an input data set option, they promote efficient computing in
+DATA steps because they prevent SAS from moving data into the PDV.
+Used as an output data set option, the promote *future* efficient
+computing.
+
+Used with an output data set, they do the same thing as a
+DATA step statement.
+
+We could use these options on both input and output data
+sets in the same step.
+
+```{sas glm2}
+data class (drop=height weight);
+  set sashelp.class(drop=name);
+  bmi = (weight/height**2)*703;
+  run;
+
+proc means data=class n mean stddev;
+  class sex;
+run;
+```
+
+Used to modify a input data set, these options may also appear in
+PROCs.  (In the next example, this does not provide any computational
+benefit, it merely gives me an alternative way of specifying TABLES.)
+
+```{sas freq}
+proc freq data=sashelp.class(keep=sex age);
+  tables _all_ /nocum;
+  run;
+```
+

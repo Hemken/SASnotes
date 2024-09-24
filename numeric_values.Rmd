@@ -1,0 +1,150 @@
+# Working with Numeric Data
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+## Assigning Values
+The most common thing you will do in a DATA step is to *assign*
+values to a variable.  The [basic assignment statement](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lestmtsref/p1hglxgj1sjhdzn18soqrqmvogvj.htm) is
+
+```sas
+variable = expression;
+```
+
+where *variable* names either a new or existing variable, and *expression*
+is some combination of constants, variable names, operators, and functions.
+When an expression is evaluated (executed) it results in a data value.
+
+This is the one SAS statement that does not begin with a SAS keyword.  Assignment
+always occurs within a DATA step.  The SAS language includes all the usual
+[arithmetic operators](https://documentation.sas.com/doc/en/lrcon/9.4/p00iah2thp63bmn1lt20esag14lh.htm#n1feyypdf6czp4n15pthf5lafmlf)
+and [numeric functions](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/n01f5qrjoh9h4hn1olbdpb5pr2td.htm#p0twobwkv7f4mrn19238vqqzzls9).
+
+For example, using the SAS example data set, `class`, we can add a variable
+for the body mass index of each kid, calculated from the existing variables
+`height` and `weight`.  In this example, we read the data from the SASHELP
+library, and create a new copy in the WORK library (in WORK because we have
+not named any other library on the DATA statement), and call the new
+variable `bmi`.
+
+```{sas assignment}
+data class;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+run;
+
+proc means data=class n mean stddev;
+  var weight height bmi;
+run;
+```
+
+A DATA step can include any number of assignment statements, and they
+are executed in order, one observation at a time.  You should think of
+a DATA step as an implicit *loop*:  SAS reads in one observation
+according to a statement that is (usually) at the top of the step,
+runs through each line of the step with that one observation, and
+outputs the observation to the output data set at the bottom of the
+step.  Then SAS returns to the top of the step, and repeats for as
+long as it finds a new observation to read.  See [Understanding
+SAS DATA Steps](4-18_Understanding_DATA_Steps.html) for a more
+detailed explanation.
+
+## Overwriting Existing Variables (Recoding)
+For example, another approach to our bmi calculation might begin
+by converting Imperial heights and weights into SI units.  In
+this example, notice that we are *transforming* weight and height
+(they appear on both the left and right of the assignment operator,
+the equals sign).  And the order matters.  It would be a mistake
+to put the bmi statement first.  However, changing the statement
+order would also give us
+output with no error messages in the log!
+
+```{sas si}
+data class;
+  set sashelp.class;
+  weight = weight/2.2;
+  height = height/39.37;
+  bmi    = weight/height**2;
+run;
+
+proc means data=class n mean stddev;
+  var weight height bmi;
+run;
+```
+
+Compare with this, where the bmi values are nonsense!
+
+```{saslog bad_order, SASproctime=FALSE}
+data class;
+  set sashelp.class;
+  bmi    = weight/height**2;
+  weight = weight/2.2;
+  height = height/39.37;
+run;
+
+proc means data=class n mean stddev;
+  var weight height bmi;
+run;
+```
+
+## Missing Values
+When using most SAS operators and functions, a missing value in
+an expression results in a missing value (with a few important
+exceptions).  In
+
+```sas
+z = x + y;
+```
+
+if either x or y is missing, z will be missing.
+
+```{sas}
+data missing;
+  input x y;
+  z = x + y;
+datalines;
+59 1
+60 .
+. -39
+;
+
+proc print noobs; run;
+```
+
+### Observation-wise Summary Statistics
+The functions that calculate summary statistics within an
+observation are exceptions to missing value propagation.
+Functions like MEAN(), STD(), STDERR(), and SUM() usually
+have several variables as arguments.  As long as their
+values are not all missing (within an observation), the
+result is also not missing.
+
+These functions can generally take one of two forms,
+using either variable names separated by commas, or
+OF and a [variable list](https://documentation.sas.com/doc/en/lrcon/9.4/p0wphcpsfgx6o7n1sjtqzizp1n39.htm).
+
+```sas
+mean(var1, var2, var3 ...)
+mean(of varlist)
+```
+
+```{sas}
+data missing;
+  input x1 x2 x3 x4;
+  a = mean(x1, x2, x3, x4);
+  b = std (x1, x2, x3, x4);
+  c = stderr(of x1-x4);
+  d = sum   (of _numeric_);
+datalines;
+59 1 7 2
+60 . -3 5
+. -39 . 0
+;
+
+proc print noobs; run;
+```
+
+### Sum Operator
+As described in [Understanding DATA steps](https://users.ssc.wisc.edu/~hemken/SASworkshops/4-18_Understanding_DATA_Steps.html#the-sum-operator), the sum operator, which
+accumulates sums *across* observations, does not propagate missing values.

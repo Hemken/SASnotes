@@ -1,0 +1,127 @@
+# Numeric and Character Type Conversions
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+SAS has fundamentally two data types:  `NUMERIC` AND `CHARACTER`.  On occasion
+you may have data stored as one type that you wish to use as the other type.
+
+In a DATA step, SAS may make the conversion for you (*dynamic* type conversion),
+but this will produce notes in the log.  Although these notes can largely be
+ignored, the clutter in the log file can make it difficult to see other notes
+that are more consequential.
+
+To suppress these type conversion notes, we use the `input` and `put` functions
+to make explicit conversions.
+
+## From Character to Numeric
+Consider the following data set, where `strzip` is a character variable.
+
+```{sas data1, collectcode=TRUE}
+data example;
+	input strzip $;
+	datalines;
+	53703
+	53706
+	53712
+	53715
+	;
+run;
+```
+```{sas contents}
+ods select variables;
+proc contents data=example;
+run;
+```
+
+Using character data with an arithmetic operator or function
+will cause a dynamic type conversion
+
+```{sas dynamic_math, results="hide"}
+data example;
+	set example;
+	intzip1 = strzip+0; /*produces notes*/
+	run;
+```
+```{saslog dynamic_math, results="hide", SASecho=FALSE, SASproctime=FALSE}
+```
+
+We can use the `input` [function](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/p19en16vskd2vhn1vwmxpxnglxxs.htm)
+(note that this is distinct from the
+`input` *statement* used to read data from text files) to make an
+explicit conversion, and avoid the note.
+
+This takes the form
+
+```sas
+input(source, character_informat.)
+```
+
+In this example `$5.` is a character informat, reading 5 characters.
+
+```{sas explicit, results="hide"}
+data example;
+	set example;
+	intzip1 = input(strzip, $5.); /*no note*/
+	run;
+```
+```{saslog explicit, results="hide", SASecho=FALSE, SASproctime=FALSE}
+```
+
+## From Numeric to Character
+Now consider this data set, where `intzip` is a numeric variable.
+
+```{sas data2, collectcode=TRUE}
+data example;
+	input intzip;
+	datalines;
+	53703
+	53706
+	53712
+	53715
+	00001
+	;
+run;
+```
+```{sas contents}
+```
+
+If we try to copy these data into a character variable, whose
+type is defined by the `length` statement, we again see notes.
+
+```{sas dynamic_conversion, results="hide"}
+data example;
+	set example;
+	length strzip1 $5;
+	strzip1 = intzip; /*produces notes*/
+	run;
+```
+```{saslog dynamic_conversion, results="hide", SASecho=FALSE, SASproctime=FALSE}
+```
+
+Here we use a `put` [function](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/n0mlfb88dkhbmun1x08qbh5xbs7e.htm) (again, distinct from the `put` statement used to
+write output to the log).
+
+This takes the form:
+
+```sas
+put(source, numeric_format.)
+```
+
+Here we will use the "Zw.d" format to reproduce the leading zeros. (There are
+a huge number of [numeric formats](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/leforinforref/n0p2fmevfgj470n17h4k9f27qjag.htm#n0wi06aq4kydlxn1uqc0p6eygu75) to choose from)
+
+```{sas explicit2, results="hide", collectcode=TRUE}
+data example;
+	set example;
+	length strzip1 $5;
+	strzip1 = put(intzip, z5.0); /*no note*/
+	run;
+```
+```{saslog explicit2, results="hide", SASecho=FALSE, SASproctime=FALSE}
+```
+
+```{sas}
+proc print; run;
+```

@@ -1,0 +1,166 @@
+# Data Set Options
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+Whenever you specify a SAS data set, you can also
+use *data set options* to make a variety of modifications
+to that data set.  Most of these options can be
+used with either *input* or *output* data sets.
+Some of them also have analogous SAS statements
+that may be used in most DATA steps and PROCS.
+
+There are many [data set options](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/ledsoptsref/titlepage.htm).
+Those used most commonly are for
+
+- renaming variables
+- keeping selected observations
+- keeping selected variables
+- recording the source of an observation (when merging)
+
+Some of the most used options are discussed in [Subsetting SAS data sets]().
+
+Here we will look at the `RENAME` option to
+illustrate the differences between input, output, and
+statement specifications.
+
+In general, data set options take the form
+
+```sas
+data-set-name ( option1 option2 ...)
+```
+
+where options are specified in parentheses after the
+data set name.  (Options may include their own
+parentheses, as you will see in the first example.)
+Options are separated by spaces.
+
+## Input Options
+
+Most PROCs and DATA steps begin by reading data.  This is
+the *input data set*.
+
+### In a PROC step
+To rename a variable for just the duration of a single PROC,
+use a RENAME option when specifying the data set.
+
+Not renamed:
+
+```{sas original}
+proc freq data=sashelp.class;
+  tables sex / nopercent nocum;
+run;
+```
+
+Renamed:
+
+Notice in this example that when we rename a variable
+on the input data set, any other statements in that step
+must refer to the variable by it's **new** name.
+
+```{sas renamed}
+proc freq data=sashelp.class(rename=(sex=gender));
+  tables gender / nopercent nocum;
+run;
+```
+
+Although not strictly required for this example, the RENAME option
+is typically specified with parentheses around the
+`old-varname=new-varname` pairs.  Even with just one varname
+pair, parentheses makes our code more readable - with more than
+one pair the parentheses are required.
+
+### In a DATA step
+Used in a DATA step, the changes affect all subsequent PROCs that
+use the data set created.
+
+```{sas data_rename}
+data class;
+  set sashelp.class(rename=(age=years height=inches));
+run;
+
+proc means data=class;
+  var years inches;
+run;
+```
+
+Here the parentheses around the varname pairs are required,
+because there are two pair.
+(Try it without the added parentheses, and see if the error message makes sense to
+you!)
+
+## Output Options
+The data set created by a DATA step is the *output data set*.
+Some PROCS also produce output data sets.
+
+### In a PROC step
+PROC SUMMARY (similar to PROC MEANS) produces an output data
+set with summary statistics.
+
+```{sas procsummary}
+proc summary data=sashelp.class;
+  var height;
+  output out=descriptives;
+run;
+
+proc print data=descriptives;
+run;
+```
+
+To rename the variable \_FREQ\_, we could specify
+
+```{sas summary rename}
+proc summary data=sashelp.class;
+  var height;
+  output out=descriptives(rename=(_FREQ_=NOBS));
+run;
+
+proc print data=descriptives;
+run;
+```
+
+Notice that we could rename `height` in a few different places.
+By adding a RENAME option to the input data for PROC SUMMARY we
+would end up renaming height in both the input and output
+data sets. This
+would also require changing the varname on the VAR statement.
+If we were to rename height on the output data set, it
+would be changed only in that data set.
+
+### In a DATA step
+DATA steps also have output data sets (say that three times, fast!).
+
+Notice that if we rename a variable in the output data set,
+statements in the DATA step must still use the original name.
+
+```{sas bmi}
+data class(rename=(height=inches));
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+run;
+
+proc means data=class;
+  var bmi inches;
+run;
+```
+
+## Statements instead of Options
+Many data set options have analogous DATA step *statements*. These
+have the same effect as an **output** data set option.
+
+```{sas}
+data class;
+  set sashelp.class;
+  rename age=years height=inches;
+  bmi = (weight/height**2)*703;
+run;
+
+proc means data=class;
+  var years inches bmi;
+run;
+```
+
+The exception to statements-as-output-options is the WHERE statement.
+See [Subsetting SAS data sets]() for more details of that data set
+option/statement.

@@ -1,0 +1,386 @@
+# Understanding SAS Data Steps 
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+To go further with SAS DATA steps, it helps to understand
+three features of DATA step programming.
+
+- *Compile phase* versus *execute phase*
+- the central role of the *progam data vector* (PDV)
+- DATA steps loop through observations
+
+The typical DATA step completes these tasks:
+
+- names an output data set
+- reads an observation
+- manipulates the observation
+- outputs the observation
+- returns to the top for the next observation
+
+```sas
+data new-data;
+  set old-data;
+  /* manipulations */
+  * output ;
+  * return ;
+run;
+```
+
+If a DATA step does not include explicitly coded OUTPUT
+or RETURN statements, these are assumed to be the final
+two statements.  So the above example would typically
+be written
+
+```sas
+data new-data;
+  set old-data;
+  /* manipulations */
+run;
+```
+
+For a more detailed flow chart of DATA step processing see the
+[SAS Programmer's Guide](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lepg/p0l9z26c8qrhl8n1hqs6raontpbn.htm)
+
+## Compile Phase and Execution Phase
+
+When SAS receives a DATA step, it first goes through a *compile
+phase* in which it checks your code for syntax errors (typos,
+missing semicolons, etc. - however, not all errors are syntax errors),
+and prepares space in memory to
+process your data.  If SAS finds a syntax error, it skips
+execution, but continues to check for syntax errors.  No
+output data set is created.
+
+:::{.callout-warning}
+In interactive mode, a DATA step error means that single
+step is not executed, but SAS will **attempt** to process
+subsequent steps.  In batch mode, a DATA step error means
+that **no** subsequent steps are processed.
+:::
+
+If no errors are found, SAS then begins to execute the
+DATA step.
+
+## Compile Phase
+In addition to checking for syntax errors, the main task
+accomplished in the compile phase it to define variables
+for processing, creating the *program data vector* (PDV).
+SAS scans through you code, including taking a peek at
+the variables already defined in input data sets.  SAS
+assembles the PDV, with the variables defined in the order
+in which they are encountered in your code.  The PDV
+also includes several *automatic* variables.  Two variables
+that are always present in the PDV (but not saved to your
+output data set) are `_N_` (current observation number)
+and `_ERROR_` (errors encountered).
+
+The *attributes*
+of each variable (type, storage length, etc.) are defined
+in the compile phase as well.  A number of DATA step
+statements are only used during the compile phase:
+LENGTH, FORMAT, LABEL, ATTRIB.  While the *order* of the
+variables in the PDV depends on the order in which they
+are **first** encountered in the code, their *attributes* depend
+on the value **last** encountered in the code.
+
+### Initial PDV
+You can see the current state of the PDV during the execution
+phase by adding `PUT _all_`
+statements to your DATA step, which adds text output to your
+log or to a specified "outfile".  To see the PDV add the
+statement
+
+```sas
+put _all_;
+```
+
+(You could also name just a few variables to PUT, rather than
+writing out the whole PDV.)
+
+For example, we could see which variables are in the PDV
+of this DATA step:
+
+```{saslog put, SASproctime=FALSE}
+data new;
+  put _all_;
+  set sashelp.class(obs=0);
+run;
+```
+
+By placing the PUT statement first, we can see what
+values the PDV holds *before* any data are read from
+the input data set.  The very first time SAS
+executes this statement, it effectively tells us
+how the PDV is defined at the end of the compile
+phase. (And the `obs=0` data set option
+prevents SAS from reading any data.)
+
+(SAS also has a [DATA step debugger](https://documentation.sas.com/doc/en/webeditorcdc/5.2/webeditorug/n1hvj6m33v3pidn1f136i22e18br.htm) for interactive
+interfaces, which is a little more involved to use.)
+
+### Variable Order and Attributes
+
+In the next example, we can see how both the order of the variables
+and their attributes are changed during the compile phase.
+
+```{saslog order, SASproctime=FALSE, SASnotes=FALSE, collectcode=TRUE}
+data new;
+	if _n_ eq 1 then put _all_;
+	label weight = "Weight (lbs.)";
+	set sashelp.class;
+	length age 3.;
+	run;
+```
+
+The variable `weight` is encountered first, in the LABEL
+statement.  The rest of the `class` variables are 
+encountered next (including `weight` again), implicit
+in the SET statement.  And
+finally, the length attribute of `age` - already set to
+length 8 from the SET statement - is reset to length 3.
+
+Here the executable PUT statement is limited to the
+first observation, so we only see the PDV at the end
+of the compile phase.
+
+Part of the output from PROC CONTENTS shows us the 
+variable attributes.
+
+```{sas position}
+ods select position;
+proc contents data=new position;
+	run;
+```
+
+## Execution Phase
+
+In execution phase, your data is loaded one observation at a time, the
+actual data manipulation is done, and the output is written to disk.
+Execution phase very much depends on the actual data, and can include
+conditional execution (IFs) and within-observation loops (DOs).
+
+### Order of Execution / PDV
+
+Once you reach execution phase, SAS will load one observation 
+at a time into the PDV and execute
+the DATA step statements **in order** before loading the next observation.
+
+To see this
+in action, we can add several PUT \_ALL\_ statements, and look at
+the log output.
+
+In this example we can examine
+- the values in the PDV at the beginning ("top") of the DATA step
+- the values in the PDV after a new observation is read (SET)
+- the values in the PDV after the assignment statement (`bmi`)
+
+This final set of values (at the "bottom" of the DATA step)
+is what is OUTPUT to the `new` data set.
+SAS then RETURNs to the top and tries to read another observation.
+
+(We'll limit this to just three observations.)
+
+```{saslog execution, SASproctime=FALSE}
+data new;
+  put "Observation " _n_;
+  put _all_;
+  
+  set sashelp.class(obs=3);
+  put _all_;
+  
+  bmi = (weight/height**2)*703;
+  put _all_;
+  put; *add a blank line;
+run;
+```
+
+There are a few details worth observing here.
+
+- At the top of the first observation, all the data values
+are missing.  This is the PDV at the end of the compile phase.
+- In the next two steps, one observation is read and `bmi` is
+calculated.
+- At the "bottom" (after the final PUT), the observation
+in OUTPUT and the loop RETURNs.
+
+- At the top of the second observation, some values are carried
+over from the previous observation, while `bmi` is reset to missing.
+We'll come back to this, below.
+- Data values from the next observation (SET) replace those from the
+previous observation.  Then `bmi` is calculated, etc.
+
+- SAS goes back to the top for a fourth observation, but finding
+no next observation it exits the DATA step at the SET statement
+(without executing further statements or writing to the output data set).
+
+### The Implicit Loop
+
+As seen in the previous example,
+a SAS DATA step is an implicit loop-over-observations,
+where observations are read or constructed one at a time,
+output, and the loop begins again.  The loop ends when
+SAS no longer finds a new observation to read.
+
+#### OUTPUT and RETURN
+Implicit in most DATA steps are an OUTPUT statement and
+a RETURN statement.  Making these explicit gives us more
+control over these features of the DATA step.
+
+Suppose you write a data step that says:
+
+```sas
+data copy;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+run;
+```
+
+This simply creates a data set named `copy` from the
+data set `class` located in the `sashelp` library.  We
+can rewrite this as
+
+```sas
+data copy;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+  output;
+  return;
+run;
+```
+
+This is just the same as the preceding code.
+
+It would be possible to have more than one OUTPUT statement
+per DATA step.  We use this when we want to create more
+than one data set with one DATA step (an efficient way to
+create disjoint subsets), when we want to turn one
+input observation into multiple output observations
+("reshaping" data), and when we are creating purely
+simulated data.
+
+For example, to create two subsets we would use two
+conditional OUTPUT statements:
+
+```{sas twosubsets, collectcode=TRUE}
+data girls boys;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+  if sex eq "F" then output girls;
+    else if sex eq "M" then output boys;
+run;
+```
+
+```{sas printgirls}
+proc print data=girls(obs=5);
+  var name sex weight height bmi;
+run;
+```
+```{sas printboys}
+proc print data=boys(obs=5);
+  var name sex weight height bmi;
+run;
+```
+
+Notice that where we place the OUTPUT statement matters.  In
+the next example, we output the data and then calculate the `bmi`!
+
+```{sas bad-output}
+data copy;
+  set sashelp.class;
+  output;
+  bmi = (weight/height**2)*703;
+  return;
+run;
+
+proc print data=copy(obs=5);
+  var name weight height bmi;
+  run;
+```
+
+This has written the data to `copy` before
+each `bmi` value has been calculated.  Not very useful!
+(But also, SAS produces no error message.  If you add
+a PUT \_ALL\_ at the bottom of the DATA step, you will
+see that SAS indeed calculates `bmi` ... it just never
+gets into the output data set!)
+
+We could also move the RETURN statement (but we seldom see
+this in practice).
+
+#### The Retain Flag
+
+As seen in the previous examples, some values are *retained*
+from one observation to the next, while other are not.  By default
+variables that are input from other data sets (SET) are retained,
+while newly created variables are reset to missing at the top
+of each DATA step.
+
+It is sometimes useful to carry over the values of a new variable
+from a previous observation - this is useful in calculating cumulative
+values, change values, rank orders, etc.  SAS has a variety of
+methods for these sorts of calculations, and retaining values
+across iterations of the PDV is one such method.
+
+An attribute of each variable in the PDV is it's *retain flag*.
+The retain flag is automatically set to yes for all variables that come
+from the input data set. For new variables, you can set it using the
+`RETAIN` statement.  (To "un-retain" a variable, you must explicitly
+reset it to missing in the DATA step.)
+
+```sas
+retain x;
+```
+
+will set the Retain flag to yes for the variable `x`. You
+can also set an initial value:
+
+```sas
+retain x 5;
+```
+
+For example, to calculate the "cumulative years of experience"
+(sum of the ages) in the `class` data we might write
+
+```{sas max}
+data class;
+  set sashelp.class;
+  retain total_years 0; /*initialize at 0*/
+  total_years = total_years + age;
+run;
+
+proc means data=class max;
+  var total_years;
+run;
+```
+
+#### The Sum Operator
+
+SAS gives you an easy shortcut for cumulative sums: the sum operator.
+The syntax is simply:
+
+```sas
+var + expression;
+```
+
+Note that there is no equals sign.  This is equivalent to our RETAIN
+example
+
+```sas
+retain var;
+var = var + expression;
+```
+
+But if you use the sum operator, SAS will do several things for you
+automatically. First, it will set the Retain flag for the variable to
+yes, and give it an initial value of zero.
+
+It will also set the Missing Protect flag to yes. Normally if you add a
+missing value to anything the result is a missing value. But if the
+Missing Protect flag is set to yes, missing values are treated like
+zeroes. You\'ll have to decide if this is appropriate for your analysis
+or not. But without this protection, a single missing value will make
+the sum missing for all subsequent observations.
+
+Last Revised: 9/03/2024

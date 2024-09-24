@@ -1,0 +1,260 @@
+# INPUT Specifications
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+Finding and interpreting the text to use for each data value is the most important
+function of the INPUT statement.  There are three main methods of identifying the
+text to use for the next data value:
+
+- data value delimiters (e.g. spaces, commas)
+- column positions
+- informats (for data with commas, currency symbols, dates and times, etc.)
+
+These three methods may be used together in the same INPUT statement.
+
+In addition to methods of identifying text for data values, there are also
+a number of *pointer* instructions that allow us to change the position of
+the pointer in the input buffer without reading text for a variable.  We
+can move the pointer
+
+- to a fixed position
+- forward or backward a relative number of characters
+
+## Delimited Data
+As [we have seen](), the INPUT statement for delimited data (list, csv)
+just lists the names of the variables to be created, and indicates
+those that are character variables.
+
+However, if the delimiting character is also a valid character within
+a data value, we need to move beyond the default.  In this case
+we need to declare that the data is delimited on the INFILE statement.
+The DSD option by itself defaults to using commas as delimiters.
+
+If we have a space delimited file with quoted character values, we
+can add a DELIMITER option to the INFILE statements as well.
+
+```{sas}
+data club; 
+	infile datalines dsd delimiter=' ';
+   input idno name $ team $ strtwght endwght; 
+datalines; 
+1023 'David S' red 189 165 
+1049 'Amelia H' yellow 145 124 
+1219 'Alan F' red 210 192 
+1246 'Ravi S' yellow 194 177 
+1078 'Ashley J' red 127 118 
+1221 'Jim G' yellow 220 . 
+; 
+
+proc print; run;
+```
+
+It is important to notice that multiple adjacent delimiters now
+denote missing values.  In the next example, there are two spaces
+between "red" and "165".  (Missing numeric values also may still be
+represented with a period, as in the previous example.)
+
+```{sas}
+data club; 
+	infile datalines dsd delimiter=' ';
+   input idno name $ team $ strtwght endwght; 
+datalines; 
+1023 'David S' red  165 
+1049 'Amelia H' yellow 145 124 
+; 
+
+proc print; run;
+```
+
+It is not necessary to read in all the variables.  But in list
+specification style, we do have to begin at the start of each
+record and read all the data through the last variable we
+wish to keep.  For example, if I want ID numbers and team names,
+I also have to read individual names (which I might then DROP).
+
+```{sas}
+data club; 
+  infile datalines dsd delimiter=' ';
+  input idno name $ team $;
+  drop name;
+datalines; 
+1023 'David S' red 189 165 
+1049 'Amelia H' yellow 145 124 
+1219 'Alan F' red 210 192 
+1246 'Ravi S' yellow 194 177 
+; 
+
+proc print; run;
+```
+
+## Fixed Columns
+It is also common (especially in older data sets) for data values
+to be aligned in regular (*fixed*) columns. This takes the form
+
+```
+varname <$> start<-end>
+```
+
+Fixed column data makes it very easy to extract just a few variables
+from a file.  However, figuring out which columns contain the data
+of interest can be mind-numbing.  A codebook *that gives column
+specifications* (a.k.a. a data dictionary) is a live-saver!
+
+```{sas}
+data club; 
+  infile datalines;
+  input idno 1-4 name $ 6-13 team $ 15-20
+        strtwght 22-24 endwght 26-28; 
+datalines; 
+1023 David S  red    189 165 
+1049 Amelia H yellow 145 124 
+1219 Alan F   red    210 192 
+; 
+
+proc print; run;
+```
+
+We no longer have to worry about whether the delimiting character
+is valid inside a data value, and we no longer require placeholders
+or multiple delimiters to represent missing data.  Data values may
+even run together.
+
+```{sas}
+data club; 
+  infile datalines;
+  input idno 1-4 name $ 6-13 team $ 15-20
+        strtwght 22-24 endwght 25-27; 
+datalines; 
+1023 David S  red    189165 
+1049 Amelia H yellow 145124 
+1219 Alan F   red    210192 
+; 
+
+proc print; run;
+```
+
+To read selected variables, we just specify what we want to keep
+on the INPUT statement.
+
+```{sas}
+data club; 
+  infile datalines;
+  input team $ 15-20 endwght 25-27; 
+datalines; 
+1023 David S  red    189165 
+1049 Amelia H yellow 145124 
+1219 Alan F   red    210192 
+; 
+
+proc print; run;
+```
+
+## Formatted Data
+Formatted numeric data presents a problem, because SAS interprets
+these as character data.  While we could read them as character values
+and transform them later in the DATA step, where we have an existing
+format that produces the same sort of output it is often easier to simply
+use the inverse function, the *informat*.  SAS informats have the same
+names as the formats, making them fairly easy to remember.  (You can also
+create your own informats.)
+
+```{sas}
+data formatted; 
+   input item $ 1-11 amount comma5.; 
+datalines; 
+trucks     1,382 
+jeeps      1,235 
+landrovers 2,391 
+; 
+
+proc print data=formatted; 
+run; 
+```
+
+Notice that this example mixes fixed column specification and formatted
+specification!
+
+## Pointer Instructions
+As data values are being read from the input buffer, a *pointer* is
+keeping track of the position in the buffer.  With both delimited and
+formatted data, the pointer ends up at the position after the text
+that is read, and this becomes the starting point for reading the next
+data value.
+
+In addition to moving the pointer by reading data values, you can also
+move the pointer without reading data.  This has basic three forms
+
+- `@n`, an absolute numeric position
+- `+n`, a relative numeric position
+- `@'char'`, a relative character position
+
+### Absolute positions (@n)
+You can always move the pointer to any position number before reading
+the next variable from the input buffer.
+
+In this example, first an `id` is input, and then the pointer is moved
+to position 26 before `endwgt` is read.
+
+```{sas}
+data club; 
+  infile datalines;
+  input id @26 endwght; 
+datalines; 
+1023 David S  red    189 165 
+1049 Amelia H yellow 145 124 
+1219 Alan F   red    210 192 
+; 
+
+proc print; run;
+```
+
+You can move the pointer in either direction, forward or backward, and
+in fact you can reread text.  It is also possible to use a numeric variable
+or a numeric expression, rather than a fixed `n` for all observations.
+
+### Relative positions ( +n )
+The pointer can also be moved forward or backward (using `+(-n)`) from
+it's position after the specifications that have preceded it.
+
+In this example, the `start` date is read with a date informat that leaves
+the pointer in position 11.  The `+9` specification move the pointer
+nine positions to the right before trying to read the value of `count`.
+
+```{sas}
+data dates;
+  input start mmddyy10. +9 count;
+  format start date9.;
+datalines;
+09/20/2024 09/30/24 15
+08/20/2024 09/19/24 37
+;
+
+proc print noobs; run;
+```
+
+Here too, a numeric variable or expression can be used instead of a
+fixed `n` for every observation.
+
+### Relative character positions (@'char')
+The `@'char'` specification moves the pointer to the character after the next
+occurrence of the character string in the input buffer.
+
+In this example, after `x` and `y` are read, the pointer is
+located at the character after the space that delimits the end of y.
+the `@" "` then moves the pointer to position after the *next* space.
+
+```{sas}
+data test;
+	input x y @" " z;
+datalines;
+1 2 3 45 6
+543 2 1 0
+;
+
+proc print noobs; run;
+```
+
+As with the numeric pointers, character variables or expressions may
+be used here instead of a literal character value.

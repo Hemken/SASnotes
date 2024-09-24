@@ -1,0 +1,243 @@
+# SAS Grammar
+
+```{r sassetup, include=FALSE}
+library(SASmarkdown)
+```
+
+In order for SAS to execute your code, SAS has to be able to interpret
+it.  In order for you to troubleshoot your code, *you* have to be 
+able to interpret it.
+
+This document is primarily about getting your SAS code on the page
+in a form that both you and the SAS interpreter can understand.  
+
+The concepts here will also help you make sense of the SAS 
+documentation and examples.  SAS Help (including the [online version](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/pgmsaswlcm/home.htm)) is organized into modules (generally, collections of SAS PROCs), PROCs, statements, and keywords.
+
+To understand the elements of the SAS language, see also:
+
+- [Base SAS Language Definitions](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lepg/n1lk7u75dae3hjn1c1ymzcu4xg9u.htm)
+- [SAS Syntax](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lepg/p1vpgy5rf0nioxn1j9z0w5g2bv4e.htm)
+
+for more detailed concepts of the SAS language.
+
+## The Major Building Blocks: "Steps"
+The main units of work in most SAS programs are **DATA steps** and 
+**PROC steps**.  The SAS interpreter collects the code you submit
+until a step is complete, and then executes that step.
+
+DATA steps generally produce data sets.  DATA steps are used
+to read in text
+data, produce new data values, merge data, subset data, 
+label data, etc.
+
+PROC steps
+include statistical procedures (like PROC MEANS or PROC REG) as well
+as utility procedures (like PROC SORT).
+
+### DATA step
+An example of a DATA step is
+```{sas datastep, collectcode=TRUE}
+data new;
+  set sashelp.class;
+  bmi = 703*weight/height**2;
+  run;
+```
+
+```{saslog datalog, results="hide", SASecho=FALSE}
+data new;
+  set sashelp.class;
+  bmi = 703*weight/height**2;
+  run;
+```
+
+This creates a data set, named *new*, by reading an existing
+data set named *class*, and creating a new variable, named *bmi*.
+
+### PROC step
+An example of a PROC step is
+```{sas procstep}
+proc means data=new;
+  var bmi;
+  run;
+```
+
+This produces descriptive statistics for the variable *bmi*
+in the data set *new*.
+
+A step begins with the key word DATA or PROC, and ends
+with a `run;` statement, or with the beginning of another
+step.
+
+### Global Statements
+In addition to data steps and proc steps, SAS programs
+commonly include *global statements*, which often
+create pointers to directories and files or otherwise configure
+your SAS session (e.g. a LIBNAME statement).
+
+An example of a global statement is
+```{sas global, results="hide"}
+libname y "y:\";
+data y.class;
+  set sashelp.class;
+  run;
+```
+
+This configures the SAS name *y* as a reference to the
+*y:/* folder on your computer, then copies the *class*
+data from *sashelp* to the *y:/* folder.
+
+And finally, your program may
+include *comments*, text that SAS does not try to
+interpret.
+
+## Statements
+Steps are composed of one or more *statements*.  Most
+statements begin with a SAS keyword, and all statements
+end with a semi-colon, ` ; `.  In the examples above, the DATA
+step is composed of four statements, the
+PROC step is composed of three statements.
+
+Statements are composed of *words* (also called *tokens*) 
+and special characters.
+A word might be a SAS keyword, or it might be a user-supplied
+word like a data set name, variable name, or a data value.
+Special characters include symbols like equals signs,
+parentheses, less-than and greater-than signs, etc.
+
+The words in a statement need to be separated by spaces
+or special characters - SASfindsrunoncodingdifficulttointerpret,
+just like you do.
+
+## Syntax Diagrams in SAS Help
+See an [overview](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/proc/n18vucblyvk64en1styw57v68shi.htm) of how to read syntax diagrams
+in SAS Help.
+
+## Code Layout
+SAS parses code based on word and statement delimiters - spaces,
+special characters, keywords, and
+semi-colons.  In addition to separating words in a statement, your
+use of white space should be guided by human-readability.  Pick
+a consistent layout (your "coding style"), preferably one that other humans
+find familiar, and stick with it.  This will make it much
+easier to read and troubleshoot your code.
+
+### Spaces in Statements
+Where you need one space, you may use as many spaces as you like.
+This can be useful for aligning code that belongs together
+conceptually, or where you are working with a list of similar
+commands, and lining up words across lines makes it easier for
+you to understand and debug your code.
+
+A common scenario is where you have several assignment statements
+in a data step, and you align the equal signs so it is easier
+to spot the left-hand-sides versus the right-hand-sides.
+
+```sas
+data new;
+  set old;
+  landdistance  = run  + bike;
+  waterdistance = swim + row;
+  run;
+```
+
+Where special characters separate words, spaces are *not required*,
+but again, might be helpful for human readability.
+
+It is common to indent groups of statements that together form some 
+executable or logical unit.  In the previous example, all the
+statements in the DATA step are indented, to show humans that
+they are executed together.
+
+### Lines
+SAS treats line breaks in code as spaces.  This means that SAS can
+interpret code with multiple statements per line, and also
+statements that are spread across multiple lines.
+
+Typical style is to write one statement per line, as illustrated
+above.
+
+Multiple statements per line are usually difficult to read, and
+are the primary reason consultants have graying hair and poor
+eyesight.  Don't
+bring us code that looks like this!
+
+```{sas poorstyle}
+proc means data=new; var bmi; run;
+```
+
+Statements that are especially long are commonly broken into
+multiple lines, with
+the continuation lines indented.  While there are no general
+rules-of-thumb for how to do this, try to find a consistent
+style - consistency is
+your friend when debugging!
+
+You use blank lines much the same way you use indentation,
+to visually demarcate blocks of code that form some sort
+of conceptual or logical unit.
+
+### Comments
+We use *comments* for a variety of purposes.
+
+One use of comments is to write explanatory notes in your
+code.  Use these to explain the logic behind a block of
+code, or to describe the action of statements and keywords
+you don't use very frequently.  The first time you have
+to pick up months-old code and debug it, you will appreciate
+your foresight.  Likewise, the first time you take over a
+project from someone else, you will appreciate their kindness.
+
+Another major use of comments is in debugging.  When you are
+struggling to figure out how an error popped up, it can be useful
+to disable pieces of your code in order to isolate a segment for
+closer examination and testing.
+
+SAS comments come in two types, *statement* comments and *block*
+comments.
+
+#### Statement Comments
+
+An asterisk used as the first "word" in a statement turns
+that statement into a comment.
+
+In this example, the `var` statement is disabled ("commented out").
+
+```{sas statment}
+proc means data=sashelp.class n mean stddev;
+*  var height weight;
+run;
+```
+
+(All numeric variables are summarized.)
+
+#### Block Comments
+
+A pair of tokens, slash-asterisk (` /* `) and asterisk-slash (` */ `)
+form the beginning and end of a commented block of code.  This
+can be used within a line of code
+
+```{sas within}
+proc means data=sashelp.class n mean stddev;
+  var /*height*/ weight;
+run;
+```
+
+(`height` is ignored)
+
+or across multiple lines of code
+
+```{sas across}
+data newclass;
+  set sashelp.class;
+/*
+  bmi = (weight/height**2)*703;
+  label bmi = "Body Mass Index";
+*/
+run;
+
+proc means data=newclass n mean stddev;
+run;
+```
+
+(No `bmi` variable was created.)

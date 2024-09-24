@@ -1,0 +1,79 @@
+# Reading Compressed Text (Zip) Files
+
+Linux has its own set of tools for compressing files, notably
+compress/uncompress, gzip/gunzip, bzip2/bunzip2 and zip/unzip. They are
+described in [Using Compressed Data in Linux](7-8.htm). Windows has
+another set of compression tools, the most common being Winzip and its
+relatives (note that the Linux programs [uncompress] and
+[unzip] can both handle Windows zip files, as can
+[zcat]). It is very common to receive data as text files
+that have been compressed using one of these programs.
+
+Often the easiest way to read in these files is to first uncompress them
+using Linux tools and then read the uncompressed data directly\--just
+remember not to keep both the compressed files and the uncompressed
+files once you\'re done. You can temporarily store the uncompressed
+files in /temp/fivedays if they are too large to fit in the space
+available to you.
+
+But it is possible to have SAS read compressed files directly (with the
+exception of files compressed using [bzip2], since it is not
+compatible with [zcat]). This can be handy if the files are
+extremely large, or if you are working with many compressed files.
+
+The key is to define a SAS filename which is actually the output of the
+[zcat] command. The [zcat] command simply reads
+out the tables of a compressed file. SAS can use the output of
+[zcat] just as if it were a file. Before your data step,
+insert the following in your SAS program:
+
+filename reader pipe \'zcat [file]\';
+
+where [[file]] is the name of the compressed
+file you want to read. Now in your data step, your infile command just
+uses reader:
+
+infile reader;
+
+Options such as [delimiter] still work as usual if needed.
+Here\'s an example of a full data step that reads a compressed text
+file:
+
+filename reader pipe \'zcat compressed.Z\';
+
+data plain;\
+[infile reader delimiter=\" \";]{.indent3}\
+[input x1 x2 x3 x4 x5 x6 x7 x8 x9 x10;]{.indent3}\
+run;
+
+## Writing Compressed Text Files
+
+You can have SAS output compressed text files as well. This is
+equivalent to having SAS write normal text and then compressing it, but
+can save you a step (and this way it is all documented in your SAS
+program). Once again, the key is a filename containing a compression
+command:
+
+filename writer pipe \'compress \> [file].Z\';
+
+The [.Z] is essential so [uncompress] will later
+recognize the output as a compressed file. You can then use that
+filename anywhere where SAS writes text. Two examples:
+
+data \_null\_;\
+[set plain;]{.indent3}\
+[file writer;]{.indent3}\
+[put x1-x10;]{.indent3}\
+run;
+
+proc export data=plain outfile=writer dbms=dlm;\
+[delimiter=\',\';]{.indent3}\
+run;
+
+Please note that proc export will insist on briefly opening a SAS window
+as it runs. It will disappear very quickly, but this does mean that you
+must have the ability to display Linux graphics in your session or a job
+using proc export will hang. This is true whether you\'re compressing
+the output of proc export or not.
+
+Last Revised: 5/10/2006

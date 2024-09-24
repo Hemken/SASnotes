@@ -1,0 +1,170 @@
+# Saving SAS Data Sets
+
+```{r, include=FALSE}
+library(SASmarkdown)
+```
+
+::: {.callout-tip}
+## Saving SAS Data
+
+Save SAS data by either
+
+- using a permanent SAS library
+- using a quoted operating system file name
+:::
+
+## Introduction
+In order for SAS to process any data, that data must be in the format
+of a SAS data set.  This is a special SAS binary file which usually
+has the file extension ".sas7bdat".  These are typically saved
+by writing some SAS code, such as a `DATA` step.
+
+## Temporary and Permanent (Saved) Data Sets
+Every SAS data set is stored in your computer's
+file system, rather than being solely loaded in your computer's
+memory.  However, some data sets are *temporary*
+while others are *permanent*. 
+
+Temporary data are written
+to a temporary folder usually referred to as the `WORK` library,
+which is automatically deleted when SAS is shut down.  Data sets
+referred to by a *SAS name* (more below) without a library
+reference are stored in the WORK library by default, so they
+are temporary.
+
+SAS data sets may be created in several ways, and any of these
+may be created as either temporary or permanent.
+
+ - a `DATA` step
+ - many `PROC`s have "output data" options
+ - all printable output tables can be saved as data using `ODS`
+
+
+## File References
+
+In your SAS code, these data files can be addressed in
+either of two ways, either using an *operating system
+name* or using a [*SAS name*](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lepg/p0ty0ux2rvfhx2n1wka6q16zgtj5.htm).
+SAS names are usually preferred, because they are easier to
+read, write, and they make your code more portable.
+
+SAS file names generally take the form
+
+```sas
+library-name.file-name
+```
+
+or just
+
+```sas
+file-name
+```
+
+The operating system file
+name might include the location (the directory or folder)
+as well as the file name.  For example a Windows data
+file name might look like
+
+```sas
+"U:\SAS\class.sas7bdat"
+```
+
+while a Linux data file name could look like
+
+```sas
+"~/SAS/class.sas7bdat"
+```
+
+On either operating system the SAS name for these
+data files might look like
+
+```sas
+u.class
+```
+
+Operating system file names are **ALWAYS** enclosed in
+quotes, while SAS file names are **NEVER** in quotes.
+In operating systems names, the file path (location) is included
+as part of the file name specification.  In SAS file
+names, the location is given by a prefix called a
+*library* name.  In the SAS example above, `u` is a library
+name while `class` is the data file name.
+
+### SAS Names
+
+```{r cleanup, include=FALSE}
+try(unlink("~/SAS/class.sas7bdat"))
+```
+
+The basic code to save a SAS data set using the SAS name is
+
+```{sas sasname, results="hide"}
+libname z "~/SAS";     /* Linstat example */
+* libname z "U:/SAS"; /* Winstat example */
+
+data z.class;
+  set sashelp.class;
+run;
+```
+
+This produces a log which says
+that the file was successfully saved.
+
+```{saslog sasname, results="hide"}
+```
+
+There
+are two key elements to this code.  One is the line
+that says `data z.class;`, a \"data statement\", which
+instructs SAS where to write the file and what to name it.
+In this case, the file will be written wherever the
+library `z` points to, and will be named `class`.
+
+The other key element, then, is the line that says
+`libname z "~/SAS";`, a \"libname statement\", which
+tells SAS that the library `z` points to the place
+the operating system calls \"~/SAS" (on Linux, the
+folder within my home directory).
+
+The data set name and the library name are chosen by
+you, but there are certain restrictions (see [SAS names](http://documentation.sas.com/?docsetId=lrcon&docsetTarget=p18cdcs4v5wd2dn1q0x296d3qek6.htm&docsetVersion=9.4&locale=en#p0v4w5zj1972man13kghfmmqec3s)).  SAS names typically begin with a letter
+or underscore, and are composed of letters and numerals and
+underscores - special characters like blanks or parentheses
+are not (usually) allowed.  Library names may be up to
+eight characters, while data set names may be up to 32
+characters.
+
+(The `set` statement tells SAS where to get data *from*, and 
+the `run;` statement tells SAS to execute the instructions
+accumulated so far.)
+
+### Operating System Names
+Any place you can use a SAS name for a data set, you could
+instead use the operating system name.  So the code that
+saves the data set, above, could have been written
+
+```{sas osname, results="hide"}
+data "~/SAS/class.sas7bdat";   /* Linstat example */
+*data "U:/SAS/class.sas7bdat"; /* Winstat example */
+  set sashelp.class;
+run;
+```
+
+And again we'll check the log.
+
+```{saslog osname, results="hide"}
+```
+
+### Pros and Cons
+The advantages of using SAS names are
+
+- shorter file references, less clutter
+- if you move your project to a new folder or a new platform,
+all you have to change is the LIBNAME.
+
+The advantages of using operating system names are
+
+- more flexibile, expressive, file names
+- no need for a `libname` statement
+
+In our experience, most SAS programmers use SAS names.

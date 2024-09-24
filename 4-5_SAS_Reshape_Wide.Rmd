@@ -1,0 +1,242 @@
+# Reshape Long to Wide
+
+As with the more common reshaping [wide-to-long](4-5_SAS_Reshape_Long.html), reshaping
+long-to-wide can be be accomplished either through the use
+of ARRAYS or with PROC TRANSPOSE.  Where you just have one
+variable to reshape, PROC TRANSPOSE is perhaps simpler, but
+for the more general case ARRAYS give you the most flexibility
+and power.
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+```{sas, collectcode=TRUE}
+data fishlong;
+   infile datalines truncover;
+   input Location & $10. Date date7. Length Weight @;
+	do fish = 1 by 1 while (length gt . and weight gt .);
+   		output;
+		input Length Weight @;
+		end;
+	
+   format date date7.;
+   datalines;
+Cole Pond   2JUN95 31 .25 32 .3  32 .25 33 .3
+Cole Pond   3JUL95 33 .32 34 .41 37 .48 32 .28
+Cole Pond   4AUG95 29 .23 30 .25 34 .47 32 .3
+Eagle Lake  2JUN95 32 .35 32 .25 33 .30
+Eagle Lake  3JUL95 30 .20 36 .45
+Eagle Lake  4AUG95 33 .30 33 .28 34 .42
+;
+```
+
+```{sas}
+proc print data=fishlong(obs=8);
+run;
+```
+
+## Using PROC TRANSPOSE
+
+Each group of observations to be combined into a single
+observation is identified BY `location` and `date`.  In this
+example we will reshape the `length` column (VAR), and give names
+to the new columns based on `fish` (ID).
+
+```{sas transpose}
+proc transpose data=fishlong out=fishwide;
+	by location date;
+	var length;
+    id fish;
+	run;
+
+proc print data=fishwide;
+run;
+```
+
+We can have better variable names for our reshaped data
+if we add a PREFIX option to the PROC statement.  And we could
+drop the _NAME_ variable.
+
+```{sas prefix}
+proc transpose data=fishlong prefix=Length
+      out=fishwide(drop=_name_);
+	by location date;
+	var length;
+    id fish;
+	run;
+
+proc print data=fishwide;
+run;
+```
+
+An undocumented feature of PROC TRANSPOSE is that if we have
+a \_NAME\_ variable in the long data (for example if we had previously
+transposed wide-to-long), SAS will use that for the new variable
+ID.
+
+```{sas _name_}
+proc transpose data=fishlong(rename=(fish=_name_))
+      prefix=Length
+      out=fishwide(drop=_name_);
+	by location date;
+	var length;
+	run;
+
+proc print data=fishwide;
+run;
+```
+
+
+## Using Arrays
+
+:::{.callout-note}
+We will discuss this is four stages in order to more easily
+understand the elements of the process, but in practice you just
+use the [final data step](#keep-the-final-observation-in-each-by-group).
+:::
+
+To transform our long data to wide form involves three DATA step
+concepts.
+
+- assigning values to new variables
+- retaining values from one observation to the next
+- initialing each by-group (not always required)
+- outputting only the final observation of a group
+
+### Moving data to separate columns
+
+We want variables `length` and `weight` distributed across four
+new variables each.  The variable `fish` along with two array
+references enables us to do just that, where `fish` picks out
+the new column from a set of columns.
+
+```{sas separate}
+data fishwide;
+	set fishlong;
+
+	array len{4};
+	array wgt{4};
+	len{fish}=length;
+	wgt{fish}=weight;
+
+	run;
+
+proc print data=fishwide(obs=8);
+run;
+```
+
+Notice here that we are using array references, but we
+are *not* looping within each observation - the reference
+just picks out one particular variable from a set of possibilities.
+
+### Retaining data across observations
+
+Ordinarily, new variables are given a missing value
+at the top of each iteration of the DATA step.
+The RETAIN statement alters that behavior, so that
+the value of a new variable will be carried over
+until it is explicitly changed.
+
+```{sas retain}
+data fishwide;
+	set fishlong;
+	array len{4};
+	array wgt{4};
+
+    retain len1-len4 wgt1-wgt4;
+
+	len{fish}=length;
+	wgt{fish}=weight;
+	run;
+
+proc print data=fishwide(obs=8);
+run;
+```
+
+The RETAIN statement is used during the compile phase
+of the DATA step, so the order in which it appears
+in the DATA step is not important.  Placing it immediately
+before or after the ARRAY statements keeps all the
+statements that define the behavior of these variables
+in one place, and is common style.
+
+### By-group initialization
+The 4th and 8th observations are in the final form
+we seek.  However, RETAINing data can also create
+observations with data values from the **wrong** fish,
+as in observations 5 through 7.
+
+Unless we always have the same number of observations in
+each group (i.e. no missing repetitions), we should
+re-initialize the first observation in each group.
+For this we need *by group* processing.
+
+```{sas retain2}
+data fishwide;
+	set fishlong;
+
+	array len{4};
+	array wgt{4};
+    retain len1-len4 wgt1-wgt4;
+
+    by location date;
+    if first.date then do i=1 to 4;
+      len{i} = .;
+      wgt{i} = .;
+      end;
+    drop i;
+
+	len{fish}=length;
+	wgt{fish}=weight;
+	run;
+
+proc print data=fishwide(firstobs=9 obs=16);
+run;
+```
+
+The BY statement assumes the data are already sorted.  It
+creates two *automatic* variables for each BY-variable,
+FIRST.variable and LAST.variable (like ARRAYS, these only
+exist for the duration of the DATA step, they are not part
+of the output data set).
+
+Like RETAIN, the position of the BY and DROP statements is
+not too important.  It is common style to place the BY after
+the SET statement, and the DROP at the bottom of the DATA
+step.  I have repositioned them here just to keep all the
+newly added statements together.
+
+The conditional DO loop with
+it's assignment statements must come **before** the assignment
+statements that move data values into the correct columns.
+
+### Keep the final observation in each by-group
+All that is left is to OUTPUT the correct observation,
+skipping all the intermediate observations.  For this we
+use the LAST automatic variable, which comes from the
+BY statement we have already added.
+
+```{sas keep}
+data fishwide;
+	set fishlong;
+    by location date;
+	array len{4};
+	array wgt{4};
+    retain len1-len4 wgt1-wgt4;
+    if first.date then do i=1 to 4;
+      len{i} = .;
+      wgt{i} = .;
+      end;
+	len{fish}=length;
+	wgt{fish}=weight;
+  
+    if last.date then output;
+
+    drop i length weight;
+	run;
+
+
+proc print data=fishwide;
+run;
+```

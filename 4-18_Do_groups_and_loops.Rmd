@@ -1,0 +1,163 @@
+# Do Groups and Loops
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+## Do Groups
+
+From time to time you will want to do several calculations based on the
+same condition.  Repeatedly checking the same condition is both [computationally
+inefficient](4-3_SAS_Efficiencies.html#tip-20-calculate-values-once)
+and makes your code harder to read.  The `DO` statement is the tool
+you are looking for.  The DO and END statements mark the beginning
+and end of a block of statements that should all be executed as a
+unit.
+
+For example, suppose you are working with the `cars` data set, and want
+to calculate the effect of imposing a 100% tariff on foreign cars.
+("We're going to put a 100 percent tariff on every single car that
+comes across the line" - Donald Trump, 17 March 2024.)  You might
+want to create three new variables:  tariff, MSRP_tariff, Invoice_tariff.
+
+```{sas}
+data cars;
+  set sashelp.cars;
+  msrp2024    = msrp   *1.7; /* inflation, 2004 to 2024 */
+  invoice2024 = invoice*1.7;
+
+  if (origin ne "USA") then do;
+    tariff         = msrp2024;
+    MSRP_tariff    = msrp2024    + tariff;
+    invoice_tariff = invoice2024 + tariff;
+    end;
+
+    else do;
+      tariff         = 0;
+      MSRP_tariff    = msrp2024    + tariff;
+      invoice_tariff = invoice2024 + tariff;
+      end;
+run;
+
+proc means data=cars n mean stddev;
+  var msrp2024 msrp_tariff invoice2024 invoice_tariff;
+run;
+```
+
+[Not the best example: you can easily rewrite this without
+the DO!]
+
+## Do Loops (Iteration)
+
+At other times you will find you want to execute some statement(s)
+repeatedly.  Do loops show up regularly for repeating statements
+across several variables (see [arrays](4-5_SAS_Arrays.html)), but
+might also be used for checking values in a list, or generating
+random data.
+
+An iterative DO can take several forms:
+
+```sas
+DO value-list;
+DO var = start TO stop <BY step> <WHILE | UNTIL>;
+DO WHILE (condition); 
+DO UNTIL (condition);
+```
+
+### Do value-list
+We can iterate over an arbitrary set of values.  This would
+be the only way to iterate over a set of character values!
+
+For example, if we wanted to simulate scores for three teams:
+
+```{sas}
+data teams;
+  length team $ 6;
+  do team = "red", "yellow", "green";
+    score = rand('integer', 90, 100);
+    output;
+  end;
+run;
+
+proc print noobs; run;
+```
+
+### DO integer sequence
+The most common form of the DO loop will be to iterate
+over a sequence of integers, counting iterations.
+
+For example, if we wanted to simulate a two-group t-test,
+with 15 observations per group:
+
+```{sas}
+data simulated;
+  do i = 1 to 30;
+    if (i le 15) then group = 1;
+      else group = 2;
+      y = rand('normal', group+3);
+      output;
+  end;
+  drop i; /* it is common to drop the counter */
+run;
+
+ods select statistics ttests;
+proc ttest data=simulated;
+  class group;
+  var y;
+run;
+```
+
+### DO BY steps
+A DO loop need not proceed by steps of 1, and in fact could
+count backward.  In this example, note that we do not end
+exactly at 1, but stop when that value is exceeded.
+
+```{sas}
+data countdown;
+  do x = 10 to 1 by -2;
+    output;
+  end;
+run;
+
+proc print noobs; run;
+```
+
+### Variable iteration parameters
+While the preceding examples give fixed start, stop, and
+step values, these may in fact be given by variables.
+
+Suppose we are given summary data to work with.
+```{sas, collectcode=TRUE}
+proc summary data=sashelp.class;
+	class sex;
+	types sex;
+	var height;
+	output out=class_summary mean=mhght stddev=sdhght;
+	run;
+```
+
+```{sas}
+proc print data=class_summary noobs;
+run;
+```
+
+We could use the means and standard deviations to
+simulate data (and begin the work of developing a
+power analysis [although this particular analysis
+could be done with the appropriate formula]).
+```{sas}
+data sim_class;
+  set class_summary;
+  do i = 1 to _freq_;
+    sim_height = rand('normal', mhght, sdhght);
+    output;
+    end;
+    drop i;
+  run;
+
+ods select statistics ttests;
+proc ttest data=sim_class;
+  class sex;
+  var sim_height;
+  run;
+```

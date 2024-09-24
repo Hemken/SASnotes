@@ -1,0 +1,164 @@
+# SAS Formats
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+*Formats* in SAS can be thought of as functions that transform our data values
+from the form in which they are stored in a SAS data set into some more readily understood or useful form.
+
+Formats have many uses, including
+
+- Controlling the display of significant digits, commas, and currency symbols
+- Adding value labels to categorical (and continuous!) data
+- Displaying date and time data in common, easily understood units
+- Recoding data
+
+SAS also has a reciprocal concept (language element) called the *informat*
+that is used for converting values into data values to be stored in a SAS
+data set.  This is most often used when importing text data into SAS.
+
+SAS provides numerous [built-in formats](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/leforinforref/n0p2fmevfgj470n17h4k9f27qjag.htm)
+and also a PROC FORMAT for you to define
+[your own formats](4-19_SAS_user_formats.html).
+Formats may be used with both continuous and categorical data, and there are
+both numeric and character formats.
+
+Formats may be assigned to a variable in a DATA step, in which case
+they are used in all subsequent processing.  Formats may also be
+assigned in PROC steps, in which case they are used for just that
+PROC.
+
+There are also several [DATA step functions](Converting_numbers_and_characters.html) and statements
+that make use of formats.
+
+## Format Syntax
+Formats may be specified in a few different forms
+
+```sas
+format.
+formatw.
+formatw.d
+$formatw.
+```
+
+where *format* is the name (keyword) for a specific format, and the
+period, ` . ` is required.  
+
+*w* is the number of characters used for the entire display of a data value.
+This includes space for decimals, commas, currency symbols, and other
+symbols.
+Each format has a default *w*, if this is not specified.  If *w* is too
+small to express the integer portion of a numeric value, SAS will use a
+format named BEST.
+
+*d* is the number of characters devoted to decimal digits.  The default is
+zero (0) if this is not specified.  If *d* is too small to express the
+full precision of a numeric value, the value is rounded.
+
+A leading *$* indicates the format is a character format (and there are
+no decimal digits).
+
+For example if we were to print the number one million, at least 7
+characters (*w*) are required for a full integer representation.  If we
+add commas, at least 9 characters are required.  If we add two
+decimal places, at least 12 characters are required.  A currency
+symbol adds yet another character.
+
+```
+----|----1----|-
+1000000
+1,000,000
+1,000,000.00
+$1,000,000.00
+```
+
+## Specifying Formats
+Formats are most often specified in a FORMAT statement, either in
+a DATA step or a PROC step.  This takes the form
+
+```sas
+format var|varlist format. <var|varlist format. ...>;
+```
+
+where a variable name or variable list is followed by the
+name of the format that applies to the them, and more than
+one format may be specified with the same command.
+
+### In a DATA step
+
+In the previous example, the formats can be named `7.`, `COMMA9.`,
+`COMMA12.2`, and `DOLLAR13.2`.
+
+```{sas}
+data formats;
+	array x {4};
+	do i = 1 to dim(x);
+		x{i} = 1000000;
+		end;
+		drop i;
+	format x1 7. x2 comma9. x3 comma12.2 x4 dollar13.2;
+	run;
+
+proc print noobs; run;
+```
+
+### In a PROC step
+
+The same form is used in a PROC step.  For example, in
+the `class` data we can add one place of decimal precision
+to the `age` variable.
+
+```{sas}
+proc freq data=sashelp.class;
+	tables age/ nocum;
+	format age f4.1;
+	run;
+```
+
+### Removing a Format
+
+To remove a format, use a FORMAT statement with no
+named format.  In this `cars` example, `invoice` is
+already given a DOLLAR format.
+
+```{sas}
+proc print data=sashelp.cars(obs=3) noobs;
+  var make invoice;
+  run;
+```
+
+Remove the format.  (It doesn't matter where in the PROC the FORMAT statement
+is written, before or after the VAR statement.)
+```{sas}
+proc print data=sashelp.cars(obs=3) noobs;
+  format invoice;
+  var make invoice;
+  run;
+```
+
+### Recoding Data
+In statistical PROCs, formats have the effect of recoding data,
+aggregating data into categories (while retaining full precision
+in the values stored in the data set).
+
+For example, in the `cars` data, `EngineSize` has one decimal place
+of precision.
+
+```{sas}
+proc freq data=sashelp.cars;
+	where enginesize lt 2;
+	tables enginesize / nocum;
+	run;
+```
+
+If we format `enginesize` to use integer values, the values
+are rounded and aggregated.
+
+```{sas}
+proc freq data=sashelp.cars;
+	where enginesize lt 2;
+	tables enginesize / nocum;
+  format enginesize f1.0;
+	run;
+```

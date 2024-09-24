@@ -1,0 +1,336 @@
+# Using and Saving Custom Formats 
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+SAS enables the use of value labels, called *formats*
+(e.g. 0 is male, 1 is female) by allowing
+you to define custom formats. A difficulty is that these formats are
+not saved as part of the data set they label.
+
+## SAS Formats
+
+As an example, consider a data set of individuals. For each
+individual you have their gender, their age, and their income. We want
+to do three things with this data: 
+
+- read it in and prepare it for analysis,
+- get basic summary statistics, and
+- regress income on the other variables. 
+
+You might put each step in a separate
+SAS program. However you want to apply the same value labels to gender
+in all three programs, so you need a way to share a custom format
+between programs.
+
+Start by reading in the example data. In this example we\'ll 
+put the data in our script, using `DATALINES`.
+
+```{sas data, collectcode=TRUE}
+libname u "U:\";
+data u.incomes;
+  input gender age income;
+  format income dollar8.;
+datalines;
+0 50 60000
+1 45 80000
+1 30 25000
+0 25 18000
+1 72 40000
+;
+run;
+```
+
+The data is saved as a permanent data set which we can
+use in later programs without re-reading the text data. In
+addition, we have assigned `income` a format, `DOLLAR8.`.
+This is one of [many](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/leforinforref/p0z62k899n6a7wn1r5in6q5253v1.htm) formats supplied by SAS.
+It adds US dollar symbols and commas to the display of
+`income` data values, using up to 8 characters.
+
+```{sas income}
+proc freq data=u.incomes;
+  table income;
+  run;
+```
+
+But consider a frequency table for `gender`, which we
+have not given any value labels.
+
+```{sas noformat}
+proc freq data=u.incomes;
+  tables gender;
+run;
+```
+
+Similarly, run a regression (just some of the output is shown here).
+
+```{sas regress}
+ods select parameterestimates;
+proc glm data=u.incomes;
+  class gender;
+  model income = gender age / solution;
+  run;
+```
+
+It would be easier to interpret the results of these
+statistical procedures if there
+were value labels for `gender`, rather than having to
+remember what "0" and "1" mean - it is not at all clear
+what these values mean here.
+
+## Defining and Using Formats
+
+Formats in SAS are *defined* using `PROC FORMAT`, and are
+*applied* to variables using a `FORMAT` statement. So to
+apply value labels to the `gender` variable, the first step is to
+define a format that associates 0 with male and 1 with female. We\'ll
+call this format "genderformat".
+
+### Defining a Format
+The key element of PROC FORMAT is a `VALUE` statement, taking the form
+
+```sas
+VALUE formatname valuerange1=label1 valuerange2=label2 ...;
+```
+See [VALUE statement](https://go.documentation.sas.com/doc/en/pgmsascdc/v_053/proc/p1upn25lbfo6mkn1wncu4dyh9q91.htm#n1a7kollpkq2vwn1wss4qzv92wy9) for more details and options.
+
+In the typical case there is a one-to-one correspondence between values and labels.
+(But see [Using Formats to Collapse Categories]() to see how value ranges can be
+used to recode variables.)
+
+```{sas procformat1, collectcode=TRUE}
+proc format;
+  value genderformat
+    0= 'male'
+    1= 'female'
+  ;
+run;
+```
+
+### Using a Format
+Next you need to associate that format with the `gender` variable,
+using a FORMAT statement.
+
+```sas
+format gender genderformat.;
+```
+
+::: {.callout-note}
+Note that when a format is **defined** the name does *not* include
+a period, e.g."genderformat".
+When a format is **used** the name *does* include a period, e.g.
+"genderformat.".
+:::
+
+This statement could appear in either a `DATA` step or a `PROC` step.
+Assigned in a `DATA` step, the format is used in *all* subsequent
+`PROC`s that process that data set.  Assigned in a `PROC` step,
+it is used for only that specific step.
+
+For example, the frequency table would be easier to read if we
+produced it like this:
+
+```{sas formatted}
+proc freq data=u.incomes;
+  format gender genderformat.;
+  tables gender;
+  run;
+```
+
+In this case, the data set is unformatted, and the value labels
+are assigned only to produce the one table.
+
+## Reusing Formats
+A difficulty is that `genderformat` is deleted when
+the SAS session that defined it ends. How can we save it so that
+we can use it in later SAS sessions?
+
+There are three solutions that might occur to you.
+
+- Include the `PROC FORMAT` in every SAS script where you
+will use it.
+- Put the `PROC FORMAT` in a separate script, and call
+that script from all the other scripts that will use it.
+- Save the formats in a SAS *catalog* file, and include
+a reference to the *catalog* in other scripts.
+
+### Include the Format Definitions in All Your Programs
+Simply copy-and-paste the PROC FORMAT into every SAS
+program file that will use these value labels.
+
+This option might be good if you only have a few scripts
+that need to use the same set of formats.
+However, if you ever revise your value labels, you should make the
+revision in **each** of your scripts.
+
+### Use a Separate Formats Script
+The difficulty of keeping numerous copies of a
+PROC FORMAT, saved in numerous separate files, in sync
+motivates the second option: reusing a common "formats
+script" in multiple files.
+
+Put all of the formats in a separate file (with any name)
+
+```sas
+----- formats.sas -----
+proc format;
+  value genderformat
+    0= 'male'
+    1= 'female'
+  ;
+run;
+-----------------------
+```
+
+Then programs that rely on these formats can `%INCLUDE%`
+this file.
+
+```sas
+----- procfreq.sas -----
+%include% "formats.sas";
+
+proc freq data=u.incomes;
+  format gender genderformat.;
+  tables gender;
+  run;
+------------------------
+```
+
+Like the first option, the
+formats are recreated each time they are reused.
+
+### Saving Formats in a Catalog
+
+```{sas clearformats, include=FALSE, collectcode=TRUE}
+* to suppress the "format already exists" note;
+proc catalog catalog=work.formats;
+	delete genderformat.format;
+	run; quit;
+```
+
+The third option is more efficient, saving the formats that
+have been created.  While this will not appreciably speed
+up most scripts, it does make the log much cleaner by
+avoiding all the PROC FORMAT output, making it easier to
+focus on more important messages in the log.
+
+To understand how this works, consider the messages that
+PROC FORMAT writes to your log.
+
+```{saslog messages, results="hide", SASproctime=FALSE}
+proc format;
+  value genderformat
+    0= 'male'
+    1= 'female'
+  ;
+run;
+```
+
+The format definition is "output" (saved) in a file
+named FORMATS.SAS7BCAT, located in your WORK library.
+This is the default location for saving user formats,
+*a file that is separate from your data file*.
+
+![Formats catalog](sas_user_formats/formats_catalog.png)
+
+In order to *save* format catalog, you\'ll add a `LIBRARY`
+option to the PROC FORMAT statement, pointing to a
+permanent library.
+
+When you need to *use* a format, SAS will automatically
+look for a formats catalog, first in your WORK library
+and then in a library named "LIBRARY" (if it has been
+defined).
+
+(Where SAS searches for format catalogs is an option
+which can be configured with the `FMTSEARCH` system option.)
+
+A typical approach to defining a library named LIBRARY
+would be to point LIBRARY to the same location where
+the data set will be stored:  both the data set and the
+formats catalog are saved side-by-side.
+
+```{sas permanent}
+libname u "U:\";
+libname library (u);
+
+proc format library=library;
+  value genderformat
+    0= 'male'
+    1= 'female'
+  ;
+run;
+
+data u.incomes;
+  input gender age income;
+  format income dollar8. gender genderformat.;
+datalines;
+0 50 60000
+1 45 80000
+1 30 25000
+0 25 18000
+1 72 40000
+;
+run;
+```
+
+In the preceding code:
+
+- libname LIBRARY refers to wherever U refers to
+- PROC FORMAT saves formats in the catalog file LIBRARY.FORMATS
+- the variable GENDER is assigned value labels from GENDERFORMAT
+in the DATA step.
+
+::: {.callout-warning}
+Now separate programs can use this variable *as long as
+SAS can find the format*.  In other words, programs which
+use this data set must include a `LIBNAME LIBRARY` definition.
+:::
+
+```{sas useformats}
+libname u "U:/";
+libname library (u);
+
+ods select parameterestimates;
+proc glm data=u.incomes;
+  class gender;
+  model income = gender age / solution;
+  run;
+```
+
+### Lost Catalogs
+Data sets include information about what format names have been
+assigned to variables, but the data set does not contain the
+actual formats.  As we have seen, these are stored in a separate
+file.  This is useful when we want to use the same formats
+with multiple data sets.  But it also means that data sets and
+format catalogs are easily separated (like a little kid on a 
+large family outing).
+
+If you ever try to work with a data set that has been formatted using
+formats you don\'t have access to, the following FORMAT statement can be used
+to tell SAS to strip selected variable formats.  This can be used
+in either a DATA step or a PROC step.
+
+```sas
+FORMAT varlist;
+```
+
+Because this FORMAT statement does not name any format, any variables
+named in the variable list are "assigned" a "null" format.
+
+A particularly useful variable list is the special keyword `_ALL_`.
+To remove all format information from a data set, make a copy of the
+data, assigning null formats to all variables.  (This also strips
+SAS formats, such at date, time, and currency formats.)
+
+```sas
+data incomes;
+  set u.incomes;
+  format _ALL_;
+run;
+```
+
+Last Revised: 8/14/2024

@@ -1,0 +1,357 @@
+# Arrays - Looping Over Variables
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+When preparing data for analysis it is common to find that
+there is some calculation that you need to perform for several
+variables.  For example, converting units of measure from imperial
+to metric units, recoding non-responses to survey questions, etc.
+
+## An Alternative to Variable Names
+
+In SAS, an *array* is a DATA step language construct that makes it easy to
+loop over a collection of variables.
+
+Using arrays is a two-part process.
+
+- Define an array with an `ARRAY` statement.  Arrays are simply
+a language construct, convenient aliases (like LIBNAMEs and FILENAMEs),
+and they must be defined in every DATA step where you wish to use
+them.  **They are not saved in the output data set.**
+- Use an *array reference* anywhere you might use a variable name.
+
+### Defining an Array
+
+Within a DATA step, the basic ARRAY statement takes the form
+
+```sas
+ARRAY array-name {size} variable-list
+```
+
+For example, if I have 5 variables I'd like to loop over, my
+DATA step might look like
+
+```sas
+data new;
+  set old;
+  
+  array v {5} q1a q1b q1c q1d q1e;
+  
+  ...
+```
+
+Here, my array is named "v", it has five elements, and the data
+is actually stored in the variables q1a through q1e.
+
+The variable list is optional.  Where you omit the variable
+list, the SAS default is to use variables with the array
+name as a prefix and the array position as a suffix.  For example
+
+```sas
+data new;
+  set old;
+  
+  array v {5};
+  
+  ...
+```
+
+Here the variables being references are named v1 through v5.  If
+they already exist in your data set, SAS uses those, otherwise
+SAS creates new variables.
+
+### Array References
+Having defined an array, you use elements of the array through
+an array reference (and you can still use the actual variable
+names, where that is convenient).
+
+An array reference simply takes the form
+
+```sas
+array-name{element}
+```
+
+In the first DATA step above, I can reference q1a as `v{1}`,
+q1e as `v{5}`, etc.  Because my array references have an index,
+it makes it easy to loop over the variable list.
+
+Where SAS can use a *variable list*, you can also use
+the reference
+
+```sas
+array-name{*}
+```
+
+to refer to the whole array.  In the previous example, the
+reference `v{*}` would mean `v1-v5`.
+
+## Using Arrays as Variable Lists
+Perhaps the simplest way to use an array is as a quick
+way to define and refer to a group of variables.
+  
+### Arrays for Data Input
+
+An ARRAY statement maps a correspondence between array
+references and actual variables in a data set.  If
+the variables do not already exist, the ARRAY statement
+creates them in the program data vector (PDV).  This is a
+handy way to create a set of related variables.
+
+An ARRAY statement of the form
+
+```sas
+ARRAY v{10};
+```
+
+seeks to create references to variables named v1 through v10
+because I have not given an explicit variable list.  If it
+finds those variables in the PDV, it uses them whenever an
+array reference is used.  If it doesn't find them, it creates them.
+
+If I had a survey with 10 questions, and I wanted to
+name the variables Q1 through Q10, my DATA step to input
+the data might look like this:
+
+```{sas data, collectcode=TRUE}
+data survey;
+  infile datalines;
+  array q{10};
+  input q{*};
+datalines;
+2 5 3 3 5 9 3 1 3 8
+4 5 2 5 5 1 8 8 2 3
+4 3 4 8 4 2 5 1 9 5
+9 5 9 9 8 3 2 9 3 2
+8 1 3 3 9 4 3 2 4 8
+8 1 5 4 9 1 3 9 2 1
+2 4 2 5 8 9 1 8 3 4
+3 2 8 5 8 8 2 3 2 8
+2 9 9 4 5 2 9 3 5 1
+5 4 2 3 2 2 3 2 1 1
+;
+```
+
+Here the ARRAY statement creates a group of variables, q1 through
+q10.  In the DATA step's compile phase, these ten variables are
+added to the PDV at this point.
+
+Then the array reference, `q{*}`, stands in for the variable list
+`q1-q10` on the INPUT statement - a small shortcut.
+
+In subsequent use of the data set, we refer to the variables by
+their variable names (there are no array references in PROCs).
+
+```{sas means}
+proc means n min max;
+  var q1 q5;
+run;
+```
+
+### Arrays in DATA Step Functions
+
+There are a few DATA step functions that accept variable
+lists as arguments.  We can use array references as a special
+form of variable list.
+
+For example, the MEAN function has a special form that uses
+variable lists:
+
+```sas
+MEAN(OF variable-list)
+```
+Note we must define an array in order to use it here - the
+array definition does **not** carry over with the `survey`
+data set.
+
+```{sas varlists}
+data rowmean;
+  set survey;
+
+  array v{*} q1-q10;
+  x = mean(of v{*});
+
+  run;
+
+proc print;
+  run;
+```
+
+Here I name my array `v` just to emphasize the point that
+the name of the array and the variable names are not required
+to match.  However, it's less confusing when they *do* match,
+don't you think?
+
+## Loop over Variables
+
+An array is a very handy construct to loop over variables.
+
+Suppose in the example above, the data are from a survey where
+8 = "don't know" and 9 = "refused to answer".  For most analyses, we
+would want to recode the 8's and 9's as missing.  For just 2 or
+3 variables it might be easy to code
+
+```sas
+data
+  ...
+  if (q1 eq 8 or q1 eq 9) then q1 = .;
+  if (q2 eq 8 or q2 eq 9) then q1 = .;
+  ...
+```
+
+Where there are many variables it will be much easier to put this
+in a DO loop.
+
+Notice again that although the *variables* already exist (from the previous example),
+we still have to define the *array* in this new DATA step.
+
+```{sas recode, collectcode=TRUE}
+data recode;
+  set survey;
+  array q{10};
+  do i = 1 to 10;
+    if (q{i} eq 8 or q{i} eq 9) then q{i} = .;
+    end;
+  drop i;
+  run;
+```
+```{sas}
+proc means n min max;
+  var q1 q5;
+  run;
+```
+
+## Array Dimensions and Sizes
+An array can have one or more dimensions.  The preceding examples
+are all one-dimensional arrays of various sizes.
+
+### Two Dimensional Arrays
+For an example of a two-dimensional array, reconsider the previous
+example.  This survey has gone back to the same respondents twice
+a year for 5 years (January and July).
+And suppose we wish to identify those years
+(if any) in which a respondent dropped out.  It would be
+convenient to consider this as a 5-by-2 array, where the first array
+dimension represents a year, and the second array dimension represents
+a survey instance.
+
+```{sas twodim}
+data dropouts;
+  set recode;
+  array q{5,2};     /* reponse array */
+  array y{5} y1-y5; /* array to count not-missed instances */
+  do year = 1 to 5;
+    y{year} = 0;    /* initial value for each observation-year */
+    do instance = 1 to 2;
+      if (q{year,instance} not eq .) then y{year} + 1;
+      end;
+    end;
+  drop year instance;
+  run;
+
+proc print; run;
+```
+
+Notice that the actual variables are still q1 through q10 by
+default.  If we had used more intuitive variable names we would
+need to provide them explicitly, e.g. q2020_1, q2020_2, q2021_1, etc.
+
+We are still processing one observation (one data row) at a time.
+Using an array we can use SAS to translate a two-dimension concept -
+year and instances - into a one-dimensional data structure.
+
+### Dimension Subscripts
+Dimension sizes and array references are not limited to ordinal
+positions.  We can also use `lower-bound:upper-bound` specifications
+to establish array sizes, and then use values within that
+range as references.
+
+For example, our last example might be more intuitive if we coded
+
+```{sas subscripts}
+data dropouts;
+  set recode;
+  array q{2020:2024,2};           /* reponse array */
+  array y{2020:2024} y2020-y2024; /* array to count not-missed instances */
+  do year = 2020 to 2024;
+    y{year} = 0;    /* initial value for each observation-year */
+    do instance = 1 to 2;
+      if (q{year,instance} not eq .) then y{year} + 1;
+      end;
+    end;
+  drop year instance;
+  run;
+
+proc print; run;
+```
+
+Notice that here again the array `q` still refers to variables
+q1 to q10 (the default), despite the use of a subscript range.
+
+### Letting SAS Determine Dimension Sizes
+#### When Defining Arrays
+For one-dimensional arrays, you can let SAS automatically
+determine how many elements are in the array **if you
+explicitly give variable names**.
+
+For example if you specify
+
+
+```sas
+data new;
+  set old;
+  
+  array v {*} v1 v4 v6;
+  ...
+```
+
+SAS understands that the array `v` has three elements
+regardless of any other variables with a v prefix.  However,
+you **cannot** specify `v {*} ;` with no variable names.
+
+#### Iterating
+When iterating over arrays, you can use the `dim()` function
+to determine the number of elements in an array dimension whose
+lower bound is 1.  Alternatively, you can use the `hbound`
+and `lbound` functions to determine the upper and lower bounds
+of an array dimension.  These are particularly useful in
+DO loops.
+
+In the first version of our example
+
+```{sas dims}
+data dropouts;
+  set recode;
+  array q{5,2};     /* reponse array */
+  array y{5} y1-y5; /* array to count not-missed instances */
+  do year = 1 to dim(q, 1);
+    y{year} = 0;    /* initial value for each observation-year */
+    do instance = 1 to dim(q, 2);
+      if (q{year,instance} not eq .) then y{year} + 1;
+      end;
+    end;
+  drop year instance;
+  run;
+
+proc print; var y1-y5; run;
+```
+
+In the second version
+
+```{sas bounds}
+data dropouts;
+  set recode;
+  array q{2020:2024,2};           /* reponse array */
+  array y{2020:2024} y2020-y2024; /* array to count not-missed instances */
+  do year = lbound(q,1) to hbound(q,1);
+    y{year} = 0;    /* initial value for each observation-year */
+    do instance = 1 to dim(q,2);
+      if (q{year,instance} not eq .) then y{year} + 1;
+      end;
+    end;
+  drop year instance;
+  run;
+
+proc print; var y2020-y2024; run;
+```

@@ -1,0 +1,347 @@
+# Working with Character Data
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+Besides numeric data, the other fundamental data type in SAS
+is *character* data - data values composed of strings of alpha-
+numeric character.
+
+> Character data can come in many language *encodings*, representing
+Western Latin character sets, double-byte character sets, and UTF-8
+character sets.  SAS has extensive capabilities to work with data
+in many different encodings, SSCC users have successfully worked with data
+in half a dozen languages.  This is a big topic that is well beyond
+the scope of these notes.  Here we will just discuss a few features
+of working with the SSCC default "wlatin" encoding.
+
+## Lengths
+### Automatically determined
+Unlike numeric data, which is always stored as an 8 byte double by
+default, the length of character variables is determined automatically
+by the expressions that create them.
+
+For example, using the `cars` data we might want to combine the Make
+and Model variables into a single string (this can be a good strategy
+for creating efficient identifiers in large data sets).
+Initially, these variables can hold up to 13 and 40 characters, respectively.
+
+```{sas}
+ods select variables;
+proc contents data=sashelp.cars(keep=make model);
+run;
+```
+
+Concatenating these variables,
+SAS allows room for 13 + 40 = 53 characters in the new variable.
+
+(We TRIM `make` first, otherwise it is *padded* to 13 characters
+- too many spaces!)
+
+```{sas, collectcode=TRUE}
+data cars;
+  set sashelp.cars;
+  mm = trim(make) || model;
+  run;
+```
+```{sas}
+ods select variables;
+proc contents data=cars(keep=make model mm);
+run;
+```
+```{sas}
+proc print data=cars(obs=3) noobs;
+  var make model mm;
+run;
+```
+
+### Too short
+Occasionally a variable will be too short, and we'll
+want to lengthen it.  This is especially common when
+creating new variables based on character *literals*
+(character constants).
+
+Suppose we wanted to create a variable that spells
+out sex in the `class` data.  Consider the difference
+in two different constructions.
+
+```{sas, collectcode=TRUE}
+data class;
+  set sashelp.class;
+
+  if sex = 'M' then sex2 = 'male';
+  else if sex = 'F' then sex2 = 'female';
+
+  if sex = 'F' then sex3 = 'female';
+  else if sex = 'M' then sex3 = 'male';
+  run;
+```
+Notice that `sex2` is truncated at four characters.
+```{sas}
+proc print data=class(obs=2);
+  var name sex sex2 sex3;
+run;
+```
+This is because, during the construction of the PDV
+in the compile phase of the DATA step, the first time
+SAS encountered the variable named `sex2`, the expression
+on the right-hand side of the assignment had a length
+of 4 characters.
+```{sas}
+ods select variables;
+proc contents data=class(keep=sex sex2 sex3);
+run;
+```
+
+One fix, then, is to ensure that the longest data value
+appears first.  Another, more common fix is to simply
+initialize the variable with a LENGTH statement.
+
+To declare the variable is a character variable, include
+the ` $ ` symbol after the variable name.
+
+```{sas, collectcode=TRUE}
+data class;
+  set sashelp.class;
+  length sex2 $ 6;
+  if sex = 'M' then sex2 = 'male';
+  else if sex = 'F' then sex2 = 'female';
+  run;
+```
+```{sas}
+proc print data=class(obs=2);
+  var name sex sex2;
+run;
+```
+
+### Too long
+Occasionally a character variable may be too long for our
+purposes - this is common where character values force a
+table of statistical results to be too wide or otherwise
+difficult to read.  Here we have two approaches we can
+take to shortening the data values.
+
+- extract a substring
+- use a format
+
+We'll discuss extracting a substring below.
+
+Using a format is often a great solution to display
+problems.  However, keep in mind that formats also
+serve to recode the data.
+
+Suppose in the `class` data we wanted a display of names
+and ages, but we only wanted the first three letters of each
+name.  We could use a character format in PROC PRINT.
+
+```{sas}
+proc print data=class(obs=5);
+  format name $3.;
+  var name age;
+run;
+```
+
+However, keep in mind that truncating character values
+can have statistical consequences, whether in the form
+of a new variable or a format.
+
+```{sas}
+proc freq data=class;
+  format name $1.;
+  tables name / nocum;
+run;
+```
+
+## Some Character Functions
+We have already encountered the TRIM function, for removing
+spaces at the end of a data value.  There are several other
+basic character functions that are endlessly useful:  LENGTH,
+INDEX, and SUBSTR.  There are numerous other character
+functions not discussed here.  SAS also has functions to
+work with Perl regular expressions.
+
+In extracting and constructing new character values, it is
+often helpful to
+
+- find the position at which a character is found 
+- extract a substring
+- replace a substring
+- determine how long a particular data value is
+
+### Index
+In the `cars` data, the `make` variable holds a lot of
+information that is not encoded elsewhere.
+
+```{sas}
+proc print data=sashelp.cars(obs=3) noobs;
+  var model;
+run;
+```
+
+Suppose we wanted to create a variable which indicated
+whether a particular model was a four-door or not.  The
+INDEX function would help.  It takes the form
+
+```sas
+INDEX(source, to-find)
+```
+
+where *source* evaluates as a character string in which
+we seek the string *to-find*.  If *to-find* is found, INDEX
+returns the position of the first character of the first
+place *to-find* occurs in *source*.  If *source* is not
+found the function returns a zero (0).
+
+(The data values in `model` incidentally have a leading blank
+which we will trim with the LEFT ("left-align") function, for
+the sake of counting characters in our output.)
+
+```{sas, collectcode=TRUE}
+data cars;
+  set sashelp.cars;
+  fdrpos = index(left(model), "4dr");
+  fourdoor = (fdrpos gt 0);
+run;
+```
+
+```{sas}
+proc print data=cars(obs=3) noobs;
+  var model fdrpos fourdoor;
+run;
+```
+
+We find that many of the cars in this data set are four-door.
+
+```{sas}
+proc freq data=cars;
+  tables fourdoor /nocum;
+run;
+```
+
+### Substrings
+Suppose we were working with just the Audi cars.  The first
+"word" (the first two characters) in `model`
+tells us the model series of each observation.
+
+(There is also a WORD function that would be even easier
+to use were it not for the second observation.)
+
+```{sas}
+proc print data=sashelp.cars(obs=3) noobs;
+  where make eq "Audi";
+  var make model;
+  run;
+```
+
+We could extract that into a separate variable with the
+SUBSTR function.  This takes the form
+
+```sas
+SUBSTR(source, start-position, length)
+```
+
+where *source* is again an expression that evaluates
+to a character string, *start-position* is the place
+where we wish to begin extracting a string from *source*,
+and *length* is the number of characters to extract.
+
+```{sas, collectcode=TRUE}
+data audi;
+  set sashelp.cars(where=(make eq "Audi"));
+  series = substr(left(model), 1, 2);
+run;
+```
+```{sas}
+proc print data=audi(obs=3) noobs;
+  var model series;
+  run;
+```
+```{sas}
+proc freq data=audi;
+  tables series /nocum;
+run;
+```
+
+### Replacement
+In the Audi data, we see that many of the `model` values
+include information about the engine size - but we already
+have a separate variable for that.  
+
+```{sas}
+proc print data=sashelp.cars(obs=3) noobs;
+  where make eq "Audi";
+  var make model enginesize;
+  run;
+```
+
+We might want to
+simplify the `model` values by removing the engine size.  We
+could to this by replacing the any engine size string with
+a space.  This also makes use of the SUBSTR function, but
+in this case SUBSTR appears on the left side of the
+assignment symbol
+
+```sas
+SUBSTR(source, start-position, length) = "replacement-string";
+```
+
+(In this example, we have to [convert the numeric engine
+size into a character string](Convering_numbers_and_characters.html)
+in order to index
+it's position.  The result of the replacement
+has multiple consecutive spaces,
+which we can compress with the COMPBL function.)
+
+```{sas, collectcode=TRUE}
+data audi;
+  set sashelp.cars;
+  where make eq "Audi";
+  keep make model enginesize es es_pos;
+  es = left(put(enginesize, f3.1));
+  es_pos = index(model, es);
+  if (es_pos > 0) then do;
+
+	substr(model, es_pos, 3) = " ";
+
+  	model = compbl(model);
+	end;
+run;
+```
+```{sas}
+proc print data=audi(obs=5) noobs;
+  var model enginesize;
+  run;
+```
+
+### Length
+It is often handy to know how long a character string is.
+We might use this information to shorten a character variable
+and save storage space (particularly with an already-large data set).
+And it is often useful in calculating where "start" positions
+are, or substring lengths.  The LENGTH function itself is
+quite simple
+
+```sas
+LENGTH(character-string)
+```
+
+where *character-string* is any expression that evaluates as a
+character string.
+
+For example, the `model` values that resulted from our replacement
+above were
+
+```{sas}
+data audi;
+  set audi;
+  model_length = length(model);
+run;
+
+proc means data=audi n min max;
+  var model_length;
+  run;
+```
+
+`Model` is being stored with a length of 40 characters, so this
+suggests we could save disk space with this variable.

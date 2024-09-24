@@ -1,0 +1,173 @@
+# Logical-valued Data
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+SAS does not have a special "logical" data type:  SAS only
+works with character and floating point numeric data.  In
+SAS, logical values are handled as numeric data:  0, 1, or
+missing.
+
+:::{.callout-important}
+- where a SAS expression **returns** a logical value, it
+will be either 0 or 1.
+- where SAS **evaluates** a "logical" expression, it only
+assumes the data is numeric, treating 0 and missing data
+as false, and any other numeric value as true.
+:::
+
+## Logical Operators
+SAS has the usual [logical operators](https://documentation.sas.com/doc/en/lrcon/9.4/p00iah2thp63bmn1lt20esag14lh.htm#n19ojrq5dkxpd6n14egp2a3oz0up):
+AND, OR, and NOT.  These many be written mnemonically or symbolically, e.g.
+`AND` or ` & `.
+
+Given the values 0 and 1, these behave as you expect.  Notice
+in the following example that a missing value is equivalent to
+0, a "false" value.
+
+```{sas, collectcode=TRUE}
+data logical;
+  length operator $ 4;
+  input x y;
+	condition = x and y;
+  operator = 'AND';
+  output;
+  condition = x or y;
+  operator = 'OR';
+  output;
+  condition = not x;
+  operator = 'NOT';
+  output;
+datalines;
+1 1
+1 0
+1 .
+0 .
+. .
+;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'AND';
+  var x operator y condition;
+  run;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'OR';
+  var x operator y condition;
+  run;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'NOT';
+  var operator x condition;
+  run;
+```
+
+Because these operators are acting on numeric values
+as inputs, you can also understand them to be
+checking if a value is 0 or missing ("false"), or not
+("true").
+
+```{sas, collectcode=TRUE}
+data logical;
+  length operator $ 4;
+  input x y;
+	condition = x and y;
+  operator = 'AND';
+  output;
+  condition = x or y;
+  operator = 'OR';
+  output;
+  condition = not x;
+  operator = 'NOT';
+  output;
+datalines;
+5 -3
+2.7 0
+100 .
+;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'AND';
+  var x operator y condition;
+  run;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'OR';
+  var x operator y condition;
+  run;
+```
+
+```{sas}	
+proc print data=logical noobs;
+  where operator eq 'NOT';
+  var operator x condition;
+  run;
+```
+
+## Comparison Operators
+SAS also has the usual [comparison operators](https://documentation.sas.com/doc/en/lrcon/9.4/p00iah2thp63bmn1lt20esag14lh.htm#n10lfrm906gpv7n1t7fue0g1ayqz),
+, including the IN operator commonly found in data processing
+languages.  These too may be written mnemonically or symbolically, e.g.
+'EQ' or ` = ` (note this is a single equals symbol in SAS), `LE` or
+` <= `, etc.  These may be used to compare numbers verus numbers or
+character strings versus character strings.
+
+### Missing Values
+A special consideration is how SAS uses missing values in comparisons.
+
+:::{.callout-tip}
+## Missing values are the smallest values
+In a comparison, SAS treats missing values as if they are simply
+the smallest possible numeric values.  So ` . <= -100 ` is true!
+:::
+
+### Decimal Values
+Comparisons of values that have decimal components can be
+problematic with any computer software (because the computation
+is actually done in binary).
+
+```{sas}
+data decimal;
+  x = 0.2;
+  y = 0.3 - 0.1;
+	condition = (x = y);
+	run;
+
+proc print noobs; run;
+```
+
+Although we understand that $0.2 = 0.3 - 0.1$ is true, when
+this expression is converted into binary, the numbers can 
+no longer be represented in finite precision.  The necessary
+rounding means these numbers are **not** exactly equal.
+
+A better comparison these, it to check that the difference
+between these two numbers is "small enough" to be essentially
+zero.  Use conditions of the form
+
+```sas
+x - y < 1e-16
+```
+
+```{sas}
+data decimal;
+  x = 0.2;
+  y = 0.3 - 0.1;
+	condition = (x - y < 1e-16);
+	run;
+
+proc print noobs; run;
+```
+
+See SAS's discussion of [numeric precision](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lepg/p0dv87zb3bnse6n1mqo360be70qr.htm) for more details.

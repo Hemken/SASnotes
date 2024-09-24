@@ -1,0 +1,111 @@
+# Variable Labels
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+## Names and Labels
+Variables labels help us make our output more easily understood.
+While we use *variable names* when we are writing SAS programs
+to specify which variables are to be processed, we use *variable
+labels* in our output.  Variable names are often short and cryptic,
+while variable labels can include spaces and special characters,
+allowing them to be much more expressive.
+
+Every variable has a name. Variables may or may not have labels
+and formats (value labels).
+
+Not every PROC uses labels in reporting results including modeling
+PROCs like GLM and GENMOD.  See [SAS Support](https://support.sas.com/kb/35/973.html) for three ways
+around this limitation using *name literals*.
+
+For example, in the data set `cars`, some variables have labels
+while others do not.
+
+```{sas}
+ods select variables;
+proc contents data=sashelp.cars;
+run;
+```
+
+Where a variable has a label, SAS uses the label in output
+tables and graphs.  Where there is no label, SAS uses the
+variable name.
+
+```{sas}
+proc means data=sashelp.cars n mean stddev;
+  var invoice enginesize;
+run;
+```
+
+```{sashtml5}
+proc sgplot data=sashelp.cars;
+  scatter y=invoice x=enginesize;
+  run;
+```
+
+## Adding Labels
+Variable labels can be added or replaced in either a DATA step
+or a PROC step.  Added in a DATA step, the label is used
+in any subsequent steps that use that data set.  Added in a
+PROC step, the label is used only in the procedure.
+
+Labels are added with a LABEL statement, which takes the
+form
+
+```sas
+LABEL varname1 = "label-1" <varname2 = "label-2 ...>
+```
+
+(You could also use more than one LABEL statement in a step.)
+
+For example, using the `class` data set, which has no labels,
+we can add labels to several variables.  When the new version
+of the `class` data is used in the subsequent PROC MEANS, the
+labels are used (along with the variable names).
+
+```{sas}
+data class;
+  set sashelp.class;
+  bmi = (weight/height**2)*703;
+  label age    = "Age (years)"
+        height = "Height (inches)"
+        bmi    = "Body Mass Index";
+  run;
+        
+proc means data=class n mean stddev;
+  var age height weight bmi;
+  run;
+```
+
+Going back to the original, unlabeled data set,
+we could add labels for just one PROC step.
+
+```{sashtml5}
+proc sgplot data=sashelp.class;
+  hbox height / category = age;
+  label age    = "Age (in years)"
+        height = "Height (in inches)";
+  run;
+```
+
+## Removing Labels
+To remove a variable label, simply assign the variable
+a null label.  In other words, use the form
+
+```sas
+LABEL varname = ;
+```
+
+where you specify the variable name, an equals symbol, and
+then nothing!  (The equals symbol is required.)
+
+For example, to remove the variable label for EngineSize
+("Engine Size (L)")
+
+```{sas}
+proc means data=sashelp.cars;
+	var enginesize cylinders;
+	label enginesize = ;
+run;
+```

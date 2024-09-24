@@ -1,0 +1,243 @@
+# Reading Text Data
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+SAS provides a great deal of flexibility for reading text data.
+This is accomplished through a DATA step.  The basic elements
+are 
+
+- an INFILE statement, usually specifying a file and some options
+for how to parse it, and
+- an INPUT statement, naming the variables to create and how to find
+specific data values.
+
+```sas
+DATA mydata;
+    INFILE file-specification;
+    INPUT variables-specifications;
+    /* any other DATA step statements */
+    RUN;
+```
+
+## Text Data Sources
+In practice, text data is most often read from an external file, either
+on a drive attached to your computer, or on the internet.  In the SAS
+documentation, the data is often included in the SAS program (*in-line* data).
+
+### External files
+Suppose I had a text file in my Z drive named "class.txt".  It has one
+observation per line (*record*), and data values are separated within each line by a space.
+Each record/observation includes 5 data values.
+
+```
+----- class.txt -----
+Alfred M 14 69 112.5
+Alice F 13 56.5 84
+Barbara F 13 65.3 98
+---------------------
+```
+
+The code to read in these data values, and to calculate `bmi` from them would look like this:
+
+```sas
+data class;
+   infile "Z:/class.txt";
+   input Name $ Sex $ Age Height Weight;
+   bmi=(weight/height**2)*703;
+   run;
+```
+
+This code makes many assumptions about the data, which we will begin to discuss below.
+They key elements here are the INFILE statement, which simply names a file to read,
+and the INPUT statement.  The INPUT statement gives names to the variables in the
+output data set and declares which variables are character variables.  The
+character designation is made by adding a `$` symbol **after** the names of character
+variables.
+
+To read a text file from the internet, you first define a FILENAME reference to
+the URL.  This takes the form
+
+```sas
+FILENAME filealias URL "url-specification";
+```
+
+A SAS *filename*, much like a library name, is used as an alias (shortcut), and in
+general they serve many purposes beyond defining URLs.  SAS filenames (unquoted) may
+be used wherever you can use a quoted file name.
+
+```{sas}
+filename w3 url "https://www.ssc.wisc.edu/sscc/pubs/data/dwr-read/class_noheader.csv";
+
+data class;
+   infile w3 dlm=',';
+   input Name $ Sex $ Age Height Weight;
+   bmi=(weight/height**2)*703;
+   run;
+
+proc means data=class n mean lclm uclm; 
+run;
+```
+
+### In-line Data
+In the SAS documentation it is very common to see example data sets included
+in-line with a DATA step.  You can skip the INFILE statements or use
+INFILE DATALINES.  The DATALINES statement is the last statement in a DATA step
+(before any RUN statement).  Data follow on subsequent lines until a semi-colon
+is found.
+
+```{sas}
+data class;
+   input Name $ Sex $ Age Height Weight;
+   bmi=(weight/height**2)*703;
+   datalines;
+Alfred M 14 69 112.5
+Alice F 13 56.5 84
+Barbara F 13 65.3 98
+;
+
+proc means data=class n mean stddev; 
+run;
+```
+
+## Text File Layout
+Text data comes in many forms. It is always a good idea to look at any
+documentation you have first. Then it can be informative to look at the
+text file itself, preferably in a dedicated text editor (on SSCC computers,
+use Notepad++ or VS Code).
+
+You are looking for a few things when you examine the file.
+
+### Distinguish data from metadata and extra text (notes)
+The file includes data values. Does it also include variable names or
+other information that helps define the data? Is there a header or a
+footer with explanatory text about the file contents?  INFILE options
+control which lines are used as data.
+
+### Observation delimiters
+
+What separates one observation from the next? Commonly, each observation has
+a separate line in the text file, but it is possible to have multiple
+observations per line, or multiple lines per observation.  INFILE options
+control what happens when an observation is found on more than one line.
+INPUT options are used when there is more than one observation per line.
+
+### Data value delimiters
+
+Within an observation, what separates one data value from the next? Most commonly
+the data value delimiter will be a space or a comma. Tabs used to be common,
+and are hard to distinguish visually from spaces.  INFILE options specify
+the delimiter.
+
+Especially in older data sets, it used to be common for data values to appear
+in specified columns - e.g. state in columns 3-4 and county in columns 5-7 -
+with no character separating data values.  INPUT options specify which
+columns to read for each variable.
+
+### Character value quotes
+
+Where data value delimiters are used, how are the same characters included in
+character data values? For instance, if the data values are separated by spaces,
+how do you include a space *within a data value*? The typical answer is,
+character data values are enclosed in quotes, either double (“) or single (’) quotes.
+INFILE options control the use of character value quotes.
+
+### Missing value strings
+
+How are missing values indicated? This might be by having two data value
+delimiters with no data value between them. Or there might be a special
+character string that denotes missing data, such as a period, ` .`, -99, or BBBBBBB.
+There may be more than one missing value indicator as well, such as -98 and -99.
+INFILE options, the MISSING statement, and recoding your data can all be
+used in various scenarios.
+
+## How SAS Reads Text Files
+Both the options for INFILE and INPUT affect how SAS reads text from files.
+
+By default, when an INPUT statement is executed a new *record* (a full line of text)
+is read into an *input buffer*.  The text in the input buffer is scanned
+according to the specific instruction in the INPUT statement, and data values
+are entered into the program data vector (PDV).
+
+SAS continues reading records until an observation is complete.
+If the INPUT statement specifies more variables than can be found in the
+input buffer, an additional line (record) or lines are read from the input
+file.  This default behavior of reading as many records as it takes to
+build an observation can be changed through INFILE options.
+
+The input buffer itself can be found in an automatic variable named (a little
+confusingly?) \_INFILE\_.
+
+The instructions in the INPUT statement control a *pointer* that specifies
+character positions.  The pointer
+can move forward, backward, or jump to a specific position.  By default the
+pointer begins at the first non-space character, reads text until it encounters
+a space, and uses the text to create a data value in the PDV for the first
+variable.  It then continues from wherever the pointer is located, reading
+non-space text until the next space delimits the end of the next data value.
+In this default context, the end of a record is the same as a space.
+
+More detailed instructions in an INPUT statement can change how the pointer
+is moved through the input buffer from variable to variable.
+
+### List (Space Delimited) Data
+This simplest type of text data to read into SAS is sometimes called
+*list* data.  If typically has one observation per record, and data
+values separated by spaces.
+
+The code for this is particularly simple:
+
+- an INFILE statement (here we will use DATALINES)
+- an INPUT statement that simply names the variables and indicates
+which are character variables.
+
+```{sas}
+data scores;
+  infile datalines;
+  input name $ score1 score2 score3 team $;
+datalines;
+Joe 11 32 76 red
+Mitchel 13 29 82 blue
+Susan 14 27 74 green
+;
+
+proc print; run;
+```
+
+### Comma-separated (CSV) Data
+The most ubiquitous text data format is surely the *comma-separate values*
+file.  Often this includes variable names as the first line.
+
+> PROC IMPORT would be our preferred method of reading this specific
+kind of text file.  It handles the standard case very nicely, *including
+variable names*.  It creates and runs a DATA step - the DATA step code
+is echoed in the log!
+
+We use the FIRSTOBS option of the INFILE statement to let SAS
+know the data begin in record 2.  And we use the DSD option
+to let SAS know that commas are now our data value delimiter.
+
+```{sas}
+data scores;
+  infile datalines firstobs=2 dsd;
+  input name $ score1 score2 score3 team $;
+datalines;
+name,score1,score2,score3,team
+Joe,11,32,76,red
+Mitchel,13,29,82,blue
+Susan,14,27,74,green
+;
+
+proc print; run;
+```
+
+The PROC IMPORT would look like
+
+```sas
+proc import datafile="scores.csv"
+        out=scores
+        dbms=csv replace;
+   getnames=yes;
+run;
+```

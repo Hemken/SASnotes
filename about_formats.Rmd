@@ -1,0 +1,111 @@
+# Formats in SAS
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+A *format* in SAS is a means of assigning a
+value label to a data value or a range of values.
+You can think of a format as a function that translates
+data values into the values that will be used in
+a procedure.
+
+(SAS also has *informats*, the inverse of formats,
+which are most often used when importing text data.)
+
+- Formats are used to
+ 
+  - make output more easily interpreted
+  - recode data
+
+- Formats are defined by
+
+  - SAS, "SAS formats"
+  - you, "user formats"
+
+- Formats can be assigned in
+
+  - a PROC step, for just that step
+  - a DATA step, for all steps that use that data
+
+- User formats may be
+
+  - temporary, for the current SAS session
+  - permanent, saved in a file
+
+For example, suppose I had a data set
+with a variable, `x`, whose data values
+ran from 80 to 140.
+
+```{sas data, collectcode=TRUE}
+data example;
+  do x = 80 to 140;
+  	output;
+	end;
+  run;
+```
+
+## For Interpretation
+As given, these are rather meaningless numbers.
+If I apply a `MMDDYY.` format, then they are
+readily interpreted as dates on a calendar.
+
+```{sas mmddyy}
+* just a few values to illustrate;
+proc freq data=example(obs=5);
+  format x mmddyy10.;
+  table x /nopercent nocum;
+run;
+```
+
+## Recoding
+Using a different format, `MONNAME.`, with the same data
+ranges of values
+are recoded into month categories for processing.
+
+```{sas monname}
+proc freq data=example;
+  format x monname.;
+  table x /nopercent nocum;
+run;
+```
+
+## User Formats
+These date formats are provided by SAS.  I could
+also create my own format, using it with the same
+underlying data.
+
+```{sas user1, collectcode=TRUE}
+proc format;
+  value april low-120 = "Before May 1"
+              121-high = "On or after May 1";
+  run;
+```
+
+```{sas user2}              
+proc freq data=example;
+  format x april.;
+  table x /nopercent nocum;
+  run;
+```
+
+## DATA Step Assignment
+While the previous examples have used formats
+for single procedures, assigning a format in
+a DATA step affects *all* procedures that later
+use the data.
+
+```{sas data_assign}
+data example2;
+  set example;
+  format x april.;
+  run;
+
+proc freq data=example2;
+  table x /nopercent nocum;
+  run;
+```
+
+## Saving Formats
+For more about writing, using, and saving formats, see
+[SAS User Formats](4-19_SAS_user_formats.html).
