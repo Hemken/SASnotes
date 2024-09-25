@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Doug Hemken" />
+
+
+<title>SAS PROC FREQ</title>
+
+<!--#include virtual="/sscc/pubs/Rmd/headInclKB.html" -->
+
+
+
+
+
+<link rel="stylesheet" href="..\..\Rmd\Rmd.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+<!--#include virtual="/sscc/pubs/Rmd/topInclKB.html" -->
+
+
+<h1 class="title toc-ignore">SAS PROC FREQ</h1>
+<h4 class="author"><em>Doug Hemken</em></h4>
+<h4 class="date"><em>March 2017</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#basic-use---one-way-tables">Basic Use - One-Way Tables</a></li>
+<li><a href="#minimal-specification">Minimal Specification</a></li>
+<li><a href="#table-requests">Table Requests</a><ul>
+<li><a href="#one-way">One-way</a></li>
+<li><a href="#two-way">Two-way</a></li>
+<li><a href="#multiple-requests-per-tables-statement">Multiple requests per tables statement</a></li>
+<li><a href="#multiple-tables-statements">Multiple tables statements</a></li>
+</ul></li>
+<li><a href="#using-summary-data">Using Summary Data</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p><code>PROC FREQ</code> provides a core command for a number of tasks that revolve around frequency tables and crosstabulations (contingency tables). You will use PROC FREQ for</p>
+<ul>
+<li>one-way tables</li>
+<li>two-way tables</li>
+<li>chi-square tests of association</li>
+<li>categorical measures of association, and other measures based on contingency tables</li>
+<li>bar charts</li>
+<li>creating data sets of counts or percents</li>
+</ul>
+<p>Documentation is found in the <a href="http://support.sas.com/documentation/cdl/en/procstat/66703/HTML/default/viewer.htm#procstat_freq_toc.htm">Base SAS 9.4 Procedures Guide: Statistical Procedures</a>.</p>
+<div id="basic-use---one-way-tables" class="section level2">
+<h2>Basic Use - One-Way Tables</h2>
+<p>In its simplest use, PROC FREQ gives you counts and percents.</p>
+<pre class="sas"><code>proc freq data=sashelp.heart;
+    tables smoking_status;
+run;</code></pre>
+<pre><code>                            The FREQ Procedure
+
+                              Smoking Status
+ 
+                                                Cumulative    Cumulative
+  Smoking_Status       Frequency     Percent     Frequency      Percent
+  ----------------------------------------------------------------------
+  Heavy (16-25)            1046       20.22          1046        20.22  
+  Light (1-5)               579       11.19          1625        31.41  
+  Moderate (6-15)           576       11.13          2201        42.55  
+  Non-smoker               2501       48.35          4702        90.90  
+  Very Heavy (&gt; 25)         471        9.10          5173       100.00  
+
+                          Frequency Missing = 36</code></pre>
+</div>
+<div id="minimal-specification" class="section level2">
+<h2>Minimal Specification</h2>
+<p>This is the barest <code>PROC FREQ</code>. Here, the default data set is <code>_LAST_</code>, and the default variables to analyze are <code>_ALL_</code>. (This example produces a lot of output! So I haven't show the output here.)</p>
+<pre class="sas"><code>data heart;
+  set sashelp.heart;
+  run;</code></pre>
+<pre class="sas"><code>proc freq;
+run;</code></pre>
+</div>
+<div id="table-requests" class="section level2">
+<h2>Table Requests</h2>
+<p>You can request one-way tables, two-way (or n-way) tables. There is a table request &quot;algebra&quot; for n-way tables.</p>
+<p>You can request multiple tables per <code>TABLES</code> statement, and you can use multiple <code>TABLES</code> statements per PROC.</p>
+<div id="one-way" class="section level3">
+<h3>One-way</h3>
+<pre class="sas"><code>proc freq;
+  tables smoking_status;
+    run;</code></pre>
+<pre><code>                            The FREQ Procedure
+
+                              Smoking Status
+ 
+                                                Cumulative    Cumulative
+  Smoking_Status       Frequency     Percent     Frequency      Percent
+  ----------------------------------------------------------------------
+  Heavy (16-25)            1046       20.22          1046        20.22  
+  Light (1-5)               579       11.19          1625        31.41  
+  Moderate (6-15)           576       11.13          2201        42.55  
+  Non-smoker               2501       48.35          4702        90.90  
+  Very Heavy (&gt; 25)         471        9.10          5173       100.00  
+
+                          Frequency Missing = 36</code></pre>
+</div>
+<div id="two-way" class="section level3">
+<h3>Two-way</h3>
+<p>Specified as row*column.</p>
+<pre class="sas"><code>proc freq;
+    tables smoking_status*sex;
+    run;</code></pre>
+<pre><code>                            The FREQ Procedure
+
+                      Table of Smoking_Status by Sex
+
+                Smoking_Status(Smoking Status)     Sex
+
+                Frequency        |
+                Percent          |
+                Row Pct          |
+                Col Pct          |Female  |Male    |  Total
+                -----------------+--------+--------+
+                Heavy (16-25)    |    339 |    707 |   1046
+                                 |   6.55 |  13.67 |  20.22
+                                 |  32.41 |  67.59 |
+                                 |  11.87 |  30.51 |
+                -----------------+--------+--------+
+                Light (1-5)      |    422 |    157 |    579
+                                 |   8.16 |   3.03 |  11.19
+                                 |  72.88 |  27.12 |
+                                 |  14.78 |   6.78 |
+                -----------------+--------+--------+
+                Moderate (6-15)  |    340 |    236 |    576
+                                 |   6.57 |   4.56 |  11.13
+                                 |  59.03 |  40.97 |
+                                 |  11.90 |  10.19 |
+                -----------------+--------+--------+
+                Non-smoker       |   1682 |    819 |   2501
+                                 |  32.51 |  15.83 |  48.35
+                                 |  67.25 |  32.75 |
+                                 |  58.89 |  35.35 |
+                -----------------+--------+--------+
+                Very Heavy (&gt; 25 |     73 |    398 |    471
+                )                |   1.41 |   7.69 |   9.10
+                                 |  15.50 |  84.50 |
+                                 |   2.56 |  17.18 |
+                -----------------+--------+--------+
+                Total                2856     2317     5173
+                                    55.21    44.79   100.00
+
+                          Frequency Missing = 36</code></pre>
+<p>The table request &quot;algebra&quot; consists of variable lists, the asterisk for &quot;crossing&quot; variables, and parentheses to distribute the crossing operation.</p>
+<p>So a specification like <code>A*(B C)</code> is equal to <code>A*B A*C</code>. In a data set with variables A through F, in order, the specification <code>(A--C)*(D--F)</code> would mean <code>A*D A*E A*F B*D B*E B*F C*D C*E C*F</code>.</p>
+</div>
+<div id="multiple-requests-per-tables-statement" class="section level3">
+<h3>Multiple requests per tables statement</h3>
+<p>As implied by the request algebra, a single <code>TABLES</code> statements may have more than one table request, and even more than one type of table requested.</p>
+<pre class="sas"><code>proc freq;
+    tables smoking_status sex*smoking_status;
+    run;</code></pre>
+<pre><code>                            The FREQ Procedure
+
+                              Smoking Status
+ 
+                                                Cumulative    Cumulative
+  Smoking_Status       Frequency     Percent     Frequency      Percent
+  ----------------------------------------------------------------------
+  Heavy (16-25)            1046       20.22          1046        20.22  
+  Light (1-5)               579       11.19          1625        31.41  
+  Moderate (6-15)           576       11.13          2201        42.55  
+  Non-smoker               2501       48.35          4702        90.90  
+  Very Heavy (&gt; 25)         471        9.10          5173       100.00  
+
+                          Frequency Missing = 36
+
+                      Table of Sex by Smoking_Status
+
+      Sex       Smoking_Status(Smoking Status)
+
+      Frequency|
+      Percent  |
+      Row Pct  |
+      Col Pct  |Heavy (1|Light (1|Moderate|Non-smok|Very Hea|  Total
+               |6-25)   |-5)     | (6-15) |er      |vy (&gt; 25|
+               |        |        |        |        |)       |
+      ---------+--------+--------+--------+--------+--------+
+      Female   |    339 |    422 |    340 |   1682 |     73 |   2856
+               |   6.55 |   8.16 |   6.57 |  32.51 |   1.41 |  55.21
+               |  11.87 |  14.78 |  11.90 |  58.89 |   2.56 |
+               |  32.41 |  72.88 |  59.03 |  67.25 |  15.50 |
+      ---------+--------+--------+--------+--------+--------+
+      Male     |    707 |    157 |    236 |    819 |    398 |   2317
+               |  13.67 |   3.03 |   4.56 |  15.83 |   7.69 |  44.79
+               |  30.51 |   6.78 |  10.19 |  35.35 |  17.18 |
+               |  67.59 |  27.12 |  40.97 |  32.75 |  84.50 |
+      ---------+--------+--------+--------+--------+--------+
+      Total        1046      579      576     2501      471     5173
+                  20.22    11.19    11.13    48.35     9.10   100.00
+
+                          Frequency Missing = 36</code></pre>
+</div>
+<div id="multiple-tables-statements" class="section level3">
+<h3>Multiple tables statements</h3>
+<p>It is also possible to have multiple <code>TABLES</code> statements. This is especially useful when specifying different table options for distinct groups of variables.</p>
+<pre class="sas"><code>/* suppress some default output, and request additional statistics */
+proc freq;
+    tables smoking_status / nocum;
+    tables smoking_status*sex / nopercent nocol chisq;
+    run;</code></pre>
+<pre><code>                            The FREQ Procedure
+
+                              Smoking Status
+ 
+                Smoking_Status       Frequency     Percent
+                ------------------------------------------
+                Heavy (16-25)            1046       20.22 
+                Light (1-5)               579       11.19 
+                Moderate (6-15)           576       11.13 
+                Non-smoker               2501       48.35 
+                Very Heavy (&gt; 25)         471        9.10 
+
+                          Frequency Missing = 36
+
+                      Table of Smoking_Status by Sex
+
+                Smoking_Status(Smoking Status)     Sex
+
+                Frequency        |
+                Row Pct          |Female  |Male    |  Total
+                -----------------+--------+--------+
+                Heavy (16-25)    |    339 |    707 |   1046
+                                 |  32.41 |  67.59 |
+                -----------------+--------+--------+
+                Light (1-5)      |    422 |    157 |    579
+                                 |  72.88 |  27.12 |
+                -----------------+--------+--------+
+                Moderate (6-15)  |    340 |    236 |    576
+                                 |  59.03 |  40.97 |
+                -----------------+--------+--------+
+                Non-smoker       |   1682 |    819 |   2501
+                                 |  67.25 |  32.75 |
+                -----------------+--------+--------+
+                Very Heavy (&gt; 25 |     73 |    398 |    471
+                )                |  15.50 |  84.50 |
+                -----------------+--------+--------+
+                Total                2856     2317     5173
+
+                          Frequency Missing = 36
+
+               Statistics for Table of Smoking_Status by Sex
+
+          Statistic                     DF       Value      Prob
+          ------------------------------------------------------
+          Chi-Square                     4    743.4890    &lt;.0001
+          Likelihood Ratio Chi-Square    4    771.5109    &lt;.0001
+          Mantel-Haenszel Chi-Square     1     40.7641    &lt;.0001
+          Phi Coefficient                       0.3791          
+          Contingency Coefficient               0.3545          
+          Cramer&#39;s V                            0.3791          
+
+                       Effective Sample Size = 5173
+                          Frequency Missing = 36</code></pre>
+</div>
+</div>
+<div id="using-summary-data" class="section level2">
+<h2>Using Summary Data</h2>
+<pre class="sas"><code>/* the data in summary or &quot;table&quot; form */
+data coffee2;
+  input loc $ type $ count;
+datalines;
+drive-up cappuccino 2
+window cappuccino 4
+drive-up espresso 6
+window espresso 2
+drive-up iced 2
+window iced 2
+drive-up kona 2
+window kona 9
+;
+
+proc print; run; /* look at data values in output */</code></pre>
+<pre><code>                   Obs      loc       type        count
+
+                    1     drive-up    cappucci      2  
+                    2     window      cappucci      4  
+                    3     drive-up    espresso      6  
+                    4     window      espresso      2  
+                    5     drive-up    iced          2  
+                    6     window      iced          2  
+                    7     drive-up    kona          2  
+                    8     window      kona          9  </code></pre>
+<pre class="sas"><code>proc freq data=coffee2;       /* weighted data */
+    tables type*loc / nopercent norow chisq;
+    weight count;  /* many procs have a &quot;freq&quot; statement */
+    run;</code></pre>
+<pre><code>                              The SAS System                              1
+                                             15:01 Wednesday, March 8, 2017
+
+                   Obs      loc       type        count
+
+                    1     drive-up    cappucci      2  
+                    2     window      cappucci      4  
+                    3     drive-up    espresso      6  
+                    4     window      espresso      2  
+                    5     drive-up    iced          2  
+                    6     window      iced          2  
+                    7     drive-up    kona          2  
+                    8     window      kona          9  
+ 
+                                                                           
+ 
+                            The FREQ Procedure
+
+                           Table of type by loc
+
+                    type      loc
+
+                    Frequency|
+                    Col Pct  |drive-up|window  |  Total
+                    ---------+--------+--------+
+                    cappucci |      2 |      4 |      6
+                             |  16.67 |  23.53 |
+                    ---------+--------+--------+
+                    espresso |      6 |      2 |      8
+                             |  50.00 |  11.76 |
+                    ---------+--------+--------+
+                    iced     |      2 |      2 |      4
+                             |  16.67 |  11.76 |
+                    ---------+--------+--------+
+                    kona     |      2 |      9 |     11
+                             |  16.67 |  52.94 |
+                    ---------+--------+--------+
+                    Total          12       17       29
+
+                    Statistics for Table of type by loc
+
+          Statistic                     DF       Value      Prob
+          ------------------------------------------------------
+          Chi-Square                     3      6.4509    0.0916
+          Likelihood Ratio Chi-Square    3      6.7244    0.0812
+          Mantel-Haenszel Chi-Square     1      1.8100    0.1785
+          Phi Coefficient                       0.4716          
+          Contingency Coefficient               0.4266          
+          Cramer&#39;s V                            0.4716          
+
+           WARNING: 88% of the cells have expected counts less 
+                    than 5. Chi-Square may not be a valid test.
+
+                             Sample Size = 29</code></pre>
+<p>You also use <code>PROC FREQ</code> to create summary data sets, with the <code>OUTPUT=</code> option.</p>
+<pre class="sas"><code>proc freq data=coffee2 noprint;   /* save a crosstab as summary data */
+    tables loc * type / out=coffeetable;
+    /* name a data set for the output*/
+    weight count;
+    run;
+
+proc print data=coffeetable; run;</code></pre>
+<pre><code>                              The SAS System                              1
+                                             15:01 Wednesday, March 8, 2017
+
+                   Obs      loc       type        count
+
+                    1     drive-up    cappucci      2  
+                    2     window      cappucci      4  
+                    3     drive-up    espresso      6  
+                    4     window      espresso      2  
+                    5     drive-up    iced          2  
+                    6     window      iced          2  
+                    7     drive-up    kona          2  
+                    8     window      kona          9  
+ 
+                                                                           
+ 
+              Obs      loc       type        COUNT    PERCENT
+
+               1     drive-up    cappucci      2       6.8966
+               2     drive-up    espresso      6      20.6897
+               3     drive-up    iced          2       6.8966
+               4     drive-up    kona          2       6.8966
+               5     window      cappucci      4      13.7931
+               6     window      espresso      2       6.8966
+               7     window      iced          2       6.8966
+               8     window      kona          9      31.0345</code></pre>
+</div>
+</div>
+
+<!--#include virtual="/sscc/pubs/Rmd/bottomInclKB.html" -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

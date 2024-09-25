@@ -1,0 +1,31 @@
+li.nav-item {
+	text-align: center;
+}	
+.navbar-brand>img {
+	max-height: 80px;
+    width: auto;	
+}
+
+div.cell-output {
+	background-color: #f7f7f7;
+}
+
+div.proc_title_group {
+	background-color: #f7f7f7;
+}
+
+code:not(.sourceCode) {
+	background-color: #f7f7f7;
+}
+
+pre.sas {
+	background-color: #f7f7f7;
+}
+
+pre.sas.cell-code {
+	background-color: #f7f7f7;
+}
+
+pre.sashtml.cell-code {
+	background-color: #f7f7f7;
+}

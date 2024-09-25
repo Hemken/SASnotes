@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 SAS HTML output | SASmarkdown</title>
+  <meta name="description" content="4 SAS HTML output | SASmarkdown" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 SAS HTML output | SASmarkdown" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 SAS HTML output | SASmarkdown" />
+  
+  
+  
+
+<meta name="author" content="Doug Hemken" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ch3.html"/>
+<link rel="next" href="ch5.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> The SASmarkdown Package</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#set-up-the-sas-engines"><i class="fa fa-check"></i><b>1.2</b> Set up the SAS Engines</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-an-engine"><i class="fa fa-check"></i><b>1.3</b> Use an Engine</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#sas-engine"><i class="fa fa-check"></i><b>1.3.1</b> "sas" engine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch2.html"><a href="ch2.html"><i class="fa fa-check"></i><b>2</b> Using SASmarkdown</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ch2.html"><a href="ch2.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="ch2.html"><a href="ch2.html#background"><i class="fa fa-check"></i><b>2.2</b> Background</a></li>
+<li class="chapter" data-level="2.3" data-path="ch2.html"><a href="ch2.html#including-sas-code-in-your-document"><i class="fa fa-check"></i><b>2.3</b> Including SAS Code in your Document</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="ch2.html"><a href="ch2.html#limitations"><i class="fa fa-check"></i><b>2.3.1</b> Limitations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="ch2.html"><a href="ch2.html#html-or-pdf-document"><i class="fa fa-check"></i><b>2.3.2</b> HTML or PDF Document?</a></li>
+<li class="chapter" data-level="2.3.3" data-path="ch2.html"><a href="ch2.html#document-setup"><i class="fa fa-check"></i><b>2.3.3</b> Document Setup</a></li>
+<li class="chapter" data-level="2.3.4" data-path="ch2.html"><a href="ch2.html#code-chunk-setup"><i class="fa fa-check"></i><b>2.3.4</b> Code Chunk Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="ch2.html"><a href="ch2.html#running-sas"><i class="fa fa-check"></i><b>2.4</b> Running SAS</a></li>
+<li class="chapter" data-level="2.5" data-path="ch2.html"><a href="ch2.html#html-output-and-graphics"><i class="fa fa-check"></i><b>2.5</b> HTML Output and Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch3.html"><a href="ch3.html"><i class="fa fa-check"></i><b>3</b> Linking Code Blocks</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ch3.html"><a href="ch3.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="ch3.html"><a href="ch3.html#load-sasmarkdown"><i class="fa fa-check"></i><b>3.2</b> Load SASmarkdown</a></li>
+<li class="chapter" data-level="3.3" data-path="ch3.html"><a href="ch3.html#example-linking-code-blocks"><i class="fa fa-check"></i><b>3.3</b> Example: Linking Code Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch4.html"><a href="ch4.html"><i class="fa fa-check"></i><b>4</b> SAS HTML output</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ch4.html"><a href="ch4.html#set-up"><i class="fa fa-check"></i><b>4.1</b> Set up</a></li>
+<li class="chapter" data-level="4.2" data-path="ch4.html"><a href="ch4.html#using-the-sashtml-engine"><i class="fa fa-check"></i><b>4.2</b> Using the 'sashtml' engine</a></li>
+<li class="chapter" data-level="4.3" data-path="ch4.html"><a href="ch4.html#using-the-sashtml5-engine"><i class="fa fa-check"></i><b>4.3</b> Using the 'sashtml5' engine</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch5.html"><a href="ch5.html"><i class="fa fa-check"></i><b>5</b> SAS Logs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ch5.html"><a href="ch5.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a></li>
+<li class="chapter" data-level="5.2" data-path="ch5.html"><a href="ch5.html#using-the-saslog-engine"><i class="fa fa-check"></i><b>5.2</b> Using the <code>saslog</code> engine</a></li>
+<li class="chapter" data-level="5.3" data-path="ch5.html"><a href="ch5.html#using-the-sashtmllog-and-sashtml5log-engines"><i class="fa fa-check"></i><b>5.3</b> Using the <code>sashtmllog</code> and <code>sashtml5log</code> engines</a></li>
+<li class="chapter" data-level="5.4" data-path="ch5.html"><a href="ch5.html#sas-error-messages"><i class="fa fa-check"></i><b>5.4</b> SAS ERROR messages</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch5.html"><a href="ch5.html#semantic-and-execution-errors"><i class="fa fa-check"></i><b>5.4.1</b> Semantic and Execution Errors</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ch5.html"><a href="ch5.html#mathematical-errors"><i class="fa fa-check"></i><b>5.4.2</b> Mathematical Errors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch6.html"><a href="ch6.html"><i class="fa fa-check"></i><b>6</b> Cleaning Up SAS Log Output</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ch6.html"><a href="ch6.html#intro"><i class="fa fa-check"></i><b>6.1</b> Intro</a></li>
+<li class="chapter" data-level="6.2" data-path="ch6.html"><a href="ch6.html#setup"><i class="fa fa-check"></i><b>6.2</b> Setup</a></li>
+<li class="chapter" data-level="6.3" data-path="ch6.html"><a href="ch6.html#default-log"><i class="fa fa-check"></i><b>6.3</b> Default Log</a></li>
+<li class="chapter" data-level="6.4" data-path="ch6.html"><a href="ch6.html#global-cleanup"><i class="fa fa-check"></i><b>6.4</b> Global Cleanup</a></li>
+<li class="chapter" data-level="6.5" data-path="ch6.html"><a href="ch6.html#chunk-cleanup"><i class="fa fa-check"></i><b>6.5</b> Chunk Cleanup</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="ch6.html"><a href="ch6.html#sasproctime"><i class="fa fa-check"></i><b>6.5.1</b> SASproctime</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch6.html"><a href="ch6.html#sasecho"><i class="fa fa-check"></i><b>6.5.2</b> SASecho</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ch6.html"><a href="ch6.html#sasnotes"><i class="fa fa-check"></i><b>6.5.3</b> SASnotes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch7.html"><a href="ch7.html"><i class="fa fa-check"></i><b>7</b> SAS LaTeX</a></li>
+<li class="chapter" data-level="8" data-path="ch8.html"><a href="ch8.html"><i class="fa fa-check"></i><b>8</b> SAS National Language Support</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ch8.html"><a href="ch8.html#intro-1"><i class="fa fa-check"></i><b>8.1</b> Intro</a></li>
+<li class="chapter" data-level="8.2" data-path="ch8.html"><a href="ch8.html#setup-1"><i class="fa fa-check"></i><b>8.2</b> Setup</a></li>
+<li class="chapter" data-level="8.3" data-path="ch8.html"><a href="ch8.html#default-language"><i class="fa fa-check"></i><b>8.3</b> Default Language</a></li>
+<li class="chapter" data-level="8.4" data-path="ch8.html"><a href="ch8.html#french"><i class="fa fa-check"></i><b>8.4</b> French</a></li>
+<li class="chapter" data-level="8.5" data-path="ch8.html"><a href="ch8.html#chinese"><i class="fa fa-check"></i><b>8.5</b> Chinese</a></li>
+<li class="chapter" data-level="8.6" data-path="ch8.html"><a href="ch8.html#documentation"><i class="fa fa-check"></i><b>8.6</b> Documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch9.html"><a href="ch9.html"><i class="fa fa-check"></i><b>9</b> Saving Intermediate SAS files</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ch9.html"><a href="ch9.html#saving-sas-files"><i class="fa fa-check"></i><b>9.1</b> Saving SAS files</a></li>
+<li class="chapter" data-level="9.2" data-path="ch9.html"><a href="ch9.html#saving-markdown-and-latex-files"><i class="fa fa-check"></i><b>9.2</b> Saving Markdown and LaTeX files</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch10.html"><a href="ch10.html"><i class="fa fa-check"></i><b>10</b> SpinSAS</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ch10.html"><a href="ch10.html#special-markup"><i class="fa fa-check"></i><b>10.1</b> Special Markup</a></li>
+<li class="chapter" data-level="10.2" data-path="ch10.html"><a href="ch10.html#semi-colons"><i class="fa fa-check"></i><b>10.2</b> Semi-colons</a></li>
+<li class="chapter" data-level="10.3" data-path="ch10.html"><a href="ch10.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="10.4" data-path="ch10.html"><a href="ch10.html#processing"><i class="fa fa-check"></i><b>10.4</b> Processing</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SASmarkdown</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ch4" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> SAS HTML output<a href="ch4.html#ch4" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>SAS can produce output in several different formats. The traditional
+SAS output, "listing" output, is written as plain text. This means
+that "tables" depend on mono-spaced fonts and the width of the
+end user's screen to display properly. It also makes
+it more work to include graphics in your document.</p>
+<p>However, the SAS Output
+Delivery System (ODS) makes it easy to produce HTML output. Using
+HTML output from SAS
+makes it easy to have tables that retain their structure despite
+variations in end user fonts and screen sizes. And HTML output
+makes it easy to include graphics in documents.</p>
+<div id="set-up" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Set up<a href="ch4.html#set-up" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This is set up by using a different "language engine" in <code>knitr</code>.
+The initial document setup using the SASmarkdown package is the same.</p>
+<pre class="r"><code>library(SASmarkdown)</code></pre>
+</div>
+<div id="using-the-sashtml-engine" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Using the 'sashtml' engine<a href="ch4.html#using-the-sashtml-engine" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Invoke the <code>sashtml</code> engine for code chunks. What you write is:</p>
+<pre><code>```{sashtml} 
+proc corr data=sashelp.class plots=matrix;
+run;
+```</code></pre>
+<p>This produces:</p>
+<pre class="sashtml5"><code>proc corr data=sashelp.class plots=matrix;
+run;</code></pre>
+<div style="padding-bottom: 8px; padding-top: 1px">
+<div id="IDX" style="padding-bottom: 8px; padding-top: 1px">
+<!--BEGINTABLE-->
+<table class="table" style="border-spacing: 0" aria-label="Variables Information">
+<caption aria-label="Variables Information">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+</colgroup>
+<tbody>
+<tr>
+<th class="rowheader" scope="row">
+3 Variables:
+</th>
+<td class="data">
+Age Height Weight
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+<div id="IDX1" style="padding-bottom: 8px; padding-top: 1px">
+<!--BEGINTABLE-->
+<table class="table" style="border-spacing: 0" aria-label="Simple Statistics">
+<caption aria-label="Simple Statistics">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+<col/>
+<col/>
+<col/>
+<col/>
+<col/>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" colspan="7" scope="colgroup">
+Simple Statistics
+</th>
+</tr>
+<tr>
+<th class="b header" scope="col">
+Variable
+</th>
+<th class="r b header" scope="col">
+N
+</th>
+<th class="r b header" scope="col">
+Mean
+</th>
+<th class="r b header" scope="col">
+Std Dev
+</th>
+<th class="r b header" scope="col">
+Sum
+</th>
+<th class="r b header" scope="col">
+Minimum
+</th>
+<th class="r b header" scope="col">
+Maximum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="rowheader" scope="row">
+Age
+</th>
+<td class="r data">
+19
+</td>
+<td class="r data">
+13.31579
+</td>
+<td class="r data">
+1.49267
+</td>
+<td class="r data">
+253.00000
+</td>
+<td class="r data">
+11.00000
+</td>
+<td class="r data">
+16.00000
+</td>
+</tr>
+<tr>
+<th class="rowheader" scope="row">
+Height
+</th>
+<td class="r data">
+19
+</td>
+<td class="r data">
+62.33684
+</td>
+<td class="r data">
+5.12708
+</td>
+<td class="r data">
+1184
+</td>
+<td class="r data">
+51.30000
+</td>
+<td class="r data">
+72.00000
+</td>
+</tr>
+<tr>
+<th class="rowheader" scope="row">
+Weight
+</th>
+<td class="r data">
+19
+</td>
+<td class="r data">
+100.02632
+</td>
+<td class="r data">
+22.77393
+</td>
+<td class="r data">
+1901
+</td>
+<td class="r data">
+50.50000
+</td>
+<td class="r data">
+150.00000
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+<div id="IDX2" style="padding-bottom: 8px; padding-top: 1px">
+<!--BEGINTABLE-->
+<table class="table" style="border-spacing: 0" aria-label="Pearson Correlations">
+<caption aria-label="Pearson Correlations">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+<col/>
+<col/>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" colspan="4" scope="colgroup">
+Pearson Correlation Coefficients, N = 19<br/>Prob &gt; |r| under H0: Rho=0
+</th>
+</tr>
+<tr>
+<th class="c headerempty" scope="col">
+ 
+</th>
+<th class="r b header" scope="col">
+Age
+</th>
+<th class="r b header" scope="col">
+Height
+</th>
+<th class="r b header" scope="col">
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="rowheader" scope="row">
+Age
+</th>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+1.00000
+</div>
+<div class="r">
+ 
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.81143
+</div>
+<div class="r">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.74089
+</div>
+<div class="r">
+0.0003
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<th class="rowheader" scope="row">
+Height
+</th>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.81143
+</div>
+<div class="r">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+1.00000
+</div>
+<div class="r">
+ 
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.87779
+</div>
+<div class="r">
+&lt;.0001
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<th class="rowheader" scope="row">
+Weight
+</th>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.74089
+</div>
+<div class="r">
+0.0003
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+0.87779
+</div>
+<div class="r">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data">
+<div class="stacked-cell">
+<div class="r">
+1.00000
+</div>
+<div class="r">
+ 
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+<div id="IDX3" style="padding-bottom: 8px; padding-top: 1px">
+<div class="c">
+<script type="text/ecmascript">
+var SVG_IDX3_SVGRoot = null;
+var SVG_IDX3_TrueCoords = null;
+var SVG_IDX3_singleTip = null;
+var SVG_IDX3_singleBox = null;
+var SVG_IDX3_singleText = null;
+var SVG_IDX3_tiptspan = null;
+var SVG_IDX3_attrScale = 1;
+var SVG_IDX3_rightEdge = null;
+var SVG_IDX3_SVGHeight = null;
+var SVG_IDX3_SVGWidth = null;
+function SVG_IDX3_Init(anchor) {
+   SVG_IDX3_SVGRoot = document.getElementById(anchor);
+   SVG_IDX3_TrueCoords = SVG_IDX3_SVGRoot.createSVGPoint();
+   SVG_IDX3_singleTip = document.getElementById(anchor + '_singleTip1');
+   SVG_IDX3_singleBox = document.getElementById(anchor + '_singleBox1');
+   SVG_IDX3_singleText = document.getElementById(anchor + '_singleText1');
+   SVG_IDX3_tiptspan = document.getElementById(anchor + '_tiptspan1');
+   SVG_IDX3_tiptspan.firstChild.nodeValue = null;
+   SVG_IDX3_SVGRoot.addEventListener('mousemove', SVG_IDX3_ShowTooltip, false);
+   SVG_IDX3_SVGRoot.addEventListener('mouseout', SVG_IDX3_HideTooltip, false);
+   SVG_IDX3_SVGHeight = SVG_IDX3_SVGRoot.getAttributeNS(null, "height");
+   SVG_IDX3_SVGWidth = SVG_IDX3_SVGRoot.getAttributeNS(null, "width");
+   if (!isNaN(parseFloat(SVG_IDX3_SVGHeight)) && !isNaN(parseFloat(SVG_IDX3_SVGWidth)))
+      SVG_IDX3_GetHW();
+}
+function SVG_IDX3_GetHW()
+{
+    if (SVG_IDX3_SVGWidth != null && SVG_IDX3_SVGWidth != "") {
+       if (SVG_IDX3_SVGWidth.match(/%/)) {
+          var factor = parseFloat(SVG_IDX3_SVGWidth.replace(/%/,""))/100;
+          SVG_IDX3_SVGWidth = window.innerWidth * factor;
+       }
+       else if (SVG_IDX3_SVGWidth.match(/in/))
+          SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth.replace(/in/,""))*96;
+       else if (SVG_IDX3_SVGWidth.match(/cm/))
+          SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth.replace(/in/,""))*96/2.54;
+       else
+           SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth);
+    }
+    if (SVG_IDX3_SVGHeight != null && SVG_IDX3_SVGHeight != "") {
+       if (SVG_IDX3_SVGHeight.match(/%/)) {
+          var factor = parseFloat(SVG_IDX3_SVGHeight.replace(/%/,""))/100;
+          SVG_IDX3_SVGHeight = window.innerHeight * factor;
+       }
+       else if (SVG_IDX3_SVGHeight.match(/in/))
+          SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight.replace(/in/,""))*96;
+       else if (SVG_IDX3_SVGHeight.match(/cm/))
+          SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight.replace(/in/,""))*96/2.54;
+       else
+           SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight);
+    }
+}
+function SVG_IDX3_GetScaleFactors(evt)
+{
+   var zoomFactor = 1;
+   windowWidth  = (top.innerWidth==undefined)  ? window.innerWidth  : top.innerWidth;
+   windowHeight = (top.innerHeight==undefined) ? window.innerHeight : top.innerHeight;
+   SVG_IDX3_rightEdge = (SVG_IDX3_SVGWidth) ? SVG_IDX3_SVGWidth - window.pageXOffset : windowWidth;
+   if (parseFloat(SVG_IDX3_SVGWidth) > 0 || parseFloat(SVG_IDX3_SVGHeight) > 0)
+      var tipScale = 1.40625;
+   else {
+      var tipXScale  = (screen.width/windowWidth) / SVG_IDX3_SVGRoot.currentScale;
+      var tipYScale  = (screen.height/windowHeight) / SVG_IDX3_SVGRoot.currentScale;
+      var tipScale   = (tipXScale + tipYScale)/2.0;
+   }
+   SVG_IDX3_attrScale = tipScale;
+   if (navigator.appName == 'Adobe SVG Viewer') {
+      if (screen.deviceXDPI != null && screen.logicalXDPI != null)
+         zoomFactor = screen.deviceXDPI/screen.logicalXDPI;
+      SVG_IDX3_attrScale = zoomFactor*tipScale;
+   }
+   else if (navigator.userAgent != null && navigator.userAgent != '') {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf("msie") != -1 || ua.indexOf("trident") != -1) {
+         zoomFactor = screen.deviceXDPI/screen.logicalXDPI;
+         SVG_IDX3_attrScale = tipScale/zoomFactor;
+         SVG_IDX3_rightEdge /= zoomFactor;
+      }
+      else if (ua.indexOf("ipad") != -1) {
+         zoomFactor = SVG_IDX3_SVGRoot.clientWidth / window.innerWidth;
+         SVG_IDX3_attrScale = 1.5 / zoomFactor;
+         SVG_IDX3_rightEdge /= zoomFactor;
+      }
+      else if (ua.indexOf("opera") != -1)
+         SVG_IDX3_attrScale = tipScale;
+      else if (ua.indexOf("firefox") != -1)
+         SVG_IDX3_attrScale = tipScale;
+      else {
+         if (SVG_IDX3_SVGWidth > 0 || SVG_IDX3_SVGHeight > 0)
+            zoomFactor = 1;
+         else
+            zoomFactor = parseInt(document.defaultView.getComputedStyle(SVG_IDX3_SVGRoot, null).width,10)/
+                                  SVG_IDX3_SVGRoot.clientWidth;
+         SVG_IDX3_attrScale = tipScale/zoomFactor;
+         SVG_IDX3_rightEdge *= zoomFactor;
+      }
+   }
+}
+function SVG_IDX3_GetTrueCoords(evt)
+{
+   var trans = SVG_IDX3_SVGRoot.currentTranslate;
+   var scale = SVG_IDX3_SVGRoot.currentScale;
+   SVG_IDX3_GetScaleFactors();
+   var p1    = SVG_IDX3_SVGRoot.createSVGPoint();
+   var p2;
+      var m = SVG_IDX3_SVGRoot.getScreenCTM();
+      if (navigator.userAgent.toLowerCase().indexOf("ipad") != -1) {
+         p1.x = evt.clientX + window.pageXOffset;
+         p1.y = evt.clientY + window.pageYOffset;
+      }
+      else {
+      p1.x = evt.clientX;
+      p1.y = evt.clientY;
+      }
+      p2 = p1.matrixTransform(m.inverse());
+   SVG_IDX3_TrueCoords.x = Math.round(p2.x*100) / 100;
+   SVG_IDX3_TrueCoords.y = Math.round(p2.y*100) / 100;
+}
+function SVG_IDX3_HideTooltip( evt )
+{
+   SVG_IDX3_tiptspan.firstChild.nodeValue = null;
+   SVG_IDX3_singleTip.setAttributeNS(null, 'visibility', 'hidden');
+}
+function SVG_IDX3_ShowTooltip( evt )
+{
+   SVG_IDX3_GetTrueCoords( evt );
+   var targetElement = evt.target;
+   var tspanCount = targetElement.getElementsByTagName('desc').length;
+   if (tspanCount == 1) {
+      var targetTspan = targetElement.getElementsByTagName('desc').item(0);
+      if ( targetTspan) {
+         if (targetTspan.firstChild != null)
+            SVG_IDX3_tiptspan.firstChild.nodeValue = targetTspan.firstChild.nodeValue; }
+   }
+   if ( '' != SVG_IDX3_tiptspan.firstChild.nodeValue )
+   {
+      var outline = SVG_IDX3_singleText.getBBox();
+      SVG_IDX3_singleBox.setAttributeNS(null, 'transform', 'scale(' + SVG_IDX3_attrScale + ',' + SVG_IDX3_attrScale + ')' );
+      SVG_IDX3_singleText.setAttributeNS(null, 'transform', 'scale(' + SVG_IDX3_attrScale + ',' + SVG_IDX3_attrScale + ')' );
+      SVG_IDX3_singleTip.setAttributeNS(null, 'visibility', 'visible');
+      if (evt.clientX + ((outline.width + 10)/1.06666) * SVG_IDX3_attrScale > SVG_IDX3_rightEdge) {
+         var xPos = SVG_IDX3_TrueCoords.x - parseInt((outline.width + 10)*SVG_IDX3_attrScale);
+         if (xPos < 0)
+            xPos = 0;
+      }
+      else
+         var xPos = SVG_IDX3_TrueCoords.x;
+      if (SVG_IDX3_TrueCoords.y < 21) {
+         var yPos = SVG_IDX3_TrueCoords.y + ((outline.height + 21)/1.06666)*SVG_IDX3_attrScale;
+         if (yPos > windowHeight)
+            yPos = SVG_IDX3_TrueCoords.y - parseInt((outline.height + 10)*SVG_IDX3_attrScale);
+      }
+      else
+         var yPos = SVG_IDX3_TrueCoords.y - parseInt((outline.height + 10)*SVG_IDX3_attrScale);
+      if (Number(outline.width == 0))
+         SVG_IDX3_singleBox.setAttributeNS(null, 'width', outline.width);
+      else
+         SVG_IDX3_singleBox.setAttributeNS(null, 'width', outline.width + 10);
+      SVG_IDX3_singleBox.setAttributeNS(null, 'height', outline.height + 10);
+      SVG_IDX3_singleTip.setAttributeNS(null, 'transform', 'translate(' + xPos + ',' + yPos + ')');
+   }
+}
+</script>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" baseProfile="full" version="1.1" id="SVG_IDX3" onload="SVG_IDX3_Init(&quot;SVG_IDX3&quot;)" viewBox="-1 -1 641 641" height="640" width="640">
+<desc id="desc_SVG_IDX3">Scatter Plot Matrix</desc>
+<defs>
+<clipPath id="SVG_IDX3_clipPage1">
+<rect x="-1" y="-1" width="641" height="641"></rect>
+</clipPath>
+</defs>
+<g id="SVG_IDX3_Page1" clip-path="url(#SVG_IDX3_clipPage1)">
+<g transform=" scale(1, 1)">
+<rect x="0" y="0" width="639" height="639" style="fill: #FFFFFF; "></rect>
+<rect x="0" y="0" width="639" height="639" style="fill: #FFFFFF; "></rect>
+<rect x="0" y="0" width="639" height="639" style="stroke: #000000; stroke-width: 1; fill: none; "></rect>
+<g transform="matrix(1, 0, 0, 1, 11, 11)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath0">
+<rect x="-1" y="-1" width="619" height="24" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath1">
+<rect x="-1" y="-1" width="619" height="24" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath1)">
+<g transform="matrix(1, 0, 0, 1, 246, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath2">
+<rect x="-1" y="-1" width="128" height="19" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath2)">
+<text textLength="121" lengthAdjust="spacingAndGlyphs" x="3" y="13.5791" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 15px; white-space: pre; ">Scatter Plot Matrix</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 11, 34)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath3">
+<rect x="-1" y="-1" width="619" height="596" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath3)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath4">
+<rect x="-1" y="-1" width="619" height="596" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath4)">
+<g transform="matrix(1, 0, 0, 1, 399, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath5">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath5)">
+<path d="M25.99665 26L25.99665 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M59.78581 26L59.78581 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M93.57497 26L93.57497 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M127.36413 26L127.36413 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M161.15329 26L161.15329 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 399, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath6">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath6)">
+<path d="M25.99665 0L25.99665 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 18.99665, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M59.78581 0L59.78581 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 52.78581, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">80</text>
+</g>
+<path d="M93.57497 0L93.57497 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 83.07497, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">100</text>
+</g>
+<path d="M127.36413 0L127.36413 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 116.86413, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">120</text>
+</g>
+<path d="M161.15329 0L161.15329 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 150.65329, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">140</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 211, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath7">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath7)">
+<path d="M9.9468 26L9.9468 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.9468, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">50</text>
+</g>
+<path d="M48.15159 26L48.15159 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 41.15159, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">55</text>
+</g>
+<path d="M86.35638 26L86.35638 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 79.35638, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M124.56117 26L124.56117 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 117.56117, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">65</text>
+</g>
+<path d="M162.76595 26L162.76595 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 155.76595, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">70</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 211, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath8">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath8)">
+<path d="M9.9468 0L9.9468 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M48.15159 0L48.15159 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M86.35638 0L86.35638 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M124.56117 0L124.56117 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M162.76595 0L162.76595 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 23, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath9">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath9)">
+<path d="M9.9468 26L9.9468 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M43.56702 26L43.56702 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M77.18723 26L77.18723 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M110.80744 26L110.80744 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M144.42766 26L144.42766 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M178.04787 26L178.04787 20.39999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 23, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath10">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath10)">
+<path d="M9.9468 0L9.9468 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.9468, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">11</text>
+</g>
+<path d="M43.56702 0L43.56702 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 36.56702, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">12</text>
+</g>
+<path d="M77.18723 0L77.18723 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 70.18723, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">13</text>
+</g>
+<path d="M110.80744 0L110.80744 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 103.80744, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">14</text>
+</g>
+<path d="M144.42766 0L144.42766 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 137.42765, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">15</text>
+</g>
+<path d="M178.04787 0L178.04787 5.59999" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 171.04787, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">16</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath11">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath11)">
+<path d="M0 154.57364L5.46064 154.57364" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 158.57364)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M0 121.99184L5.46064 121.99184" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 125.99184)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">80</text>
+</g>
+<path d="M0 89.41005L5.46064 89.41005" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 93.41005)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">100</text>
+</g>
+<path d="M0 56.82825L5.46064 56.82825" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 60.82825)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">120</text>
+</g>
+<path d="M0 24.24645L5.46064 24.24645" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 28.24645)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">140</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath12">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath12)">
+<path d="M25 154.57364L19.5853 154.57364" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 121.99184L19.5853 121.99184" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 89.41005L19.5853 89.41005" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 56.82825L19.5853 56.82825" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 24.24645L19.5853 24.24645" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath13">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath13)">
+<path d="M0 170.05L5.46064 170.05" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 133.21035L5.46064 133.21035" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 96.3707L5.46064 96.3707" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 59.53106L5.46064 59.53106" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 22.69141L5.46064 22.69141" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath14">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath14)">
+<path d="M25 170.05L19.5853 170.05" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 174.04999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">50</text>
+</g>
+<path d="M25 133.21035L19.5853 133.21035" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 137.21035)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">55</text>
+</g>
+<path d="M25 96.3707L19.5853 96.3707" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 100.3707)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M25 59.53106L19.5853 59.53106" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 63.53106)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">65</text>
+</g>
+<path d="M25 22.69141L19.5853 22.69141" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 26.69141)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">70</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath15">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath15)">
+<path d="M0 170.05L5.46064 170.05" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 174.04999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">11</text>
+</g>
+<path d="M0 137.63111L5.46064 137.63111" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 141.63111)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">12</text>
+</g>
+<path d="M0 105.21222L5.46064 105.21222" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 109.21222)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">13</text>
+</g>
+<path d="M0 72.79333L5.46064 72.79333" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 76.79333)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">14</text>
+</g>
+<path d="M0 40.37444L5.46064 40.37444" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 44.37444)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">15</text>
+</g>
+<path d="M0 7.95555L5.46064 7.95555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 11.95555)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">16</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath16">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath16)">
+<path d="M25 170.05L19.5853 170.05" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 137.63111L19.5853 137.63111" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 105.21222L19.5853 105.21222" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 72.79333L19.5853 72.79333" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 40.37444L19.5853 40.37444" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M25 7.95555L19.5853 7.95555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath17">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath17)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="40" lengthAdjust="spacingAndGlyphs" x="72.5" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Weight</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #000000; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath18">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath18)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath19">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath19)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath20">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath20)">
+<circle cx="153.12683" cy="69.04642" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="57.62035" cy="115.47548" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="124.85691" cy="92.66822" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="105.75562" cy="85.33732" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.10398" cy="85.33732" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="63.73277" cy="117.10457" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="82.83406" cy="114.66094" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="69.04642" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="115.47548" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="76.72165" cy="90.22459" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="17.88966" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="117.21639" cy="105.70094" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="56.09225" cy="126.87911" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="69.86097" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="121.03665" cy="43.79553" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="137.84579" cy="35.65008" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.26087" cy="113.84639" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="69.86097" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath21">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath21)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath22">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath22)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath23">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath23)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath24">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath24)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath25">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath25)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath26">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath26)">
+<circle cx="108.81182" cy="69.04642" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="115.47548" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="92.66822" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="85.33732" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="85.33732" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="117.10457" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="114.66094" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.04642" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="115.47548" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="90.22459" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="105.70094" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="126.87911" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.86097" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="43.79553" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="35.65008" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="113.84639" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.86097" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath27">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath27)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath28">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath28)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath29">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath29)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath30">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath30)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath31">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath31)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath32">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath32)">
+<circle cx="112.69735" cy="30.05934" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="122.15845" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="88.20162" cy="57.32068" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="75.7405" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="70.58295" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="62.86121" cy="116.26411" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.39525" cy="97.84429" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="112.69735" cy="77.95088" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="77.95088" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="90.73566" cy="103.73863" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="160.47169" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="74.68673" cy="64.68861" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="52.72505" cy="123.63204" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="48.47916" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="138.88245" cy="61.00464" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="147.32925" cy="44.7952" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="66.23993" cy="114.79053" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="48.47916" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath33">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath33)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath34">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath34)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath35">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath35)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath36">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath36)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="37" lengthAdjust="spacingAndGlyphs" x="74" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Height</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #000000; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath37">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath37)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath38">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath38)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath39">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath39)">
+<circle cx="108.81182" cy="30.05934" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="122.15845" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="57.32068" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="75.7405" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="70.58295" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="116.26411" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="97.84429" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="77.95088" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="77.95088" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="103.73863" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="160.47169" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="64.68861" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="123.63204" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="48.47916" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="61.00464" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="44.7952" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="114.79053" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="48.47916" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath40">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath40)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath41">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath41)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath42">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath42)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath43">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath43)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath44">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath44)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath45">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath45)">
+<circle cx="112.69735" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="88.20162" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="62.86121" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.39525" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="112.69735" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="90.73566" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="74.68673" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="52.72505" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="138.88245" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="147.32925" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="66.23993" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath46">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath46)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath47">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath47)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath48">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath48)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath49">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath49)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath50">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath50)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath51">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath51)">
+<circle cx="153.12683" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="57.62035" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="124.85691" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="105.75562" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.10398" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="63.73277" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="82.83406" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="105.21222" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="76.72165" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="17.88966" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="117.21639" cy="72.79333" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="56.09225" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="121.03665" cy="137.63111" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="137.84579" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.26087" cy="170.05" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="40.37444" r="2" style="stroke: #000000; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath52">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath52)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #000000; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath53">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath53)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath54">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath54)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath55">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath55)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="23" lengthAdjust="spacingAndGlyphs" x="81" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Age</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #000000; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<rect x="0" y="0" width="640" height="640" fill="#FFFFFF" fill-opacity="0" aria-hidden="true">
+<desc>Scatter Plot Matrix</desc>
+</rect>
+</g>
+<g id="SVG_IDX3_singleTip1" visibility="hidden" pointer-events="none">
+<rect id="SVG_IDX3_singleBox1" x="0" y="0" width="88" height="20" rx="2" ry="2" fill="white" stroke="black" stroke-width="1.06666" opacity="0.8"></rect>
+<text id="SVG_IDX3_singleText1" x="5" y="10" font-family="'Albany AMT', sans-serif" font-size="8"><tspan id="SVG_IDX3_tiptspan1" x="5" class="tiptext"><![CDATA[ ]]></tspan></text>
+</g>
+<defs>
+<style type="text/css"><![CDATA[
+    tspan.tiptext { white-space: pre }
+]]></style>
+</defs>
+<defs>
+<style type="text/css"><![CDATA[
+  @font-face {
+      font-family: "SVG_IDX3_Arial Font3";
+      src: url("#SVG_IDX3_Font3") format("svg")
+      }
+]]></style>
+<font id="SVG_IDX3_Font3" horiz-adv-x="6144" >
+<font-face      font-family="SVG_IDX3_Arial Font3"
+    units-per-em="2048" ascent="1854" descent="-434" >
+<font-face-src>
+<font-face-name name="SVG_IDX3_Arial Font3"></font-face-name>
+</font-face-src>
+</font-face>
+<missing-glyph><path d="M0 0v4992h3456v-4992h-3456" fill="none"></path>
+</missing-glyph>
+<glyph unicode="&#40;" horiz-adv-x="680" 
+d="M469 -426Q326 -238 227 12 T128 534Q128 772 202 990 Q288 1242 469 1493 L597 
+1493Q476 1285 437 1196 Q376 1058 341 908 Q298 722 298 533 Q298 52 597 -426 Z" ></glyph>
+<glyph unicode="&#47;" horiz-adv-x="552" 
+d="M0 0L426 1493L602 1493L175 0L0 0Z" ></glyph>
+<glyph unicode="&#104;" horiz-adv-x="1147" 
+d="M128 0L128 1493L298 1493L298 991Q432 1152 635 1152 Q760 1152 852 1102 T984 
+966T1024 714L1024 0L853 0L853 709Q853 852 789 916 T607 981Q519 981 
+441 937 T331 819T298 612L298 0L128 0Z" ></glyph>
+<glyph unicode="&#65;" horiz-adv-x="1360" 
+d="M-8 0L590 1493L732 1493L1331 0L1152 0L978 469L344 469L170 0L-8 
+0ZM408 640L914 640L776 1012Q708 1198 661 1322 Q608 1180 556 1041 Z" ></glyph>
+<glyph unicode="&#103;" horiz-adv-x="1147" 
+d="M128 -85L298 -128Q310 -190 361 -218 Q429 -256 548 -256 Q676 -256 745 -210 T
+840 -82Q854 -32 853 128 Q732 0 553 0 Q330 0 207 167 T85 569Q85 730 
+140 867 T299 1077T544 1152Q731 1152 853 981 L853 1109L1024 1109L1024 164Q1024 
+-90 973 -196 T814 -365T546 -426Q356 -426 240 -341 T128 -85ZM256 583Q256 368 
+341 269 T554 170Q681 170 767 269 T853 577Q853 777 764 879 T551 981Q428 
+981 342 881 T256 583Z" ></glyph>
+<glyph unicode="&#83;" horiz-adv-x="1360" 
+d="M85 469L256 469Q269 358 317 287 T467 172T696 128Q809 128 895 161 T1024 
+252T1066 384Q1066 460 1026 516 T889 610Q827 634 616 685 T327 781Q226 838 
+177 924 T128 1114Q128 1230 191 1330 T375 1483T644 1536Q806 1536 931 1485 T1122 
+1334T1194 1109L1024 1109Q1008 1236 917 1300 T650 1365Q466 1365 382 1297 T298 1132Q
+298 1049 358 995 Q416 941 664 885 T996 787Q1119 725 1178 631 T1237 414Q1237 
+292 1171 184 T981 17T702 -42Q506 -42 373 17 T164 197T89 317Z" ></glyph>
+<glyph unicode="&#99;" horiz-adv-x="1020" 
+d="M853 426L1024 384Q994 204 873 102 T575 0Q354 0 219 148 T85 572Q85 
+750 141 884 T313 1085T562 1152Q733 1152 842 1063 T981 810L810 768Q785 874 
+721 927 T566 981Q428 981 342 884 T256 576Q256 364 343 267 T570 170Q682 
+170 758 233 T853 426Z" ></glyph>
+<glyph unicode="&#97;" horiz-adv-x="1147" 
+d="M853 128Q759 58 664 29 T459 0Q279 0 182 89 T85 316Q85 396 122 463 T
+218 571T352 632Q408 647 518 660 Q745 688 852 725 Q853 761 853 771 Q853 
+878 800 922 Q728 981 586 981 Q454 981 391 934 T298 768L128 810Q152 928 
+207 1001 T367 1113T610 1152Q747 1152 832 1118 T958 1032T1014 903Q1024 854 1024 
+734 L1024 495Q1024 245 1032 161 T1066 0L896 0Q862 54 853 128ZM853 554Q
+746 518 532 492 Q411 477 361 458 T283 404T256 326Q256 259 315 215 T489 
+170Q602 170 691 214 T820 330Q852 386 852 494 Z" ></glyph>
+<glyph unicode="&#116;" horiz-adv-x="552" 
+d="M512 175L554 16Q479 0 419 0 Q322 0 268 31 T192 112T170 326L170 938L
+42 938L42 1109L170 1109L170 1372L341 1480L341 1109L512 1109L512 938L341 
+938L341 318Q341 240 350 218 T379 183T437 170Q466 170 512 175Z" ></glyph>
+<glyph unicode="&#101;" horiz-adv-x="1147" 
+d="M894 384L1061 341Q1017 179 898 89 T592 0Q359 0 222 149 T85 566Q85 
+844 223 998 T582 1152Q796 1152 931 997 T1066 563Q1066 546 1066 512 L256 512Q
+266 346 361 258 T596 170Q702 170 776 221 T894 384ZM256 682L896 682Q883 
+814 822 879 Q730 981 582 981 Q448 981 357 900 T256 682Z" ></glyph>
+<glyph unicode="&#114;" horiz-adv-x="680" 
+d="M128 0L128 1109L256 1109L256 982Q326 1086 385 1119 T516 1152Q619 1152 725 
+1082 L658 911Q586 981 515 981 Q452 981 401 942 T330 835Q298 730 298 606 L
+298 0L128 0Z" ></glyph>
+<glyph unicode="&#32;" horiz-adv-x="552" 
+></glyph>
+<glyph unicode="&#80;" horiz-adv-x="1360" 
+d="M170 0L170 1493L718 1493Q863 1493 940 1478 Q1047 1460 1119 1408 T1236 1262T
+1280 1056Q1280 864 1159 730 T722 597L341 597L341 0L170 0ZM341 768L742 
+768Q942 768 1025 842 T1109 1050Q1109 1148 1060 1217 T930 1308Q878 1322 738 1322 L
+341 1322L341 768Z" ></glyph>
+<glyph unicode="&#108;" horiz-adv-x="425" 
+d="M128 0L128 1493L298 1493L298 0L128 0Z" ></glyph>
+<glyph unicode="&#111;" horiz-adv-x="1147" 
+d="M85 576Q85 882 247 1029 Q382 1152 576 1152 Q792 1152 929 1003 T1066 591Q1066 
+378 1005 256 T829 67T576 0Q356 0 220 148 T85 576ZM256 576Q256 373 347 
+272 T576 170Q714 170 805 272 T896 582Q896 778 804 880 T576 981Q438 981 
+347 880 T256 576Z" ></glyph>
+<glyph unicode="&#77;" horiz-adv-x="1657" 
+d="M170 0L170 1493L462 1493L770 455Q812 310 832 238 Q853 318 899 473 L1201 
+1493L1493 1493L1493 0L1322 0L1322 1322L942 0L722 0L341 1322L341 0L170 
+0Z" ></glyph>
+<glyph unicode="&#105;" horiz-adv-x="425" 
+d="M128 1322L128 1493L298 1493L298 1322L128 1322ZM128 0L128 1109L298 1109L298 
+0L128 0Z" ></glyph>
+<glyph unicode="&#120;" horiz-adv-x="1020" 
+d="M0 0L419 574L42 1109L243 1109L445 822Q494 753 521 714 Q553 757 591 
+808 L810 1109L1010 1109L619 574L1024 0L823 0L584 340L517 434L200 0L
+0 0Z" ></glyph>
+<glyph unicode="&#54;" horiz-adv-x="1147" 
+d="M1024 1109L853 1109Q827 1207 778 1251 Q698 1322 581 1322 Q487 1322 394 1278 Q
+322 1222 269 1113 T213 786Q283 885 385 933 T598 981Q793 981 929 848 T1066 
+504Q1066 364 1003 245 T830 63T581 0Q343 0 193 165 T42 709Q42 1133 206 
+1326 Q348 1493 590 1493 Q770 1493 886 1391 T1024 1109ZM213 507Q213 418 260 337 T
+380 213T567 170Q723 170 809 258 T896 498Q896 643 811 727 T558 810Q414 
+810 314 727 T213 507Z" ></glyph>
+<glyph unicode="&#48;" horiz-adv-x="1147" 
+d="M85 746Q85 1005 140 1174 T303 1418T576 1493Q697 1493 799 1446 T950 1309T1032 
+1091T1066 746Q1066 488 1012 320 T849 75T576 0Q358 0 234 130 Q85 334 
+85 746ZM256 746Q256 378 348 274 T576 170Q711 170 803 275 T896 746Q896 
+1094 809 1208 T574 1322Q438 1322 346 1222 Q256 1093 256 746Z" ></glyph>
+<glyph unicode="&#56;" horiz-adv-x="1147" 
+d="M340 816Q232 857 180 933 T128 1115Q128 1275 249 1384 T573 1493Q776 1493 900 
+1381 T1024 1110Q1024 1008 972 932 T817 816Q939 772 1002 674 T1066 442Q1066 254 
+931 127 T576 0Q355 0 220 128 T85 446Q85 589 151 685 T340 816ZM298 1114Q
+298 1018 365 957 T578 896Q720 896 787 956 T853 1105Q853 1197 784 1260 T576 
+1322Q435 1322 367 1261 T298 1114ZM256 450Q256 378 284 311 T400 207T577 170Q
+737 170 816 248 T896 445Q896 566 814 646 T571 725Q414 725 335 647 T256 
+450Z" ></glyph>
+<glyph unicode="&#49;" horiz-adv-x="1147" 
+d="M768 0L597 0L597 1163Q528 1100 415 1037 T213 943L213 1120Q372 1192 490 
+1294 T658 1493L768 1493L768 0Z" ></glyph>
+<glyph unicode="&#50;" horiz-adv-x="1147" 
+d="M1024 170L1024 0L42 0Q40 64 66 124 Q106 222 196 313 T435 517Q667 
+722 760 838 T853 1066Q853 1174 772 1248 T560 1322Q422 1322 340 1243 T256 1024L
+85 1066Q104 1274 229 1384 T564 1493Q776 1493 900 1373 T1024 1075Q1024 984 987 
+897 T865 714T594 452Q430 316 380 268 T299 170Z" ></glyph>
+<glyph unicode="&#52;" horiz-adv-x="1147" 
+d="M725 0L725 341L42 341L42 512L768 1493L896 1493L896 512L1066 512L1066 
+341L896 341L896 0L725 0ZM725 512L725 1163L244 512L725 512Z" ></glyph>
+<glyph unicode="&#53;" horiz-adv-x="1147" 
+d="M85 426L256 426Q278 299 350 235 T560 170Q733 170 814 267 T896 524Q896 
+677 823 765 T573 853Q462 853 401 806 T298 682L128 725L298 1493L981 1493L
+981 1322L434 1322L338 925Q469 1024 613 1024 Q804 1024 935 887 T1066 536Q1066 
+332 949 182 Q807 0 560 0 Q358 0 230 117 T85 426Z" ></glyph>
+<glyph unicode="&#55;" horiz-adv-x="1147" 
+d="M85 1322L85 1493L1066 1493L1066 1355Q917 1202 770 945 T543 418Q485 227 469 
+0 L298 0Q302 179 377 433 T595 924T896 1322Z" ></glyph>
+<glyph unicode="&#51;" horiz-adv-x="1147" 
+d="M85 426L256 469Q290 310 360 240 T568 170Q727 170 811 256 T896 468Q896 
+588 808 667 T584 745Q528 745 446 725 L468 896Q487 894 498 894 Q618 894 
+714 948 T810 1115Q810 1205 737 1264 T547 1322Q432 1322 355 1258 T256 1066L85 
+1109Q119 1292 239 1392 T539 1493Q663 1493 767 1443 T926 1306T981 1122Q981 1030 
+930 954 T779 833Q909 802 987 706 T1066 466Q1066 271 923 135 T562 0Q364 
+0 234 118 T85 426Z" ></glyph>
+<glyph unicode="&#87;" horiz-adv-x="2040" 
+d="M454 0L42 1493L217 1493L459 508Q496 357 533 208 Q600 429 611 465 L923 
+1493L1166 1493L1392 752Q1475 478 1557 208 Q1582 309 1626 489 L1873 1493L2048 1493L
+1636 0L1446 0L1097 1143Q1054 1282 1045 1313 Q1002 1170 980 1100 L646 0L454 
+0Z" ></glyph>
+<glyph unicode="&#72;" horiz-adv-x="1487" 
+d="M170 0L170 1493L341 1493L341 896L1152 896L1152 1493L1322 1493L1322 0L1152 
+0L1152 725L341 725L341 0L170 0Z" ></glyph>
+</font>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<p>The default SASmarkdown “style” for HTML and HTML5 output
+is <code>journal</code>. To invoke a different SAS “style”, specify it with:</p>
+<pre><code>```{sashtml5 style_example, saveSAS=TRUE} 
+ods html5 style=htmlblue;
+proc corr data=sashelp.class plots=matrix;
+run;
+```</code></pre>
+to produce:
+<div style="padding-bottom: 8px; padding-top: 1px">
+<div id="IDX" style="padding-bottom: 8px; padding-top: 1px">
+<table class="table" style="border-color: #c1c1c1; border-style: solid; border-width: 1px 0 0 1px; border-collapse: collapse; border-spacing: 0" aria-label="Variables Information">
+<caption aria-label="Variables Information">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+</colgroup>
+<tbody>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+3 Variables:
+</th>
+<td class="data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+Age Height Weight
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="IDX1" style="padding-bottom: 8px; padding-top: 1px">
+<table class="table" style="border-color: #c1c1c1; border-style: solid; border-width: 1px 0 0 1px; border-collapse: collapse; border-spacing: 0" aria-label="Simple Statistics">
+<caption aria-label="Simple Statistics">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+<col/>
+<col/>
+<col/>
+<col/>
+<col/>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" colspan="7" scope="colgroup">
+Simple Statistics
+</th>
+</tr>
+<tr>
+<th class="b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Variable
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+N
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Mean
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Std Dev
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Sum
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Minimum
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Maximum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Age
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+19
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+13.31579
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1.49267
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+253.00000
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+11.00000
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+16.00000
+</td>
+</tr>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Height
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+19
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+62.33684
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+5.12708
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1184
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+51.30000
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+72.00000
+</td>
+</tr>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Weight
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+19
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+100.02632
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+22.77393
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1901
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+50.50000
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+150.00000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="IDX2" style="padding-bottom: 8px; padding-top: 1px">
+<table class="table" style="border-color: #c1c1c1; border-style: solid; border-width: 1px 0 0 1px; border-collapse: collapse; border-spacing: 0" aria-label="Pearson Correlations">
+<caption aria-label="Pearson Correlations">
+</caption>
+<colgroup>
+<col/>
+</colgroup>
+<colgroup>
+<col/>
+<col/>
+<col/>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" colspan="4" scope="colgroup">
+Pearson Correlation Coefficients, N = 19<br/>Prob &gt; |r| under H0: Rho=0
+</th>
+</tr>
+<tr>
+<th class="c headerempty" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+ 
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Age
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Height
+</th>
+<th class="r b header" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="col">
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Age
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1.00000
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+ 
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.81143
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.74089
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.0003
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Height
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.81143
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1.00000
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+ 
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.87779
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+&lt;.0001
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<th class="rowheader" style="background-color: #edf2f9; border-color: #b0b7bb; border-style: solid; border-width: 0 1px 1px 0; color: #112277; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: bold" scope="row">
+Weight
+</th>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.74089
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.0003
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+0.87779
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+&lt;.0001
+</div>
+</div>
+</td>
+<td class="r data" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+<div class="stacked-cell">
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+1.00000
+</div>
+<div class="r" style="background-color: #ffffff; border-color: #c1c1c1; border-style: solid; border-width: 0 1px 1px 0; font-family: Arial, &#39;Albany AMT&#39;, Helvetica, Helv; font-size: x-small; font-style: normal; font-weight: normal">
+ 
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="IDX3" style="padding-bottom: 8px; padding-top: 1px">
+<div class="c">
+<script type="text/ecmascript">
+var SVG_IDX3_SVGRoot = null;
+var SVG_IDX3_TrueCoords = null;
+var SVG_IDX3_singleTip = null;
+var SVG_IDX3_singleBox = null;
+var SVG_IDX3_singleText = null;
+var SVG_IDX3_tiptspan = null;
+var SVG_IDX3_attrScale = 1;
+var SVG_IDX3_rightEdge = null;
+var SVG_IDX3_SVGHeight = null;
+var SVG_IDX3_SVGWidth = null;
+function SVG_IDX3_Init(anchor) {
+   SVG_IDX3_SVGRoot = document.getElementById(anchor);
+   SVG_IDX3_TrueCoords = SVG_IDX3_SVGRoot.createSVGPoint();
+   SVG_IDX3_singleTip = document.getElementById(anchor + '_singleTip1');
+   SVG_IDX3_singleBox = document.getElementById(anchor + '_singleBox1');
+   SVG_IDX3_singleText = document.getElementById(anchor + '_singleText1');
+   SVG_IDX3_tiptspan = document.getElementById(anchor + '_tiptspan1');
+   SVG_IDX3_tiptspan.firstChild.nodeValue = null;
+   SVG_IDX3_SVGRoot.addEventListener('mousemove', SVG_IDX3_ShowTooltip, false);
+   SVG_IDX3_SVGRoot.addEventListener('mouseout', SVG_IDX3_HideTooltip, false);
+   SVG_IDX3_SVGHeight = SVG_IDX3_SVGRoot.getAttributeNS(null, "height");
+   SVG_IDX3_SVGWidth = SVG_IDX3_SVGRoot.getAttributeNS(null, "width");
+   if (!isNaN(parseFloat(SVG_IDX3_SVGHeight)) && !isNaN(parseFloat(SVG_IDX3_SVGWidth)))
+      SVG_IDX3_GetHW();
+}
+function SVG_IDX3_GetHW()
+{
+    if (SVG_IDX3_SVGWidth != null && SVG_IDX3_SVGWidth != "") {
+       if (SVG_IDX3_SVGWidth.match(/%/)) {
+          var factor = parseFloat(SVG_IDX3_SVGWidth.replace(/%/,""))/100;
+          SVG_IDX3_SVGWidth = window.innerWidth * factor;
+       }
+       else if (SVG_IDX3_SVGWidth.match(/in/))
+          SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth.replace(/in/,""))*96;
+       else if (SVG_IDX3_SVGWidth.match(/cm/))
+          SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth.replace(/in/,""))*96/2.54;
+       else
+           SVG_IDX3_SVGWidth = parseFloat(SVG_IDX3_SVGWidth);
+    }
+    if (SVG_IDX3_SVGHeight != null && SVG_IDX3_SVGHeight != "") {
+       if (SVG_IDX3_SVGHeight.match(/%/)) {
+          var factor = parseFloat(SVG_IDX3_SVGHeight.replace(/%/,""))/100;
+          SVG_IDX3_SVGHeight = window.innerHeight * factor;
+       }
+       else if (SVG_IDX3_SVGHeight.match(/in/))
+          SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight.replace(/in/,""))*96;
+       else if (SVG_IDX3_SVGHeight.match(/cm/))
+          SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight.replace(/in/,""))*96/2.54;
+       else
+           SVG_IDX3_SVGHeight = parseFloat(SVG_IDX3_SVGHeight);
+    }
+}
+function SVG_IDX3_GetScaleFactors(evt)
+{
+   var zoomFactor = 1;
+   windowWidth  = (top.innerWidth==undefined)  ? window.innerWidth  : top.innerWidth;
+   windowHeight = (top.innerHeight==undefined) ? window.innerHeight : top.innerHeight;
+   SVG_IDX3_rightEdge = (SVG_IDX3_SVGWidth) ? SVG_IDX3_SVGWidth - window.pageXOffset : windowWidth;
+   if (parseFloat(SVG_IDX3_SVGWidth) > 0 || parseFloat(SVG_IDX3_SVGHeight) > 0)
+      var tipScale = 1.40625;
+   else {
+      var tipXScale  = (screen.width/windowWidth) / SVG_IDX3_SVGRoot.currentScale;
+      var tipYScale  = (screen.height/windowHeight) / SVG_IDX3_SVGRoot.currentScale;
+      var tipScale   = (tipXScale + tipYScale)/2.0;
+   }
+   SVG_IDX3_attrScale = tipScale;
+   if (navigator.appName == 'Adobe SVG Viewer') {
+      if (screen.deviceXDPI != null && screen.logicalXDPI != null)
+         zoomFactor = screen.deviceXDPI/screen.logicalXDPI;
+      SVG_IDX3_attrScale = zoomFactor*tipScale;
+   }
+   else if (navigator.userAgent != null && navigator.userAgent != '') {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf("msie") != -1 || ua.indexOf("trident") != -1) {
+         zoomFactor = screen.deviceXDPI/screen.logicalXDPI;
+         SVG_IDX3_attrScale = tipScale/zoomFactor;
+         SVG_IDX3_rightEdge /= zoomFactor;
+      }
+      else if (ua.indexOf("ipad") != -1) {
+         zoomFactor = SVG_IDX3_SVGRoot.clientWidth / window.innerWidth;
+         SVG_IDX3_attrScale = 1.5 / zoomFactor;
+         SVG_IDX3_rightEdge /= zoomFactor;
+      }
+      else if (ua.indexOf("opera") != -1)
+         SVG_IDX3_attrScale = tipScale;
+      else if (ua.indexOf("firefox") != -1)
+         SVG_IDX3_attrScale = tipScale;
+      else {
+         if (SVG_IDX3_SVGWidth > 0 || SVG_IDX3_SVGHeight > 0)
+            zoomFactor = 1;
+         else
+            zoomFactor = parseInt(document.defaultView.getComputedStyle(SVG_IDX3_SVGRoot, null).width,10)/
+                                  SVG_IDX3_SVGRoot.clientWidth;
+         SVG_IDX3_attrScale = tipScale/zoomFactor;
+         SVG_IDX3_rightEdge *= zoomFactor;
+      }
+   }
+}
+function SVG_IDX3_GetTrueCoords(evt)
+{
+   var trans = SVG_IDX3_SVGRoot.currentTranslate;
+   var scale = SVG_IDX3_SVGRoot.currentScale;
+   SVG_IDX3_GetScaleFactors();
+   var p1    = SVG_IDX3_SVGRoot.createSVGPoint();
+   var p2;
+      var m = SVG_IDX3_SVGRoot.getScreenCTM();
+      if (navigator.userAgent.toLowerCase().indexOf("ipad") != -1) {
+         p1.x = evt.clientX + window.pageXOffset;
+         p1.y = evt.clientY + window.pageYOffset;
+      }
+      else {
+      p1.x = evt.clientX;
+      p1.y = evt.clientY;
+      }
+      p2 = p1.matrixTransform(m.inverse());
+   SVG_IDX3_TrueCoords.x = Math.round(p2.x*100) / 100;
+   SVG_IDX3_TrueCoords.y = Math.round(p2.y*100) / 100;
+}
+function SVG_IDX3_HideTooltip( evt )
+{
+   SVG_IDX3_tiptspan.firstChild.nodeValue = null;
+   SVG_IDX3_singleTip.setAttributeNS(null, 'visibility', 'hidden');
+}
+function SVG_IDX3_ShowTooltip( evt )
+{
+   SVG_IDX3_GetTrueCoords( evt );
+   var targetElement = evt.target;
+   var tspanCount = targetElement.getElementsByTagName('desc').length;
+   if (tspanCount == 1) {
+      var targetTspan = targetElement.getElementsByTagName('desc').item(0);
+      if ( targetTspan) {
+         if (targetTspan.firstChild != null)
+            SVG_IDX3_tiptspan.firstChild.nodeValue = targetTspan.firstChild.nodeValue; }
+   }
+   if ( '' != SVG_IDX3_tiptspan.firstChild.nodeValue )
+   {
+      var outline = SVG_IDX3_singleText.getBBox();
+      SVG_IDX3_singleBox.setAttributeNS(null, 'transform', 'scale(' + SVG_IDX3_attrScale + ',' + SVG_IDX3_attrScale + ')' );
+      SVG_IDX3_singleText.setAttributeNS(null, 'transform', 'scale(' + SVG_IDX3_attrScale + ',' + SVG_IDX3_attrScale + ')' );
+      SVG_IDX3_singleTip.setAttributeNS(null, 'visibility', 'visible');
+      if (evt.clientX + ((outline.width + 10)/1.06666) * SVG_IDX3_attrScale > SVG_IDX3_rightEdge) {
+         var xPos = SVG_IDX3_TrueCoords.x - parseInt((outline.width + 10)*SVG_IDX3_attrScale);
+         if (xPos < 0)
+            xPos = 0;
+      }
+      else
+         var xPos = SVG_IDX3_TrueCoords.x;
+      if (SVG_IDX3_TrueCoords.y < 21) {
+         var yPos = SVG_IDX3_TrueCoords.y + ((outline.height + 21)/1.06666)*SVG_IDX3_attrScale;
+         if (yPos > windowHeight)
+            yPos = SVG_IDX3_TrueCoords.y - parseInt((outline.height + 10)*SVG_IDX3_attrScale);
+      }
+      else
+         var yPos = SVG_IDX3_TrueCoords.y - parseInt((outline.height + 10)*SVG_IDX3_attrScale);
+      if (Number(outline.width == 0))
+         SVG_IDX3_singleBox.setAttributeNS(null, 'width', outline.width);
+      else
+         SVG_IDX3_singleBox.setAttributeNS(null, 'width', outline.width + 10);
+      SVG_IDX3_singleBox.setAttributeNS(null, 'height', outline.height + 10);
+      SVG_IDX3_singleTip.setAttributeNS(null, 'transform', 'translate(' + xPos + ',' + yPos + ')');
+   }
+}
+</script>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" baseProfile="full" version="1.1" id="SVG_IDX3" onload="SVG_IDX3_Init(&quot;SVG_IDX3&quot;)" viewBox="-1 -1 641 641" height="640" width="640">
+<desc id="desc_SVG_IDX3">Scatter Plot Matrix</desc>
+<defs>
+<clipPath id="SVG_IDX3_clipPage1">
+<rect x="-1" y="-1" width="641" height="641"></rect>
+</clipPath>
+</defs>
+<g id="SVG_IDX3_Page1" clip-path="url(#SVG_IDX3_clipPage1)">
+<g transform=" scale(1, 1)">
+<rect x="0" y="0" width="639" height="639" style="fill: #FFFFFF; "></rect>
+<rect x="0" y="0" width="639" height="639" style="fill: #FFFFFF; "></rect>
+<rect x="0" y="0" width="639" height="639" style="stroke: #D1D1D1; stroke-width: 1; fill: none; "></rect>
+<g transform="matrix(1, 0, 0, 1, 11, 11)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath0">
+<rect x="-1" y="-1" width="619" height="24" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath1">
+<rect x="-1" y="-1" width="619" height="24" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath1)">
+<g transform="matrix(1, 0, 0, 1, 241, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath2">
+<rect x="-1" y="-1" width="138" height="19" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath2)">
+<text textLength="130" lengthAdjust="spacingAndGlyphs" x="3.5" y="13.5791" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font3', 'Arial', sans-serif; font-size: 15px; font-weight: bold; white-space: pre; ">Scatter Plot Matrix</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 11, 34)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath3">
+<rect x="-1" y="-1" width="619" height="596" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath3)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath4">
+<rect x="-1" y="-1" width="619" height="596" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath4)">
+<g transform="matrix(1, 0, 0, 1, 399, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath5">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath5)">
+<path d="M25.99665 26L25.99665 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M59.78581 26L59.78581 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M93.57497 26L93.57497 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M127.36413 26L127.36413 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M161.15329 26L161.15329 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 399, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath6">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath6)">
+<path d="M25.99665 0L25.99665 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 18.99665, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M59.78581 0L59.78581 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 52.78581, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">80</text>
+</g>
+<path d="M93.57497 0L93.57497 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 83.07497, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">100</text>
+</g>
+<path d="M127.36413 0L127.36413 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 116.86413, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">120</text>
+</g>
+<path d="M161.15329 0L161.15329 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 150.65329, 20.1)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">140</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 211, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath7">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath7)">
+<path d="M9.9468 26L9.9468 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.9468, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">50</text>
+</g>
+<path d="M48.15159 26L48.15159 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 41.15159, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">55</text>
+</g>
+<path d="M86.35638 26L86.35638 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 79.35638, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M124.56117 26L124.56117 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 117.56117, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">65</text>
+</g>
+<path d="M162.76595 26L162.76595 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 155.76595, 13.89999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">70</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 211, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath8">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath8)">
+<path d="M9.9468 0L9.9468 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M48.15159 0L48.15159 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M86.35638 0L86.35638 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M124.56117 0L124.56117 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M162.76595 0L162.76595 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 23, 0)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath9">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath9)">
+<path d="M9.9468 26L9.9468 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M43.56702 26L43.56702 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M77.18723 26L77.18723 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M110.80744 26L110.80744 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M144.42766 26L144.42766 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M178.04787 26L178.04787 20.39999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 23, 569)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath10">
+<rect x="-1" y="-1" width="188" height="27" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath10)">
+<path d="M9.9468 0L9.9468 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.9468, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">11</text>
+</g>
+<path d="M43.56702 0L43.56702 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 36.56702, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">12</text>
+</g>
+<path d="M77.18723 0L77.18723 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 70.18723, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">13</text>
+</g>
+<path d="M110.80744 0L110.80744 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 103.80744, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">14</text>
+</g>
+<path d="M144.42766 0L144.42766 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 137.42765, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">15</text>
+</g>
+<path d="M178.04787 0L178.04787 5.59999" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 171.04787, 20.1)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">16</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath11">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath11)">
+<path d="M0 154.57364L5.46064 154.57364" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 158.57364)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M0 121.99184L5.46064 121.99184" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 125.99184)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">80</text>
+</g>
+<path d="M0 89.41005L5.46064 89.41005" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 93.41005)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">100</text>
+</g>
+<path d="M0 56.82825L5.46064 56.82825" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 60.82825)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">120</text>
+</g>
+<path d="M0 24.24645L5.46064 24.24645" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 28.24645)">
+<text textLength="21" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">140</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath12">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath12)">
+<path d="M25 154.57364L19.5853 154.57364" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 121.99184L19.5853 121.99184" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 89.41005L19.5853 89.41005" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 56.82825L19.5853 56.82825" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 24.24645L19.5853 24.24645" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath13">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath13)">
+<path d="M0 170.05L5.46064 170.05" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 133.21035L5.46064 133.21035" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 96.3707L5.46064 96.3707" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 59.53106L5.46064 59.53106" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 22.69141L5.46064 22.69141" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath14">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath14)">
+<path d="M25 170.05L19.5853 170.05" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 174.04999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">50</text>
+</g>
+<path d="M25 133.21035L19.5853 133.21035" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 137.21035)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">55</text>
+</g>
+<path d="M25 96.3707L19.5853 96.3707" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 100.3707)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">60</text>
+</g>
+<path d="M25 59.53106L19.5853 59.53106" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 63.53106)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">65</text>
+</g>
+<path d="M25 22.69141L19.5853 22.69141" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 2.20111, 26.69141)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">70</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 586, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath15">
+<rect x="-1" y="-1" width="33" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath15)">
+<path d="M0 170.05L5.46064 170.05" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 174.04999)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">11</text>
+</g>
+<path d="M0 137.63111L5.46064 137.63111" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 141.63111)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">12</text>
+</g>
+<path d="M0 105.21222L5.46064 105.21222" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 109.21222)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">13</text>
+</g>
+<path d="M0 72.79333L5.46064 72.79333" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 76.79333)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">14</text>
+</g>
+<path d="M0 40.37444L5.46064 40.37444" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 44.37444)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">15</text>
+</g>
+<path d="M0 7.95555L5.46064 7.95555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<g transform="matrix(1, 0, 0, 1, 8.87354, 11.95555)">
+<text textLength="14" lengthAdjust="spacingAndGlyphs" x="0" y="0.5" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 12px; white-space: pre; ">16</text>
+</g>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 0, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath16">
+<rect x="-1" y="-1" width="26" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath16)">
+<path d="M25 170.05L19.5853 170.05" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 137.63111L19.5853 137.63111" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 105.21222L19.5853 105.21222" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 72.79333L19.5853 72.79333" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 40.37444L19.5853 40.37444" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M25 7.95555L19.5853 7.95555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath17">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath17)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="40" lengthAdjust="spacingAndGlyphs" x="72.5" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Weight</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #989EA1; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath18">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath18)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath19">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath19)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath20">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath20)">
+<circle cx="153.12683" cy="69.04642" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="57.62035" cy="115.47548" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="124.85691" cy="92.66822" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="105.75562" cy="85.33732" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.10398" cy="85.33732" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="63.73277" cy="117.10457" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="82.83406" cy="114.66094" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="69.04642" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="115.47548" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="76.72165" cy="90.22459" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="17.88966" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="117.21639" cy="105.70094" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="56.09225" cy="126.87911" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="69.86097" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="121.03665" cy="43.79553" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="137.84579" cy="35.65008" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.26087" cy="113.84639" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="69.86097" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath21">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath21)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath22">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath22)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath23">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath23)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 390)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath24">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath24)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath25">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath25)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath26">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath26)">
+<circle cx="108.81182" cy="69.04642" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="115.47548" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="92.66822" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="85.33732" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="85.33732" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="117.10457" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="114.66094" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.04642" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="115.47548" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="90.22459" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="105.70094" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="126.87911" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.86097" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="43.79553" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="35.65008" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="113.84639" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="69.86097" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath27">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath27)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath28">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath28)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath29">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath29)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath30">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath30)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath31">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath31)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath32">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath32)">
+<circle cx="112.69735" cy="30.05934" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="122.15845" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="88.20162" cy="57.32068" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="75.7405" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="70.58295" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="62.86121" cy="116.26411" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.39525" cy="97.84429" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="112.69735" cy="77.95088" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="77.95088" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="90.73566" cy="103.73863" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="160.47169" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="74.68673" cy="64.68861" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="52.72505" cy="123.63204" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="48.47916" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="138.88245" cy="61.00464" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="147.32925" cy="44.7952" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="66.23993" cy="114.79053" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="48.47916" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath33">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath33)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath34">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath34)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath35">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath35)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath36">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath36)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="37" lengthAdjust="spacingAndGlyphs" x="74" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Height</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #989EA1; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 208)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath37">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath37)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath38">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath38)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath39">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath39)">
+<circle cx="108.81182" cy="30.05934" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="122.15845" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="57.32068" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="75.7405" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="70.58295" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="116.26411" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="97.84429" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="77.95088" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="75.19354" cy="77.95088" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="103.73863" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="160.47169" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="108.81182" cy="64.68861" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="123.63204" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="48.47916" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="41.57526" cy="61.00464" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="44.7952" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="114.79053" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="142.4301" cy="48.47916" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath40">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath40)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath41">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath41)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath42">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath42)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 401, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath43">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath43)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath44">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath44)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath45">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath45)">
+<circle cx="112.69735" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="88.20162" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="95.80374" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="62.86121" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.39525" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="112.69735" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="64.55057" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="90.73566" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="7.95698" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="74.68673" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="52.72505" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="138.88245" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="147.32925" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="66.23993" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.85267" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath46">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath46)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath47">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath47)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath48">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath48)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 213, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath49">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath49)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath50">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath50)">
+<rect x="0.49731" y="0.49722" width="183.01075" height="177.01111" style="fill: #FFFFFF; "></rect>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath51">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath51)">
+<circle cx="153.12683" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="57.62035" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="124.85691" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="105.75562" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="111.10398" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="63.73277" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="82.83406" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="103.46346" cy="105.21222" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="76.72165" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="17.88966" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="117.21639" cy="72.79333" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="56.09225" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="176.04838" cy="7.95555" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="121.03665" cy="137.63111" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="137.84579" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="65.26087" cy="170.05" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+<circle cx="134.02553" cy="40.37444" r="2" style="stroke: #003399; stroke-width: 1; fill: none; stroke-linecap: square; "></circle>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath52">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath52)">
+<path d="M0 178.00555L184.00537 178.00555" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M184.00537 178.00555L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 0L184.00537 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+<path d="M0 178.00555L0 0" style="stroke: #989EA1; stroke-width: 1; fill: none; "></path>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath53">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath53)">
+</g>
+<defs>
+<clipPath id="SVG_IDX3_ClipPath54">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath54)">
+</g>
+</g>
+<g transform="matrix(1, 0, 0, 1, 25, 26)">
+<defs>
+<clipPath id="SVG_IDX3_ClipPath55">
+<rect x="-1" y="-1" width="186" height="180" ></rect>
+</clipPath>
+</defs>
+<g clip-path="url(#SVG_IDX3_ClipPath55)">
+<rect x="0" y="0" width="184" height="178" style="fill: #FFFFFF; "></rect>
+<text textLength="23" lengthAdjust="spacingAndGlyphs" x="81" y="93.26855" style="fill: #000000; font-family: 'SVG_IDX3_Arial Font5', 'Arial', sans-serif; font-size: 13px; white-space: pre; ">Age</text>
+<rect x="0" y="0" width="184" height="178" style="stroke: #989EA1; stroke-width: 1; fill: none; "></rect>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<rect x="0" y="0" width="640" height="640" fill="#FFFFFF" fill-opacity="0" aria-hidden="true">
+<desc>Scatter Plot Matrix</desc>
+</rect>
+</g>
+<g id="SVG_IDX3_singleTip1" visibility="hidden" pointer-events="none">
+<rect id="SVG_IDX3_singleBox1" x="0" y="0" width="88" height="20" rx="2" ry="2" fill="white" stroke="black" stroke-width="1.06666" opacity="0.8"></rect>
+<text id="SVG_IDX3_singleText1" x="5" y="10" font-family="'Albany AMT', sans-serif" font-size="8"><tspan id="SVG_IDX3_tiptspan1" x="5" class="tiptext"><![CDATA[ ]]></tspan></text>
+</g>
+<defs>
+<style type="text/css"><![CDATA[
+    tspan.tiptext { white-space: pre }
+]]></style>
+</defs>
+<defs>
+<style type="text/css"><![CDATA[
+  @font-face {
+      font-family: "SVG_IDX3_Arial Font3";
+      font-weight: bold;
+      src: url("#SVG_IDX3_Font3") format("svg")
+      }
+]]></style>
+<font id="SVG_IDX3_Font3" horiz-adv-x="6144" >
+<font-face      font-family="SVG_IDX3_Arial Font3"
+    font-weight="bold"    units-per-em="2048" ascent="1854" descent="-434" >
+<font-face-src>
+<font-face-name name="SVG_IDX3_Arial Font3"></font-face-name>
+</font-face-src>
+</font-face>
+<missing-glyph><path d="M0 0v4992h3456v-4992h-3456" fill="none"></path>
+</missing-glyph>
+<glyph unicode="&#40;" horiz-adv-x="680" 
+d="M597 -426L384 -426Q238 -196 161 52 T85 534Q85 823 178 1080 Q259 1304 384 
+1493 L597 1493Q475 1190 429 978 T384 528Q384 364 411 192 T486 -134Q518 -236 
+597 -426Z" ></glyph>
+<glyph unicode="&#47;" horiz-adv-x="552" 
+d="M-4 0L337 1493L554 1493L213 0L-4 0Z" ></glyph>
+<glyph unicode="&#104;" horiz-adv-x="1232" 
+d="M426 1493L426 993Q562 1152 750 1152 Q846 1152 924 1113 T1041 1016T1095 884T
+1109 660L1109 0L810 0L810 604Q810 784 795 833 T741 910T646 938Q579 
+938 527 902 T451 791T426 573L426 0L128 0L128 1493L426 1493Z" ></glyph>
+<glyph unicode="&#65;" horiz-adv-x="1402" 
+d="M1408 0L1094 0L987 341L423 341L316 0L0 0L510 1493L894 1493L1408 
+0ZM906 597L704 1237L503 597L906 597Z" ></glyph>
+<glyph unicode="&#103;" horiz-adv-x="1232" 
+d="M128 -85L426 -128Q434 -172 462 -189 Q501 -213 584 -213 Q690 -213 744 -184 Q
+780 -164 798 -122 Q810 -91 810 -8 L810 128Q714 0 522 0 Q308 0 183 192 Q
+85 344 85 569 Q85 852 213 1002 T532 1152Q729 1152 853 980 L853 1109L1109 
+1109L1109 128Q1109 -64 1079 -160 T993 -310T846 -395T614 -426Q349 -426 238 -339 T
+126 -117Q126 -104 128 -85ZM384 580Q384 390 443 301 T589 213Q682 213 746 
+304 T810 572Q810 758 749 848 T594 938Q502 938 443 850 T384 580Z" ></glyph>
+<glyph unicode="&#83;" horiz-adv-x="1360" 
+d="M85 426L384 469Q409 337 487 275 T698 213Q838 213 910 271 T981 406Q981 
+456 950 491 T842 552Q790 572 602 624 Q362 690 264 782 Q128 912 128 1098 Q
+128 1218 192 1322 T377 1481T669 1536Q948 1536 1089 1408 T1237 1066L938 1066Q920 
+1180 858 1230 T672 1280Q545 1280 473 1225 Q426 1190 426 1130 Q426 1077 470 1038 Q
+526 990 742 932 T1060 818T1221 664T1280 424Q1280 294 1210 180 T1011 12T692 
+-42Q413 -42 264 77 T85 426Z" ></glyph>
+<glyph unicode="&#99;" horiz-adv-x="1147" 
+d="M1066 810L768 768Q755 852 710 895 T593 938Q498 938 441 859 T384 592Q384 
+384 439 299 T589 213Q660 213 704 261 T768 426L1066 384Q1024 194 904 97 T
+584 0Q356 0 220 152 T85 574Q85 848 223 1000 T596 1152Q789 1152 903 
+1067 T1066 810Z" ></glyph>
+<glyph unicode="&#97;" horiz-adv-x="1147" 
+d="M384 810L128 853Q168 1005 267 1078 T560 1152Q737 1152 824 1104 T946 984T981 
+718L981 370Q981 222 999 151 T1066 0L768 0Q757 34 742 101 Q736 132 732 
+142 Q664 70 586 35 T420 0Q264 0 174 95 T85 336Q85 432 124 508 T233 
+624T435 694Q614 734 682 768 L682 794Q682 872 651 905 T530 938Q471 938 
+438 910 T384 810ZM682 554Q640 536 548 511 T427 461Q384 421 384 360 Q384 
+300 418 257 T506 213Q566 213 621 264 Q661 302 674 358 Q682 395 682 498 Z" ></glyph>
+<glyph unicode="&#116;" horiz-adv-x="680" 
+d="M640 1109L640 896L426 896L426 431Q426 290 432 267 T457 228T505 213Q544 
+213 618 240 L640 38Q539 0 411 0 Q333 0 270 26 T178 95T137 208Q128 
+260 128 414 L128 896L0 896L0 1109L128 1109L128 1322L426 1493L426 1109L
+640 1109Z" ></glyph>
+<glyph unicode="&#101;" horiz-adv-x="1147" 
+d="M768 341L1066 298Q1012 152 895 76 T602 0Q324 0 190 188 Q85 338 85 
+568 Q85 842 221 997 T567 1152Q801 1152 936 994 T1066 512L384 512Q386 370 
+447 292 T600 213Q662 213 704 243 T768 341ZM768 682Q765 808 711 873 T579 
+938Q496 938 442 870 Q388 800 388 682 Z" ></glyph>
+<glyph unicode="&#114;" horiz-adv-x="807" 
+d="M426 0L128 0L128 1109L384 1109L384 958Q457 1065 516 1108 T650 1152Q755 
+1152 853 1089 L789 840Q708 853 640 853 Q572 853 526 820 T453 699T426 335Z" ></glyph>
+<glyph unicode="&#32;" horiz-adv-x="552" 
+></glyph>
+<glyph unicode="&#80;" horiz-adv-x="1360" 
+d="M170 0L170 1493L640 1493Q906 1493 987 1470 Q1112 1436 1196 1323 T1280 1029Q
+1280 890 1232 796 T1110 648T959 576Q855 554 658 554 L469 554L469 0L170 
+0ZM469 1237L469 810L628 810Q800 810 857 834 T948 908T981 1025Q981 1107 
+935 1160 T818 1227Q766 1237 609 1237 Z" ></glyph>
+<glyph unicode="&#108;" horiz-adv-x="552" 
+d="M128 0L128 1493L426 1493L426 0L128 0Z" ></glyph>
+<glyph unicode="&#111;" horiz-adv-x="1232" 
+d="M85 591Q85 736 152 872 T342 1080T618 1152Q852 1152 1002 989 T1152 579Q1152 
+328 1000 164 T619 0Q477 0 348 68 T152 269T85 401ZM384 576Q384 400 451 
+306 T619 213Q718 213 786 306 T853 578Q853 752 786 845 T619 938Q519 938 
+451 845 T384 576Z" ></glyph>
+<glyph unicode="&#77;" horiz-adv-x="1742" 
+d="M170 0L170 1493L602 1493L874 389L1146 1493L1578 1493L1578 0L1322 0L1301 
+1175L1008 0L740 0L448 1175L426 0L170 0Z" ></glyph>
+<glyph unicode="&#105;" horiz-adv-x="552" 
+d="M128 1237L128 1493L426 1493L426 1237L128 1237ZM128 0L128 1109L426 1109L426 
+0L128 0Z" ></glyph>
+<glyph unicode="&#120;" horiz-adv-x="1147" 
+d="M21 0L404 571L64 1109L412 1109L568 804L740 1109L1088 1109L737 584L1130 
+0L782 0L568 343L369 0L21 0Z" ></glyph>
+</font>
+<style type="text/css"><![CDATA[
+  @font-face {
+      font-family: "SVG_IDX3_Arial Font5";
+      src: url("#SVG_IDX3_Font5") format("svg")
+      }
+]]></style>
+<font id="SVG_IDX3_Font5" horiz-adv-x="6144" >
+<font-face      font-family="SVG_IDX3_Arial Font5"
+    units-per-em="2048" ascent="1854" descent="-434" >
+<font-face-src>
+<font-face-name name="SVG_IDX3_Arial Font5"></font-face-name>
+</font-face-src>
+</font-face>
+<missing-glyph><path d="M0 0v4992h3456v-4992h-3456" fill="none"></path>
+</missing-glyph>
+<glyph unicode="&#40;" horiz-adv-x="680" 
+d="M469 -426Q326 -238 227 12 T128 534Q128 772 202 990 Q288 1242 469 1493 L597 
+1493Q476 1285 437 1196 Q376 1058 341 908 Q298 722 298 533 Q298 52 597 -426 Z" ></glyph>
+<glyph unicode="&#47;" horiz-adv-x="552" 
+d="M0 0L426 1493L602 1493L175 0L0 0Z" ></glyph>
+<glyph unicode="&#104;" horiz-adv-x="1147" 
+d="M128 0L128 1493L298 1493L298 991Q432 1152 635 1152 Q760 1152 852 1102 T984 
+966T1024 714L1024 0L853 0L853 709Q853 852 789 916 T607 981Q519 981 
+441 937 T331 819T298 612L298 0L128 0Z" ></glyph>
+<glyph unicode="&#65;" horiz-adv-x="1360" 
+d="M-8 0L590 1493L732 1493L1331 0L1152 0L978 469L344 469L170 0L-8 
+0ZM408 640L914 640L776 1012Q708 1198 661 1322 Q608 1180 556 1041 Z" ></glyph>
+<glyph unicode="&#103;" horiz-adv-x="1147" 
+d="M128 -85L298 -128Q310 -190 361 -218 Q429 -256 548 -256 Q676 -256 745 -210 T
+840 -82Q854 -32 853 128 Q732 0 553 0 Q330 0 207 167 T85 569Q85 730 
+140 867 T299 1077T544 1152Q731 1152 853 981 L853 1109L1024 1109L1024 164Q1024 
+-90 973 -196 T814 -365T546 -426Q356 -426 240 -341 T128 -85ZM256 583Q256 368 
+341 269 T554 170Q681 170 767 269 T853 577Q853 777 764 879 T551 981Q428 
+981 342 881 T256 583Z" ></glyph>
+<glyph unicode="&#54;" horiz-adv-x="1147" 
+d="M1024 1109L853 1109Q827 1207 778 1251 Q698 1322 581 1322 Q487 1322 394 1278 Q
+322 1222 269 1113 T213 786Q283 885 385 933 T598 981Q793 981 929 848 T1066 
+504Q1066 364 1003 245 T830 63T581 0Q343 0 193 165 T42 709Q42 1133 206 
+1326 Q348 1493 590 1493 Q770 1493 886 1391 T1024 1109ZM213 507Q213 418 260 337 T
+380 213T567 170Q723 170 809 258 T896 498Q896 643 811 727 T558 810Q414 
+810 314 727 T213 507Z" ></glyph>
+<glyph unicode="&#48;" horiz-adv-x="1147" 
+d="M85 746Q85 1005 140 1174 T303 1418T576 1493Q697 1493 799 1446 T950 1309T1032 
+1091T1066 746Q1066 488 1012 320 T849 75T576 0Q358 0 234 130 Q85 334 
+85 746ZM256 746Q256 378 348 274 T576 170Q711 170 803 275 T896 746Q896 
+1094 809 1208 T574 1322Q438 1322 346 1222 Q256 1093 256 746Z" ></glyph>
+<glyph unicode="&#56;" horiz-adv-x="1147" 
+d="M340 816Q232 857 180 933 T128 1115Q128 1275 249 1384 T573 1493Q776 1493 900 
+1381 T1024 1110Q1024 1008 972 932 T817 816Q939 772 1002 674 T1066 442Q1066 254 
+931 127 T576 0Q355 0 220 128 T85 446Q85 589 151 685 T340 816ZM298 1114Q
+298 1018 365 957 T578 896Q720 896 787 956 T853 1105Q853 1197 784 1260 T576 
+1322Q435 1322 367 1261 T298 1114ZM256 450Q256 378 284 311 T400 207T577 170Q
+737 170 816 248 T896 445Q896 566 814 646 T571 725Q414 725 335 647 T256 
+450Z" ></glyph>
+<glyph unicode="&#49;" horiz-adv-x="1147" 
+d="M768 0L597 0L597 1163Q528 1100 415 1037 T213 943L213 1120Q372 1192 490 
+1294 T658 1493L768 1493L768 0Z" ></glyph>
+<glyph unicode="&#50;" horiz-adv-x="1147" 
+d="M1024 170L1024 0L42 0Q40 64 66 124 Q106 222 196 313 T435 517Q667 
+722 760 838 T853 1066Q853 1174 772 1248 T560 1322Q422 1322 340 1243 T256 1024L
+85 1066Q104 1274 229 1384 T564 1493Q776 1493 900 1373 T1024 1075Q1024 984 987 
+897 T865 714T594 452Q430 316 380 268 T299 170Z" ></glyph>
+<glyph unicode="&#52;" horiz-adv-x="1147" 
+d="M725 0L725 341L42 341L42 512L768 1493L896 1493L896 512L1066 512L1066 
+341L896 341L896 0L725 0ZM725 512L725 1163L244 512L725 512Z" ></glyph>
+<glyph unicode="&#53;" horiz-adv-x="1147" 
+d="M85 426L256 426Q278 299 350 235 T560 170Q733 170 814 267 T896 524Q896 
+677 823 765 T573 853Q462 853 401 806 T298 682L128 725L298 1493L981 1493L
+981 1322L434 1322L338 925Q469 1024 613 1024 Q804 1024 935 887 T1066 536Q1066 
+332 949 182 Q807 0 560 0 Q358 0 230 117 T85 426Z" ></glyph>
+<glyph unicode="&#55;" horiz-adv-x="1147" 
+d="M85 1322L85 1493L1066 1493L1066 1355Q917 1202 770 945 T543 418Q485 227 469 
+0 L298 0Q302 179 377 433 T595 924T896 1322Z" ></glyph>
+<glyph unicode="&#51;" horiz-adv-x="1147" 
+d="M85 426L256 469Q290 310 360 240 T568 170Q727 170 811 256 T896 468Q896 
+588 808 667 T584 745Q528 745 446 725 L468 896Q487 894 498 894 Q618 894 
+714 948 T810 1115Q810 1205 737 1264 T547 1322Q432 1322 355 1258 T256 1066L85 
+1109Q119 1292 239 1392 T539 1493Q663 1493 767 1443 T926 1306T981 1122Q981 1030 
+930 954 T779 833Q909 802 987 706 T1066 466Q1066 271 923 135 T562 0Q364 
+0 234 118 T85 426Z" ></glyph>
+<glyph unicode="&#87;" horiz-adv-x="2040" 
+d="M454 0L42 1493L217 1493L459 508Q496 357 533 208 Q600 429 611 465 L923 
+1493L1166 1493L1392 752Q1475 478 1557 208 Q1582 309 1626 489 L1873 1493L2048 1493L
+1636 0L1446 0L1097 1143Q1054 1282 1045 1313 Q1002 1170 980 1100 L646 0L454 
+0Z" ></glyph>
+<glyph unicode="&#101;" horiz-adv-x="1147" 
+d="M894 384L1061 341Q1017 179 898 89 T592 0Q359 0 222 149 T85 566Q85 
+844 223 998 T582 1152Q796 1152 931 997 T1066 563Q1066 546 1066 512 L256 512Q
+266 346 361 258 T596 170Q702 170 776 221 T894 384ZM256 682L896 682Q883 
+814 822 879 Q730 981 582 981 Q448 981 357 900 T256 682Z" ></glyph>
+<glyph unicode="&#105;" horiz-adv-x="425" 
+d="M128 1322L128 1493L298 1493L298 1322L128 1322ZM128 0L128 1109L298 1109L298 
+0L128 0Z" ></glyph>
+<glyph unicode="&#116;" horiz-adv-x="552" 
+d="M512 175L554 16Q479 0 419 0 Q322 0 268 31 T192 112T170 326L170 938L
+42 938L42 1109L170 1109L170 1372L341 1480L341 1109L512 1109L512 938L341 
+938L341 318Q341 240 350 218 T379 183T437 170Q466 170 512 175Z" ></glyph>
+<glyph unicode="&#72;" horiz-adv-x="1487" 
+d="M170 0L170 1493L341 1493L341 896L1152 896L1152 1493L1322 1493L1322 0L1152 
+0L1152 725L341 725L341 0L170 0Z" ></glyph>
+</font>
+</defs>
+</svg>
+</div>
+</div>
+</div>
+<p>Use</p>
+<pre><code>```{sas} 
+proc template;
+list styles / store=sashelp.tmplmst;
+run;
+```</code></pre>
+<p>To see a list of SAS HTML styles.</p>
+</div>
+<div id="using-the-sashtml5-engine" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Using the 'sashtml5' engine<a href="ch4.html#using-the-sashtml5-engine" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you use the <code>sashtml5</code> engine, your graphs are embedded within
+your HTML file, rather than being stored as separate image files.
+This can make file management easier.</p>
+<p><em>Written using</em></p>
+<ul>
+<li><em>SASmarkdown version 0.8.0.</em></li>
+<li><em>knitr version 1.40.</em></li>
+<li><em>R version 4.2.2 (2022-10-31 ucrt).</em></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ch3.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch5.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

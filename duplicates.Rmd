@@ -1,0 +1,135 @@
+# Repeated and Duplicate Observations
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+knitr::opts_chunk$set(SASproctime=FALSE)
+```
+
+The need to find "duplicate" or "repeated" observations comes up in several different
+contexts.  We may be interested in generating a variable that is the count of
+something.  We may be interested in knowing how many observations are nested
+within some grouping variable.  We may be interested in selecting one of a
+group of repeated instances.  Or we might be cleaning data that was brought
+together from several sources and that inadvertently repeated the same observation.
+
+There are several different programming approaches we might take to these problems.
+
+## Counting Occurances
+
+To count the occurances of some identifying variable, we might either
+use PROC FREQ, or use a DATA step.
+
+Suppose we were trying to identify frequent visitors to some service, but
+our data was collected such that each observation represents a visit.
+
+### PROC FREQ count data
+
+```{sas visit, collectcode=TRUE}
+data visits;
+  input id $ date mmddyy10. +1 sex $;
+  format date mmddyy8.;
+datalines;
+11 07/01/2023 M
+22 08/01/2022 M
+33 09/12/2024 F
+44 06/23/2021 F
+11 12/13/2022 M
+22 12/02/2023 M
+11 11/06/2023 M
+55 01/30/2022 F
+66 04/22/2020 F
+;
+```
+
+PROC FREQ will count how many times we observed each visitor.
+Turning this into a data set gives us the count data we want.
+
+> PROC FREQ has two options for output data sets.  The `OUT`
+option on the TABLES statement captures counts and percents.
+The OUTPUT statement is for statistics such as chi-square.
+ODS would give us yet another method of capturing tables as
+data.
+```{sas countfreq, collectcode=TRUE}
+proc freq data=visits noprint;
+  tables id*sex / out= visitcount (keep=id sex count);
+run;
+```
+
+> Here we could simply specify
+  ```sas
+  tables id / out = ...;
+  ```
+  to get the counts.  If out intent is to merge this back to the
+  visitation data to pair counts with `sex`, it is more efficient
+  (takes fewer steps) to simply include `sex` as one of our TABLES
+  variables.  Many cells in `id*sex` have zero counts, but these
+  are dropped automatically.
+  
+```{sas printlast}
+proc print noobs; run;
+```
+
+### DATA step counts
+If we first sort our data, we can use BY-group processing
+in a DATA step to produce counts.
+
+```{sas sort, collectcode=TRUE}
+proc sort data=visits out=visitsort;
+  by id date;
+run;
+```
+
+> Here we could just sort `by id`.  Sorting `by id date`
+means the observations we select will include the latest
+visitation date.
+
+```{sas bygroup, collectcode=TRUE}
+data visitcount;
+  set visitsort;
+  by id;
+  if first.id then do;
+    count = 1;
+    if last.id then output;
+    end;
+    else do;
+      count + 1;
+      if last.id then output;
+      end;
+run;
+```
+
+> We make use of the automatic FIRST.byvar and LAST.byvar
+variables.  It is important to reset `count=1` at the 
+beginning of each BY-group - otherwise count is RETAINed.
+And we `output` only the last observation in each group,
+because that is the only observation with the correct `count`.
+
+```{sas printlast}
+```
+
+## Dropping Repeated Observations
+
+If our goal is simply to drop repeated observations -
+perhaps we want to know the proportions of `sex` by
+visitor (not by visit!) - then we can use PROC SORT
+itself.  This has two useful options:  NODUPLICATES
+and NODUPKEY.
+
+- NODUPLICATES drops observations where **every**
+data value is repeated from a previous observation.
+- NODUPKEY drops observations where the BY variable(s)
+value(s) is/are repeated from a previous observation.
+NODUPKEY paired with a BY \_ALL\_  statement is the
+equivalent of NODUPLICATES.
+
+Here we want to drop repeats of the same `id`.
+
+```{sas sortdup}
+proc sort data=visits out=visitors nodupkey;
+  by id;
+run;
+
+proc freq data=visitors;
+  tables sex / nocum;
+run;
+```

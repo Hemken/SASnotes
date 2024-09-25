@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Linking Code Blocks | SASmarkdown</title>
+  <meta name="description" content="3 Linking Code Blocks | SASmarkdown" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Linking Code Blocks | SASmarkdown" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Linking Code Blocks | SASmarkdown" />
+  
+  
+  
+
+<meta name="author" content="Doug Hemken" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ch2.html"/>
+<link rel="next" href="ch4.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> The SASmarkdown Package</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#set-up-the-sas-engines"><i class="fa fa-check"></i><b>1.2</b> Set up the SAS Engines</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-an-engine"><i class="fa fa-check"></i><b>1.3</b> Use an Engine</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#sas-engine"><i class="fa fa-check"></i><b>1.3.1</b> "sas" engine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch2.html"><a href="ch2.html"><i class="fa fa-check"></i><b>2</b> Using SASmarkdown</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ch2.html"><a href="ch2.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="ch2.html"><a href="ch2.html#background"><i class="fa fa-check"></i><b>2.2</b> Background</a></li>
+<li class="chapter" data-level="2.3" data-path="ch2.html"><a href="ch2.html#including-sas-code-in-your-document"><i class="fa fa-check"></i><b>2.3</b> Including SAS Code in your Document</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="ch2.html"><a href="ch2.html#limitations"><i class="fa fa-check"></i><b>2.3.1</b> Limitations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="ch2.html"><a href="ch2.html#html-or-pdf-document"><i class="fa fa-check"></i><b>2.3.2</b> HTML or PDF Document?</a></li>
+<li class="chapter" data-level="2.3.3" data-path="ch2.html"><a href="ch2.html#document-setup"><i class="fa fa-check"></i><b>2.3.3</b> Document Setup</a></li>
+<li class="chapter" data-level="2.3.4" data-path="ch2.html"><a href="ch2.html#code-chunk-setup"><i class="fa fa-check"></i><b>2.3.4</b> Code Chunk Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="ch2.html"><a href="ch2.html#running-sas"><i class="fa fa-check"></i><b>2.4</b> Running SAS</a></li>
+<li class="chapter" data-level="2.5" data-path="ch2.html"><a href="ch2.html#html-output-and-graphics"><i class="fa fa-check"></i><b>2.5</b> HTML Output and Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch3.html"><a href="ch3.html"><i class="fa fa-check"></i><b>3</b> Linking Code Blocks</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ch3.html"><a href="ch3.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="ch3.html"><a href="ch3.html#load-sasmarkdown"><i class="fa fa-check"></i><b>3.2</b> Load SASmarkdown</a></li>
+<li class="chapter" data-level="3.3" data-path="ch3.html"><a href="ch3.html#example-linking-code-blocks"><i class="fa fa-check"></i><b>3.3</b> Example: Linking Code Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch4.html"><a href="ch4.html"><i class="fa fa-check"></i><b>4</b> SAS HTML output</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ch4.html"><a href="ch4.html#set-up"><i class="fa fa-check"></i><b>4.1</b> Set up</a></li>
+<li class="chapter" data-level="4.2" data-path="ch4.html"><a href="ch4.html#using-the-sashtml-engine"><i class="fa fa-check"></i><b>4.2</b> Using the 'sashtml' engine</a></li>
+<li class="chapter" data-level="4.3" data-path="ch4.html"><a href="ch4.html#using-the-sashtml5-engine"><i class="fa fa-check"></i><b>4.3</b> Using the 'sashtml5' engine</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch5.html"><a href="ch5.html"><i class="fa fa-check"></i><b>5</b> SAS Logs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ch5.html"><a href="ch5.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a></li>
+<li class="chapter" data-level="5.2" data-path="ch5.html"><a href="ch5.html#using-the-saslog-engine"><i class="fa fa-check"></i><b>5.2</b> Using the <code>saslog</code> engine</a></li>
+<li class="chapter" data-level="5.3" data-path="ch5.html"><a href="ch5.html#using-the-sashtmllog-and-sashtml5log-engines"><i class="fa fa-check"></i><b>5.3</b> Using the <code>sashtmllog</code> and <code>sashtml5log</code> engines</a></li>
+<li class="chapter" data-level="5.4" data-path="ch5.html"><a href="ch5.html#sas-error-messages"><i class="fa fa-check"></i><b>5.4</b> SAS ERROR messages</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch5.html"><a href="ch5.html#semantic-and-execution-errors"><i class="fa fa-check"></i><b>5.4.1</b> Semantic and Execution Errors</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ch5.html"><a href="ch5.html#mathematical-errors"><i class="fa fa-check"></i><b>5.4.2</b> Mathematical Errors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch6.html"><a href="ch6.html"><i class="fa fa-check"></i><b>6</b> Cleaning Up SAS Log Output</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ch6.html"><a href="ch6.html#intro"><i class="fa fa-check"></i><b>6.1</b> Intro</a></li>
+<li class="chapter" data-level="6.2" data-path="ch6.html"><a href="ch6.html#setup"><i class="fa fa-check"></i><b>6.2</b> Setup</a></li>
+<li class="chapter" data-level="6.3" data-path="ch6.html"><a href="ch6.html#default-log"><i class="fa fa-check"></i><b>6.3</b> Default Log</a></li>
+<li class="chapter" data-level="6.4" data-path="ch6.html"><a href="ch6.html#global-cleanup"><i class="fa fa-check"></i><b>6.4</b> Global Cleanup</a></li>
+<li class="chapter" data-level="6.5" data-path="ch6.html"><a href="ch6.html#chunk-cleanup"><i class="fa fa-check"></i><b>6.5</b> Chunk Cleanup</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="ch6.html"><a href="ch6.html#sasproctime"><i class="fa fa-check"></i><b>6.5.1</b> SASproctime</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch6.html"><a href="ch6.html#sasecho"><i class="fa fa-check"></i><b>6.5.2</b> SASecho</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ch6.html"><a href="ch6.html#sasnotes"><i class="fa fa-check"></i><b>6.5.3</b> SASnotes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch7.html"><a href="ch7.html"><i class="fa fa-check"></i><b>7</b> SAS LaTeX</a></li>
+<li class="chapter" data-level="8" data-path="ch8.html"><a href="ch8.html"><i class="fa fa-check"></i><b>8</b> SAS National Language Support</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ch8.html"><a href="ch8.html#intro-1"><i class="fa fa-check"></i><b>8.1</b> Intro</a></li>
+<li class="chapter" data-level="8.2" data-path="ch8.html"><a href="ch8.html#setup-1"><i class="fa fa-check"></i><b>8.2</b> Setup</a></li>
+<li class="chapter" data-level="8.3" data-path="ch8.html"><a href="ch8.html#default-language"><i class="fa fa-check"></i><b>8.3</b> Default Language</a></li>
+<li class="chapter" data-level="8.4" data-path="ch8.html"><a href="ch8.html#french"><i class="fa fa-check"></i><b>8.4</b> French</a></li>
+<li class="chapter" data-level="8.5" data-path="ch8.html"><a href="ch8.html#chinese"><i class="fa fa-check"></i><b>8.5</b> Chinese</a></li>
+<li class="chapter" data-level="8.6" data-path="ch8.html"><a href="ch8.html#documentation"><i class="fa fa-check"></i><b>8.6</b> Documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch9.html"><a href="ch9.html"><i class="fa fa-check"></i><b>9</b> Saving Intermediate SAS files</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ch9.html"><a href="ch9.html#saving-sas-files"><i class="fa fa-check"></i><b>9.1</b> Saving SAS files</a></li>
+<li class="chapter" data-level="9.2" data-path="ch9.html"><a href="ch9.html#saving-markdown-and-latex-files"><i class="fa fa-check"></i><b>9.2</b> Saving Markdown and LaTeX files</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch10.html"><a href="ch10.html"><i class="fa fa-check"></i><b>10</b> SpinSAS</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ch10.html"><a href="ch10.html#special-markup"><i class="fa fa-check"></i><b>10.1</b> Special Markup</a></li>
+<li class="chapter" data-level="10.2" data-path="ch10.html"><a href="ch10.html#semi-colons"><i class="fa fa-check"></i><b>10.2</b> Semi-colons</a></li>
+<li class="chapter" data-level="10.3" data-path="ch10.html"><a href="ch10.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="10.4" data-path="ch10.html"><a href="ch10.html#processing"><i class="fa fa-check"></i><b>10.4</b> Processing</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SASmarkdown</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ch3" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Linking Code Blocks<a href="ch3.html#ch3" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction-1" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Introduction<a href="ch3.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>By default, the SAS code blocks ("chunks") in an R Markdown document are
+each run as a separate batch file - they are not connected to
+each other. However, often we want to write about a sequence
+of connected steps, interspersing code, results, and explanatory text.</p>
+<p>We could simply repeat the necessary code in each code chunk, perhaps
+hiding part of the code with a selective <code>echo</code> chunk option (a
+useful technique to know about).</p>
+<p>However, it is even simpler
+to automate this code repetition by using the <code>collectcode</code> chunk
+option. We simply need to mark those code
+chunks we need re-executed in subsequent chunks.</p>
+</div>
+<div id="load-sasmarkdown" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Load SASmarkdown<a href="ch3.html#load-sasmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>```{r} 
+library(SASmarkdown)
+```</code></pre>
+</div>
+<div id="example-linking-code-blocks" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Example: Linking Code Blocks<a href="ch3.html#example-linking-code-blocks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose your first code block is a DATA step, explaining how to
+calculate a new variable. Specify the <code>collectcode</code> chunk option
+to have this DATA step "carry over" in (all of) the following
+code blocks.</p>
+<p>This is written as:</p>
+<pre><code>```{sas, collectcode=TRUE} 
+data class;
+  set sashelp.class;
+  bmi = 703*weight/height**2;
+run;
+```</code></pre>
+<p>In your document, the result is:</p>
+<pre class="sas"><code>data class;
+  set sashelp.class;
+  bmi = 703*weight/height**2;
+  run;</code></pre>
+<p>Next, we have a <em>separate</em> code block that uses the data.
+This is just a plain SAS code block.</p>
+<pre><code>```{sas} 
+proc means data=class;
+  var bmi;
+run;
+```</code></pre>
+<p>In your document this is:</p>
+<pre class="sas"><code>proc means data=class;
+  var bmi;
+  run;</code></pre>
+<pre><code>                            The MEANS Procedure
+
+                         Analysis Variable : bmi 
+ 
+     N            Mean         Std Dev         Minimum         Maximum
+    ------------------------------------------------------------------
+    19      17.8632519       2.0926193      13.4900007      21.4296601
+    ------------------------------------------------------------------</code></pre>
+<p><em>Written using</em></p>
+<ul>
+<li><em>SASmarkdown version 0.8.0.</em></li>
+<li><em>knitr version 1.40.</em></li>
+<li><em>R version 4.2.2 (2022-10-31 ucrt).</em></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ch2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+---
+title: "SAS PROC FREQ"
+author: "Doug Hemken"
+date: "March 2017"
+output:
+  html_document:
+    includes:
+      in_header: ../../Rmd/headKBprod.html
+      before_body: ../../Rmd/topKBprod.html
+      after_body: ../../Rmd/bottomKBprod.html
+    self_contained: no
+    theme: null
+    highlight: null
+    css: ../../Rmd/Rmd.css
+    toc: yes
+---
+```{r sassetup, echo=FALSE, message=FALSE}
+prevwd <- setwd("../")
+source("SasMDsetup.r")
+setwd(prevwd)
+```
+
+# Introduction
+`PROC FREQ` provides a core command for a number of tasks that
+revolve around frequency tables and crosstabulations (contingency
+tables).  You will use PROC FREQ for
+
+- one-way tables
+- two-way tables
+- chi-square tests of association
+- categorical measures of association, and other measures based on contingency tables
+- bar charts
+- creating data sets of counts or percents
+
+Documentation is found in the [Base SAS 9.4 Procedures Guide: Statistical Procedures](http://support.sas.com/documentation/cdl/en/procstat/66703/HTML/default/viewer.htm#procstat_freq_toc.htm).
+
+## Basic Use - One-Way Tables
+In its simplest use, PROC FREQ gives you counts and percents.
+
+```{r simple}
+proc freq data=sashelp.heart;
+    tables smoking_status;
+run;
+```
+
+## Minimal Specification
+
+This is the barest `PROC FREQ`.  Here, the default data set is `_LAST_`, and the default 
+variables to analyze are `_ALL_`.  (This example produces a lot of output!  So
+I haven\'t show the output here.)
+```{r bare, collectcode=TRUE}
+data heart;
+  set sashelp.heart;
+  run;
+```
+
+```{r, eval=FALSE}
+proc freq;
+run;
+```
+
+## Table Requests
+
+You can request one-way tables, two-way (or n-way) tables.  There is a table request
+\"algebra\" for n-way tables.
+
+You can request multiple
+tables per `TABLES` statement, and you can use multiple `TABLES` statements per PROC.
+
+### One-way
+```{r oneway}
+proc freq;
+  tables smoking_status;
+	run;
+```
+
+### Two-way
+Specified as row*column.
+```{r twoway}
+proc freq;
+	tables smoking_status*sex;
+	run;
+```
+
+The table request \"algebra\" consists of variable lists, the asterisk for
+\"crossing\" variables, and parentheses to distribute the crossing operation.
+
+So a specification like `A*(B C)` is equal to `A*B A*C`.  In a data set with 
+variables A through F, in order, the specification
+`(A--C)*(D--F)` would mean `A*D A*E A*F B*D B*E B*F C*D C*E C*F`.
+
+
+### Multiple requests per tables statement
+
+As implied by the request algebra, a single `TABLES` statements may have more than one 
+table request, and even more than one type of table requested.
+```{r multireq}
+proc freq;
+	tables smoking_status sex*smoking_status;
+	run;
+```
+
+### Multiple tables statements
+
+It is also possible to have multiple `TABLES` statements.  This is especially
+useful when specifying different table options for distinct groups of
+variables.
+```{r multitable}
+/* suppress some default output, and request additional statistics */
+proc freq;
+	tables smoking_status / nocum;
+	tables smoking_status*sex / nopercent nocol chisq;
+	run;
+```
+
+## Using Summary Data
+```{r summary, collectcode=TRUE}
+/* the data in summary or "table" form */
+data coffee2;
+  input loc $ type $ count;
+datalines;
+drive-up cappuccino 2
+window cappuccino 4
+drive-up espresso 6
+window espresso 2
+drive-up iced 2
+window iced 2
+drive-up kona 2
+window kona 9
+;
+
+proc print; run; /* look at data values in output */
+```
+
+```{r weights}
+proc freq data=coffee2;       /* weighted data */
+	tables type*loc / nopercent norow chisq;
+	weight count;  /* many procs have a "freq" statement */
+	run;
+```
+
+You also use `PROC FREQ` to create summary data sets, with the `OUTPUT=` option.
+```{r outputdata}
+proc freq data=coffee2 noprint;   /* save a crosstab as summary data */
+	tables loc * type /	out=coffeetable;
+	/* name a data set for the output*/
+	weight count;
+	run;
+
+proc print data=coffeetable; run;
+```
+
+```{r, engine='R', echo=FALSE}
+unlink("autoexec.sas")
+```

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Doug Hemken" />
+
+<meta name="date" content="2017-05-17" />
+
+<title>SAS, Markdown, and Directories</title>
+
+<!--#include virtual="/sscc/pubs/Rmd/headInclKB.html" -->
+
+
+
+
+
+<link rel="stylesheet" href="..\..\Rmd\Rmd.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+<!--#include virtual="/sscc/pubs/Rmd/topInclKB.html" -->
+
+
+<h1 class="title toc-ignore">SAS, Markdown, and Directories</h1>
+<h4 class="author"><em>Doug Hemken</em></h4>
+<h4 class="date"><em>May 17, 2017</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#example-run">Example run</a></li>
+</ul>
+</div>
+
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>In this example, all files should be in the same directory. That is, the rmd file, the (usually temporary) md file, and the final document (in this case, this html page you are reading).</p>
+<pre class="r"><code>getwd() # Initial location within a knitr eval session</code></pre>
+<pre><code>## [1] &quot;Z:/PUBLIC_web/SASworkshops/Markdown&quot;</code></pre>
+<p>This is also where knitr will write out temporary SAS code files (*.sas files). When SAS is called to evaluate these code files, this will be SAS's default location, per SAS's batch processing rules.</p>
+<pre class="r"><code>saspath &lt;- &quot;C:/Program files/SASHome/SASFoundation/9.4/sas.exe&quot;
+sasopts &lt;- &quot;-nosplash -ls 75&quot;
+knitr::opts_chunk$set(engine=&#39;sas&#39;, engine.path=saspath, engine.opts=sasopts, comment=&quot;&quot;)</code></pre>
+<p>Although the sasopts (SAS command line options when calling SAS in batch mode) might include directory locations for log and listing output, here we have specified none.</p>
+</div>
+<div id="example-run" class="section level2">
+<h2>Example run</h2>
+<pre class="sas"><code>proc means data=sashelp.class;
+run;</code></pre>
+<pre><code>                            The MEANS Procedure
+
+ Variable    N           Mean        Std Dev        Minimum        Maximum
+ -------------------------------------------------------------------------
+ Age        19     13.3157895      1.4926722     11.0000000     16.0000000
+ Height     19     62.3368421      5.1270752     51.3000000     72.0000000
+ Weight     19    100.0263158     22.7739335     50.5000000    150.0000000
+ -------------------------------------------------------------------------</code></pre>
+<p>Both knitr and SAS give you options for directing files to other locations, just remember that these will need to be set separately. Within knitr, the options are package options named named root.dir and base.dir.</p>
+</div>
+
+<!--#include virtual="/sscc/pubs/Rmd/bottomInclKB.html" -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+---
+title: "Regression and ANOVA in SAS"
+author: "Doug Hemken"
+date: "March 2015"
+output: html_document
+---
+
+There are two main procedures you will want to learn for
+working with general linear models in SAS:
+`proc reg` and `proc glm`.  In addition there are 
+quite a few other procs that provide specialized analyses
+of linear models.
+
+```{r, echo=FALSE}
+  backtick <- "`"
+  saspath <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe"
+  sasopts <- "-nosplash -log 'z:' -print 'Z:' -ls 75"
+```
+As a first example, consider the class data set.  To predict kids
+weight based on their height would look like this:
+```{r, engine="sas", engine.path=saspath, engine.opts=sasopts, comment=""}
+proc reg data=sashelp.class;
+    model weight = height;
+run;
+```

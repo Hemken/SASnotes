@@ -14,9 +14,9 @@ toc-expand: 1
 
 ## Using the SAS Windows (DMS)
 - [Introduction to the SAS Windowing
-Environment](http://support.sas.com/documentation/cdl/en/lrcon/67227/HTML/default/viewer.htm#p1kcewwv8r36lun1nvr2ryx9ks9h.htm)(SAS 9.4 Language Reference)
+Environment](http://support.sas.com/documentation/cdl/en/lrcon/67227/HTML/default/viewer.htm#p1kcewwv8r36lun1nvr2ryx9ks9h.htm) (SAS 9.4 Language Reference)
 - [Main Windows in the SAS Windowing
-Environment](http://support.sas.com/documentation/cdl/en/lrcon/67227/HTML/default/viewer.htm#n1039zk8bk9aton1fmbm7z2wji3k.htm)(SAS 9.4 Language Reference)
+Environment](http://support.sas.com/documentation/cdl/en/lrcon/67227/HTML/default/viewer.htm#n1039zk8bk9aton1fmbm7z2wji3k.htm) (SAS 9.4 Language Reference)
 - [Submitting Commands](SubmittingCode.html)
 
 ## Working with the SAS Language
@@ -34,7 +34,7 @@ Saving and Using SAS Files, and the SAS Language.
 - [Where to Store Data](bigsas.html)
 - [Compressed Data](4-11_SAS_Compressed_Data.html)
 - [Importing Large Text Files](4-11_Zipped_data.html)
-- [Optimizing System Performance](https://documentation.sas.com/doc/en/lrcon/9.4/p1xjhzwjv6ojukn18mi4j1ysye76.htm)(SAS 9.4 Language Reference)
+- [Optimizing System Performance](https://documentation.sas.com/doc/en/lrcon/9.4/p1xjhzwjv6ojukn18mi4j1ysye76.htm) (SAS 9.4 Language Reference)
 
 ## Building Data Sets (Data Wrangling)
 ### The DATA step
@@ -48,6 +48,7 @@ Saving and Using SAS Files, and the SAS Language.
 - [Conditional Processing:  IF-THEN/ELSE](4-18_If-Then_Else.html)
 - [Statement groups and Iterations:  DO/END](4-18_Do_groups_and_loops.html)
 - [Iterating over variables:  Variable Arrays](4-5_SAS_Arrays.html)
+- [Repeated and Duplicate Observations](duplicates.html)
 
 ### Beyond the DATA step
 - [Variable Labels](variable_labels.html)
@@ -88,37 +89,30 @@ Saving and Using SAS Files, and the SAS Language.
 -   [ODS example: collecting
     lsmeans](Output%20data/collecting%20lsmeans.sas)
 
-## [Common Statistical Procedures](BasicStats/SAS%202%20-%20Common%20Statistics.pdf)
--   [Frequencies and
-    Crosstabs](BasicStats/procfreq.sas)
--   [Means](BasicStats/procmeans.sas) and
-    [Weighted
-    Means](BasicStats/procmeansweighted.sas)
+## Common Statistical Procedures
+-   [Frequencies and Crosstabs](BasicStats/procfreq.sas)
+-   [Means](BasicStats/procmeans.sas)
+-   [Weighted Means](BasicStats/procmeansweighted.sas)
 -   [Correlations](BasicStats/proccorr.sas)
 -   [Regression](BasicStats/procreg.sas)
 
 ## [Graphics](Graphs/SAS%20Graphics.pdf)
-
 - [Three graphics systems](Graphs/Three%20Graphics%20Systems.sas)
 - [Finding graphics commands](Graphs/Statistical%20graphics%20examples.sas)
-
-Plots
-
--   [proc sgplot](Graphs/sgplot%20forbes.sas)
--   [proc gplot](Graphs/gplot%20forbes.sas)
-
-[Charts](Graphs/Statistical%20graphics%20examples.sas)
-
--   [proc sgplot](Graphs/sgplot%20pie%20sales.sas)
--   [proc gchart](Graphs/gchart%20pie%20sales.sas)
+- Twoway Plots
+  -   [proc sgplot](Graphs/sgplot%20forbes.sas)
+  -   [proc gplot](Graphs/gplot%20forbes.sas)
+- [Categorical Charts](Graphs/Statistical%20graphics%20examples.sas)
+  -   [proc sgplot](Graphs/sgplot%20pie%20sales.sas)
+  -   [proc gchart](Graphs/gchart%20pie%20sales.sas)
 
 ## Macros
--   [Let (Macro variables)](Macros/M1.sas)
--   [Simple Macros](Macros/M2.sas)
--   [Macros with parameters](Macros/M3.sas)
--   [Macro flow](Macros/M4.sas)
+- [Let (Macro variables)](Macros/M1.sas)
+- [Simple Macros](Macros/M2.sas)
+- [Macros with parameters](Macros/M3.sas)
+- [Macro flow](Macros/M4.sas)
 
-    [Interleaved output](Macros/interleaved%20output%20from%20multiple%20procs.sas)
+- [Interleaved output](Macros/interleaved%20output%20from%20multiple%20procs.sas)
 
 ## Writing SAS Documentation
 Some notes on how to write up SAS documentation using Markdown and RMarkdown.
@@ -138,6 +132,5 @@ simple Word documents.
 -   [spinSAS - Markdown in SAS comments](Markdown/ch10.html)
 
 ## Running R from SAS
-
 - [Configuration and Basic Use](SASWindows/RfromSAS.html)
 

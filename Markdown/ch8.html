@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 SAS National Language Support | SASmarkdown</title>
+  <meta name="description" content="8 SAS National Language Support | SASmarkdown" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 SAS National Language Support | SASmarkdown" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 SAS National Language Support | SASmarkdown" />
+  
+  
+  
+
+<meta name="author" content="Doug Hemken" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ch7.html"/>
+<link rel="next" href="ch9.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> The SASmarkdown Package</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#set-up-the-sas-engines"><i class="fa fa-check"></i><b>1.2</b> Set up the SAS Engines</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-an-engine"><i class="fa fa-check"></i><b>1.3</b> Use an Engine</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#sas-engine"><i class="fa fa-check"></i><b>1.3.1</b> "sas" engine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch2.html"><a href="ch2.html"><i class="fa fa-check"></i><b>2</b> Using SASmarkdown</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ch2.html"><a href="ch2.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="ch2.html"><a href="ch2.html#background"><i class="fa fa-check"></i><b>2.2</b> Background</a></li>
+<li class="chapter" data-level="2.3" data-path="ch2.html"><a href="ch2.html#including-sas-code-in-your-document"><i class="fa fa-check"></i><b>2.3</b> Including SAS Code in your Document</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="ch2.html"><a href="ch2.html#limitations"><i class="fa fa-check"></i><b>2.3.1</b> Limitations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="ch2.html"><a href="ch2.html#html-or-pdf-document"><i class="fa fa-check"></i><b>2.3.2</b> HTML or PDF Document?</a></li>
+<li class="chapter" data-level="2.3.3" data-path="ch2.html"><a href="ch2.html#document-setup"><i class="fa fa-check"></i><b>2.3.3</b> Document Setup</a></li>
+<li class="chapter" data-level="2.3.4" data-path="ch2.html"><a href="ch2.html#code-chunk-setup"><i class="fa fa-check"></i><b>2.3.4</b> Code Chunk Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="ch2.html"><a href="ch2.html#running-sas"><i class="fa fa-check"></i><b>2.4</b> Running SAS</a></li>
+<li class="chapter" data-level="2.5" data-path="ch2.html"><a href="ch2.html#html-output-and-graphics"><i class="fa fa-check"></i><b>2.5</b> HTML Output and Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch3.html"><a href="ch3.html"><i class="fa fa-check"></i><b>3</b> Linking Code Blocks</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ch3.html"><a href="ch3.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="ch3.html"><a href="ch3.html#load-sasmarkdown"><i class="fa fa-check"></i><b>3.2</b> Load SASmarkdown</a></li>
+<li class="chapter" data-level="3.3" data-path="ch3.html"><a href="ch3.html#example-linking-code-blocks"><i class="fa fa-check"></i><b>3.3</b> Example: Linking Code Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch4.html"><a href="ch4.html"><i class="fa fa-check"></i><b>4</b> SAS HTML output</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ch4.html"><a href="ch4.html#set-up"><i class="fa fa-check"></i><b>4.1</b> Set up</a></li>
+<li class="chapter" data-level="4.2" data-path="ch4.html"><a href="ch4.html#using-the-sashtml-engine"><i class="fa fa-check"></i><b>4.2</b> Using the 'sashtml' engine</a></li>
+<li class="chapter" data-level="4.3" data-path="ch4.html"><a href="ch4.html#using-the-sashtml5-engine"><i class="fa fa-check"></i><b>4.3</b> Using the 'sashtml5' engine</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch5.html"><a href="ch5.html"><i class="fa fa-check"></i><b>5</b> SAS Logs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ch5.html"><a href="ch5.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a></li>
+<li class="chapter" data-level="5.2" data-path="ch5.html"><a href="ch5.html#using-the-saslog-engine"><i class="fa fa-check"></i><b>5.2</b> Using the <code>saslog</code> engine</a></li>
+<li class="chapter" data-level="5.3" data-path="ch5.html"><a href="ch5.html#using-the-sashtmllog-and-sashtml5log-engines"><i class="fa fa-check"></i><b>5.3</b> Using the <code>sashtmllog</code> and <code>sashtml5log</code> engines</a></li>
+<li class="chapter" data-level="5.4" data-path="ch5.html"><a href="ch5.html#sas-error-messages"><i class="fa fa-check"></i><b>5.4</b> SAS ERROR messages</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch5.html"><a href="ch5.html#semantic-and-execution-errors"><i class="fa fa-check"></i><b>5.4.1</b> Semantic and Execution Errors</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ch5.html"><a href="ch5.html#mathematical-errors"><i class="fa fa-check"></i><b>5.4.2</b> Mathematical Errors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch6.html"><a href="ch6.html"><i class="fa fa-check"></i><b>6</b> Cleaning Up SAS Log Output</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ch6.html"><a href="ch6.html#intro"><i class="fa fa-check"></i><b>6.1</b> Intro</a></li>
+<li class="chapter" data-level="6.2" data-path="ch6.html"><a href="ch6.html#setup"><i class="fa fa-check"></i><b>6.2</b> Setup</a></li>
+<li class="chapter" data-level="6.3" data-path="ch6.html"><a href="ch6.html#default-log"><i class="fa fa-check"></i><b>6.3</b> Default Log</a></li>
+<li class="chapter" data-level="6.4" data-path="ch6.html"><a href="ch6.html#global-cleanup"><i class="fa fa-check"></i><b>6.4</b> Global Cleanup</a></li>
+<li class="chapter" data-level="6.5" data-path="ch6.html"><a href="ch6.html#chunk-cleanup"><i class="fa fa-check"></i><b>6.5</b> Chunk Cleanup</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="ch6.html"><a href="ch6.html#sasproctime"><i class="fa fa-check"></i><b>6.5.1</b> SASproctime</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch6.html"><a href="ch6.html#sasecho"><i class="fa fa-check"></i><b>6.5.2</b> SASecho</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ch6.html"><a href="ch6.html#sasnotes"><i class="fa fa-check"></i><b>6.5.3</b> SASnotes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch7.html"><a href="ch7.html"><i class="fa fa-check"></i><b>7</b> SAS LaTeX</a></li>
+<li class="chapter" data-level="8" data-path="ch8.html"><a href="ch8.html"><i class="fa fa-check"></i><b>8</b> SAS National Language Support</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ch8.html"><a href="ch8.html#intro-1"><i class="fa fa-check"></i><b>8.1</b> Intro</a></li>
+<li class="chapter" data-level="8.2" data-path="ch8.html"><a href="ch8.html#setup-1"><i class="fa fa-check"></i><b>8.2</b> Setup</a></li>
+<li class="chapter" data-level="8.3" data-path="ch8.html"><a href="ch8.html#default-language"><i class="fa fa-check"></i><b>8.3</b> Default Language</a></li>
+<li class="chapter" data-level="8.4" data-path="ch8.html"><a href="ch8.html#french"><i class="fa fa-check"></i><b>8.4</b> French</a></li>
+<li class="chapter" data-level="8.5" data-path="ch8.html"><a href="ch8.html#chinese"><i class="fa fa-check"></i><b>8.5</b> Chinese</a></li>
+<li class="chapter" data-level="8.6" data-path="ch8.html"><a href="ch8.html#documentation"><i class="fa fa-check"></i><b>8.6</b> Documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch9.html"><a href="ch9.html"><i class="fa fa-check"></i><b>9</b> Saving Intermediate SAS files</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ch9.html"><a href="ch9.html#saving-sas-files"><i class="fa fa-check"></i><b>9.1</b> Saving SAS files</a></li>
+<li class="chapter" data-level="9.2" data-path="ch9.html"><a href="ch9.html#saving-markdown-and-latex-files"><i class="fa fa-check"></i><b>9.2</b> Saving Markdown and LaTeX files</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch10.html"><a href="ch10.html"><i class="fa fa-check"></i><b>10</b> SpinSAS</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ch10.html"><a href="ch10.html#special-markup"><i class="fa fa-check"></i><b>10.1</b> Special Markup</a></li>
+<li class="chapter" data-level="10.2" data-path="ch10.html"><a href="ch10.html#semi-colons"><i class="fa fa-check"></i><b>10.2</b> Semi-colons</a></li>
+<li class="chapter" data-level="10.3" data-path="ch10.html"><a href="ch10.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="10.4" data-path="ch10.html"><a href="ch10.html#processing"><i class="fa fa-check"></i><b>10.4</b> Processing</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SASmarkdown</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ch8" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> SAS National Language Support<a href="ch8.html#ch8" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="intro-1" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Intro<a href="ch8.html#intro-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>SAS allows you to work with a wide variety language encodings, and
+provides user interfaces to a handful of these encodings as well.
+This also means that your SAS output might be encoded in many different
+ways. However Rmarkdown assumes that all input is in the UTF-8
+encoding (which should accomodate the whole variety).</p>
+</div>
+<div id="setup-1" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Setup<a href="ch8.html#setup-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Set up your document by loading SASmarkdown.</p>
+<pre class="r"><code>library(SASmarkdown)</code></pre>
+<p>To use a language encoding that is not your default <em>in SAS</em> requires
+additional set up when SAS is started. This is accomplished by adding
+a <code>-config</code> option on the SAS command line. In Markdown this will
+be done through the <code>engine.opts</code> setting.</p>
+<p>To then read a SAS output file in a non-“latin1” encoding into Rmarkdown,
+an <code>encoding</code> chunk option will be used.</p>
+</div>
+<div id="default-language" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Default Language<a href="ch8.html#default-language" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Your default language depends on how you have SAS configured. In my case,
+SAS defaults to an English language interface, and a “latin1” (or “wlatin1” on
+Windows) language encoding.</p>
+<p>First, consider an example that gives us the default listing output:</p>
+<pre class="sas"><code>proc means data=sashelp.class(keep=height);
+run;</code></pre>
+<pre><code>                            The MEANS Procedure
+
+                        Analysis Variable : Height 
+ 
+     N            Mean         Std Dev         Minimum         Maximum
+    ------------------------------------------------------------------
+    19      62.3368421       5.1270752      51.3000000      72.0000000
+    ------------------------------------------------------------------</code></pre>
+</div>
+<div id="french" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> French<a href="ch8.html#french" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>I can switch to a French encoding by pointing SAS to the French
+language configuration file.</p>
+<pre class="r"><code>sasopts &lt;- &quot;-nosplash -ls 75 -config &#39;C:/Program Files/SASHome/SASFoundation/9.4/nls/fr/sasv9.cfg&#39;&quot;
+knitr::opts_chunk$set(engine.opts=list(sas=sasopts, saslog=sasopts))</code></pre>
+<p>Because French output is also encoded in the “latin1” standard, nothing special is required to use
+the SAS output.</p>
+<p>The result is:</p>
+<pre class="sas"><code>proc means data=sashelp.class(keep=height);
+run;</code></pre>
+<pre><code>                            La procédure MEANS
+
+                       Variable d&#39;analyse : Height 
+ 
+     N         Moyenne         Ec-type         Minimum         Maximum
+    ------------------------------------------------------------------
+    19      62.3368421       5.1270752      51.3000000      72.0000000
+    ------------------------------------------------------------------</code></pre>
+<p>And using HTML output:</p>
+<pre class="sashtml"><code>proc means data=sashelp.class(keep=height);
+run;</code></pre>
+<div class="branch">
+<a name="IDX"></a>
+<div>
+<div align="center">
+<!--BEGINTABLE-->
+<table class="table" cellspacing="0" cellpadding="7" rules="groups" frame="hsides" summary="Procedure Means: Statistiques descriptives">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" colspan="5" scope="colgroup">
+Variable d'analyse : Height
+</th>
+</tr>
+<tr>
+<th class="r b header" scope="col">
+N
+</th>
+<th class="r b header" scope="col">
+Moyenne
+</th>
+<th class="r b header" scope="col">
+Ec-type
+</th>
+<th class="r b header" scope="col">
+Minimum
+</th>
+<th class="r b header" scope="col">
+Maximum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="r data">
+19
+</td>
+<td class="r data">
+62.3368421
+</td>
+<td class="r data">
+5.1270752
+</td>
+<td class="r data">
+51.3000000
+</td>
+<td class="r data">
+72.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+</div>
+<br>
+</div>
+</div>
+<div id="chinese" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Chinese<a href="ch8.html#chinese" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Switching to a Chinese encoding requires one extra step. Not only do we have
+to ensure that SAS produces Chinese output (this might be your default, but it
+is not mine), but we also have to instruct Rmarkdown to transcode from Chinese
+(in this case, the “gbk” standard) to UTF-8.</p>
+<p>So a SAS set up is</p>
+<pre class="r"><code>sasopts &lt;- &quot;-nosplash -ls 75 -config &#39;C:/Program Files/SASHome/SASFoundation/9.4/nls/zh/sasv9.cfg&#39;&quot;
+knitr::opts_chunk$set(engine.opts=list(sas=sasopts, saslog=sasopts, 
+                                       sashtml=sasopts, sashtmllog=sasopts))</code></pre>
+<p>This Chinese output is also encoded in the “gbk” standard, so a chunk option is
+required to use the SAS output properly.</p>
+<p>The code chunk looks like this:</p>
+<pre><code>```{sas, encoding=&quot;gbk&quot;} 
+proc means data=sashelp.class(keep=height);
+run;
+```</code></pre>
+<p>The result is:</p>
+<pre class="sas"><code>proc means data=sashelp.class(keep=height);
+run;</code></pre>
+<pre><code>                              MEANS PROCEDURE
+
+                       分析变量: Height 身高（英寸）
+ 
+   数目            均值          标准差          最小值          最大值
+   --------------------------------------------------------------------
+     19      62.3368421       5.1270752      51.3000000      72.0000000
+   --------------------------------------------------------------------</code></pre>
+<p>And with HTML output:</p>
+<pre class="sashtml"><code>proc means data=sashelp.class(keep=height);
+run;</code></pre>
+<div class="branch">
+<a name="IDX"></a>
+<div>
+<div align="center">
+<!--BEGINTABLE-->
+<table class="table" cellspacing="0" cellpadding="7" rules="groups" frame="hsides" summary="Procedure Means: 汇总统计量">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="c b header" colspan="5" scope="colgroup">
+分析变量: Height 身高（英寸）
+</th>
+</tr>
+<tr>
+<th class="r b header" scope="col">
+数目
+</th>
+<th class="r b header" scope="col">
+均值
+</th>
+<th class="r b header" scope="col">
+标准差
+</th>
+<th class="r b header" scope="col">
+最小值
+</th>
+<th class="r b header" scope="col">
+最大值
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="r data">
+19
+</td>
+<td class="r data">
+62.3368421
+</td>
+<td class="r data">
+5.1270752
+</td>
+<td class="r data">
+51.3000000
+</td>
+<td class="r data">
+72.0000000
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+</div>
+<br>
+</div>
+</div>
+<div id="documentation" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Documentation<a href="ch8.html#documentation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To see what encodings you may use for SASmarkdown, use the function <code>iconvlist()</code>. The result is
+platform dependent.</p>
+<p>To see what encodings SAS is capable of producing see <a href="https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/nlsref/p0reo28sy0m4xpn1sa2v2sbwzap8.htm">Encoding Values for
+a SAS Session</a>.
+The options again depend on your operating system (platform).</p>
+<p>To see what encoding SAS is using,</p>
+<pre class="saslog"><code>2          proc options option=encoding;
+3          run;
+     SAS (R) PROPRIETARY SOFTWARE RELEASE 9.4  TS1M6
+
+ ENCODING=EUC-CN   指定 SAS 会话的默认字符集编码。
+</code></pre>
+<p>Be aware that the encoding name given by SAS may not match the encoding name
+used by R. Here, for instance, SAS calls it’s encoding “EUC-CN”, but that value
+fails in R (despite being in the <code>iconvlist</code>).</p>
+<p>After a little experimentation,
+I find “gb2312” and “gbk” (an expanded version of “gb2312”) both appear to work.
+(But I don’t read or speak any Chinese language, so someone tell me if my choice
+is wrong!) I came to these guesses by</p>
+<ul>
+<li>looking at the output file with the Notepad++ text editor, which guessed the
+file is “gb2312”</li>
+<li>and by saving SAS HTML output and looking at the character set it declared,
+which was “gbk”.</li>
+</ul>
+<p><em>Written using</em></p>
+<ul>
+<li><em>SASmarkdown version 0.8.0.</em></li>
+<li><em>knitr version 1.40.</em></li>
+<li><em>R version 4.2.2 (2022-10-31 ucrt).</em></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ch7.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch9.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

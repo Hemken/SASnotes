@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Doug Hemken" />
+
+
+<title>Including SAS Logs in Documents</title>
+
+<!--#include virtual="/sscc/pubs/Rmd/headInclKB.html" -->
+
+
+
+
+
+<link rel="stylesheet" href="..\..\Rmd\Rmd.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+<!--#include virtual="/sscc/pubs/Rmd/topInclKB.html" -->
+
+
+<h1 class="title toc-ignore">Including SAS Logs in Documents</h1>
+<h4 class="author"><em>Doug Hemken</em></h4>
+<h4 class="date"><em>February 2017</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#background">Background</a></li>
+<li><a href="#using-proc-printto">Using PROC PRINTTO</a></li>
+<li><a href="#data-step-put-files">DATA Step PUT Files</a></li>
+<li><a href="#showing-sas-error-messages-in-logs">Showing SAS Error Messages in Logs</a></li>
+</ul>
+</div>
+
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>SAS is unusual software in that it generates two distinct output streams. In addition to the typical tables and graphs (in a variety of formats, including text and html), SAS echos your code and writes notes and messages in a separate log file. Most software directs all of this into just one document.</p>
+<p>When using <em>R Markdown</em> and <em>knitr</em> to create simple SAS documentation, we can often skip showing the user the contents of the log file. The default output in knitr is the <code>listing</code> (text) output.</p>
+<p>However, from time to time it is useful to show the reader what they will find in a log file. How do we get knitr to include that?</p>
+<p>There are several possibilities here, depending on just what we need to show the reader. Here I'll look at some ways to use SAS commands to save log output. In another document I'll look at how to rewrite <em>knitr</em>'s &quot;sas engine&quot; to do this. The advantage of using SAS code is that a SAS programmer ought to know these commands anyway. The disadvantage is that if you need to show the reader a lot of logs, the setup will get repetitive.</p>
+<p>For either approach, if you want to fine tune how much of the logs you show the reader, you need to know some R.</p>
+<p>There are two options for using commands within SAS, <code>PROC PRINTTO</code> or the <code>PUT</code> and <code>FILE</code> statements within a <code>DATA</code> step. These use SAS to create separate files which can then be included in an R Markdown document.</p>
+</div>
+<div id="using-proc-printto" class="section level2">
+<h2>Using PROC PRINTTO</h2>
+<p>There is a utility procedure in SAS, <code>PROC PRINTTO</code>, that allows you to redirect the log, the listing output, or both.</p>
+<pre><code>```{r, engine=&#39;sas&#39;, engine.path=saspath, engine.opts=sasopts}
+proc printto log=&quot;saslog.log&quot; new;
+proc means data=sashelp.class;
+run;
+```</code></pre>
+<pre><code>                            The MEANS Procedure
+
+ Variable    N           Mean        Std Dev        Minimum        Maximum
+ -------------------------------------------------------------------------
+ Age        19     13.3157895      1.4926722     11.0000000     16.0000000
+ Height     19     62.3368421      5.1270752     51.3000000     72.0000000
+ Weight     19    100.0263158     22.7739335     50.5000000    150.0000000
+ -------------------------------------------------------------------------</code></pre>
+<p>(The <code>PROC PRINTTO</code> command could be hidden with the <code>echo=-1</code> chunk option.)</p>
+<p>The log is then shown by a separate code chunk.</p>
+<pre><code>```{r}
+cat(readLines(&quot;saslog.log&quot;), sep=&quot;\n&quot;)
+unlink(&quot;saslog.log&quot;)
+```</code></pre>
+<pre><code>NOTE: PROCEDURE PRINTTO used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+3          proc means data=sashelp.class;
+4          run;
+
+NOTE: There were 19 observations read from the data set SASHELP.CLASS.
+NOTE: The PROCEDURE MEANS printed page 1.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      </code></pre>
+<p>(We could hide all the R code that reads and deletes the log file with the <code>echo=FALSE</code> chunk option.)</p>
+<p>We can hide parts of the log file itself, too, by including just selected lines from <code>readLines()</code>. For simple manipulations, like removing several leading lines, the R code isn't too difficult:</p>
+<pre><code>```
+cat(tail(readLines(&quot;saslog.log&quot;), -5), sep=&quot;\n&quot;)
+```</code></pre>
+<p>(Display the &quot;tail&quot; of the log from it's &quot;head&quot;, minus the first 5 lines.)</p>
+</div>
+<div id="data-step-put-files" class="section level2">
+<h2>DATA Step PUT Files</h2>
+<p>In additional to echoing code and giving notes and error messages, the SAS log is also used to capture data values from DATA steps. This is useful for debugging and even for very simple reports. Here we are using SAS's PUT and FILE statements (so technically we are sidestepping the SAS log, and there is no PROC PRINTTO required).</p>
+<pre class="sas"><code>data class;
+  set sashelp.class;
+  file &quot;sasput.txt&quot;;
+  if sex eq &quot;M&quot; then put name= age= sex=;
+run;</code></pre>
+<p>And we can see the result as before:</p>
+<pre class="r"><code>cat(readLines(&quot;sasput.txt&quot;), sep=&quot;\n&quot;)</code></pre>
+<pre><code>Name=Alfred Age=14 Sex=M
+Name=Henry Age=14 Sex=M
+Name=James Age=12 Sex=M
+Name=Jeffrey Age=13 Sex=M
+Name=John Age=12 Sex=M
+Name=Philip Age=16 Sex=M
+Name=Robert Age=12 Sex=M
+Name=Ronald Age=15 Sex=M
+Name=Thomas Age=11 Sex=M
+Name=William Age=15 Sex=M</code></pre>
+</div>
+<div id="showing-sas-error-messages-in-logs" class="section level2">
+<h2>Showing SAS Error Messages in Logs</h2>
+<p>For showing errors in logs, SAS error messages come in two varieties: DATA step errors, and PROC step errors.</p>
+<p>DATA step errors are signaled by an internal _ERROR_ variable, and can be captured and shown to the reader by the PROC PRINTTO method.</p>
+<pre class="sas"><code>data class;
+  set sashelp.class(obs=6);
+  if sex eq 1 then put name= age= sex=;
+run;</code></pre>
+<p>And the log looks like this:</p>
+<pre><code>NOTE: Character values have been converted to numeric 
+      values at the places given by: (Line):(Column).
+      5:6   
+NOTE: Invalid numeric data, Sex=&#39;M&#39; , at line 5 column 6.
+Name=Alfred Sex=M Age=14 Height=69 Weight=112.5 _ERROR_=1 _N_=1
+NOTE: Invalid numeric data, Sex=&#39;F&#39; , at line 5 column 6.
+Name=Alice Sex=F Age=13 Height=56.5 Weight=84 _ERROR_=1 _N_=2
+NOTE: Invalid numeric data, Sex=&#39;F&#39; , at line 5 column 6.
+Name=Barbara Sex=F Age=13 Height=65.3 Weight=98 _ERROR_=1 _N_=3
+NOTE: Invalid numeric data, Sex=&#39;F&#39; , at line 5 column 6.
+Name=Carol Sex=F Age=14 Height=62.8 Weight=102.5 _ERROR_=1 _N_=4
+NOTE: Invalid numeric data, Sex=&#39;M&#39; , at line 5 column 6.
+Name=Henry Sex=M Age=14 Height=63.5 Weight=102.5 _ERROR_=1 _N_=5
+NOTE: Invalid numeric data, Sex=&#39;M&#39; , at line 5 column 6.
+Name=James Sex=M Age=12 Height=57.3 Weight=83 _ERROR_=1 _N_=6
+NOTE: There were 6 observations read from the data set SASHELP.CLASS.
+NOTE: The data set WORK.CLASS has 6 observations and 5 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.00 seconds
+      </code></pre>
+<p>Although SAS notes that there are errors in processing individual observations, the DATA step still runs (a potential problem that any SAS programmer will find familiar).</p>
+<p>To log PROC errors, you must use chunk option <code>error=TRUE</code>. Here, SAS exits with an error code (although it still gives you output), and in the R world this is usually the signal to stop everything.</p>
+<pre><code>```{r, engine=&#39;sas&#39;, engine.path=saspath, engine.opts=sasopts, error=TRUE, echo=FALSE}
+proc printto log=&quot;saslog.log&quot; new;
+proc means data=sashelp.class;
+  var gender; *ERROR HERE;
+run;
+```</code></pre>
+<p>Which gives us the log:</p>
+<pre><code>3          proc means data=sashelp.class;
+4            var gender; *ERROR HERE;
+ERROR: Variable GENDER not found.
+5          run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.00 seconds
+      </code></pre>
+</div>
+
+<!--#include virtual="/sscc/pubs/Rmd/bottomInclKB.html" -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+project:
+  type: website
+  output-dir: SASnotes
+
+#metadata-files:
+#  - _prod.yml
+  
+execute: 
+  freeze: auto
+
+website:
+  google-analytics: "UA-26623692-1"  
+  reader-mode: true
+
+  navbar:
+    search: true
+    title: false
+    logo: uw-crest.png
+    left:
+     - text: "Social Science<br>Computing Cooperative<br>UW-Madison"
+       href: "https://sscc.wisc.edu"
+     - text: "<br><br>Knowledge Base"
+       href: "https://kb.wisc.edu/sscc/"
+     - text: "<br><br>Training"
+       href: "https://sscc.wisc.edu/sscc_jsp/training/"
+     - text: "<br><br>Statistical Consulting"
+       href: "https://sscc.wisc.edu/statistics/statistical-consulting/"
+     - text: "<br><br>Join the SSCC"
+       href: "https://sscc.wisc.edu/about-the-ssc/join-the-sscc/"
+
+  page-footer:
+    left:
+     - text: "Feedback, questions or accessibility issues:"
+       href: "https://sscc.wisc.edu/get-help/"
+    center:
+     - text: "helpdesk@ssc.wisc.edu"
+       href: "mailto: helpdesk@ssc.wisc.edu"
+     - text: "608-262-9917"
+       href: "tel:608-262-9917"
+    right:
+     - text: "© 2024 Board of Regents of the University of Wisconsin System."
+       href: "https://www.wisconsin.edu/"
+
+format:
+  html:
+    theme: 
+      light: [cosmo, quarto_book_theme.scss]
+      dark: [darkly, quarto_book_theme.scss]
+    css: quarto_book_style.css
+    toc: true
+    toc-location: left
+    smooth-scroll: true
+    toc-depth: 4
+    toc-expand: 2

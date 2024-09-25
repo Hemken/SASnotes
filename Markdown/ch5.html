@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 SAS Logs | SASmarkdown</title>
+  <meta name="description" content="5 SAS Logs | SASmarkdown" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 SAS Logs | SASmarkdown" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 SAS Logs | SASmarkdown" />
+  
+  
+  
+
+<meta name="author" content="Doug Hemken" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ch4.html"/>
+<link rel="next" href="ch6.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> The SASmarkdown Package</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.1</b> Installation</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#set-up-the-sas-engines"><i class="fa fa-check"></i><b>1.2</b> Set up the SAS Engines</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#use-an-engine"><i class="fa fa-check"></i><b>1.3</b> Use an Engine</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#sas-engine"><i class="fa fa-check"></i><b>1.3.1</b> "sas" engine</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch2.html"><a href="ch2.html"><i class="fa fa-check"></i><b>2</b> Using SASmarkdown</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ch2.html"><a href="ch2.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="ch2.html"><a href="ch2.html#background"><i class="fa fa-check"></i><b>2.2</b> Background</a></li>
+<li class="chapter" data-level="2.3" data-path="ch2.html"><a href="ch2.html#including-sas-code-in-your-document"><i class="fa fa-check"></i><b>2.3</b> Including SAS Code in your Document</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="ch2.html"><a href="ch2.html#limitations"><i class="fa fa-check"></i><b>2.3.1</b> Limitations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="ch2.html"><a href="ch2.html#html-or-pdf-document"><i class="fa fa-check"></i><b>2.3.2</b> HTML or PDF Document?</a></li>
+<li class="chapter" data-level="2.3.3" data-path="ch2.html"><a href="ch2.html#document-setup"><i class="fa fa-check"></i><b>2.3.3</b> Document Setup</a></li>
+<li class="chapter" data-level="2.3.4" data-path="ch2.html"><a href="ch2.html#code-chunk-setup"><i class="fa fa-check"></i><b>2.3.4</b> Code Chunk Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="ch2.html"><a href="ch2.html#running-sas"><i class="fa fa-check"></i><b>2.4</b> Running SAS</a></li>
+<li class="chapter" data-level="2.5" data-path="ch2.html"><a href="ch2.html#html-output-and-graphics"><i class="fa fa-check"></i><b>2.5</b> HTML Output and Graphics</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch3.html"><a href="ch3.html"><i class="fa fa-check"></i><b>3</b> Linking Code Blocks</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ch3.html"><a href="ch3.html#introduction-1"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="ch3.html"><a href="ch3.html#load-sasmarkdown"><i class="fa fa-check"></i><b>3.2</b> Load SASmarkdown</a></li>
+<li class="chapter" data-level="3.3" data-path="ch3.html"><a href="ch3.html#example-linking-code-blocks"><i class="fa fa-check"></i><b>3.3</b> Example: Linking Code Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch4.html"><a href="ch4.html"><i class="fa fa-check"></i><b>4</b> SAS HTML output</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ch4.html"><a href="ch4.html#set-up"><i class="fa fa-check"></i><b>4.1</b> Set up</a></li>
+<li class="chapter" data-level="4.2" data-path="ch4.html"><a href="ch4.html#using-the-sashtml-engine"><i class="fa fa-check"></i><b>4.2</b> Using the 'sashtml' engine</a></li>
+<li class="chapter" data-level="4.3" data-path="ch4.html"><a href="ch4.html#using-the-sashtml5-engine"><i class="fa fa-check"></i><b>4.3</b> Using the 'sashtml5' engine</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch5.html"><a href="ch5.html"><i class="fa fa-check"></i><b>5</b> SAS Logs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ch5.html"><a href="ch5.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a></li>
+<li class="chapter" data-level="5.2" data-path="ch5.html"><a href="ch5.html#using-the-saslog-engine"><i class="fa fa-check"></i><b>5.2</b> Using the <code>saslog</code> engine</a></li>
+<li class="chapter" data-level="5.3" data-path="ch5.html"><a href="ch5.html#using-the-sashtmllog-and-sashtml5log-engines"><i class="fa fa-check"></i><b>5.3</b> Using the <code>sashtmllog</code> and <code>sashtml5log</code> engines</a></li>
+<li class="chapter" data-level="5.4" data-path="ch5.html"><a href="ch5.html#sas-error-messages"><i class="fa fa-check"></i><b>5.4</b> SAS ERROR messages</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch5.html"><a href="ch5.html#semantic-and-execution-errors"><i class="fa fa-check"></i><b>5.4.1</b> Semantic and Execution Errors</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ch5.html"><a href="ch5.html#mathematical-errors"><i class="fa fa-check"></i><b>5.4.2</b> Mathematical Errors</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch6.html"><a href="ch6.html"><i class="fa fa-check"></i><b>6</b> Cleaning Up SAS Log Output</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ch6.html"><a href="ch6.html#intro"><i class="fa fa-check"></i><b>6.1</b> Intro</a></li>
+<li class="chapter" data-level="6.2" data-path="ch6.html"><a href="ch6.html#setup"><i class="fa fa-check"></i><b>6.2</b> Setup</a></li>
+<li class="chapter" data-level="6.3" data-path="ch6.html"><a href="ch6.html#default-log"><i class="fa fa-check"></i><b>6.3</b> Default Log</a></li>
+<li class="chapter" data-level="6.4" data-path="ch6.html"><a href="ch6.html#global-cleanup"><i class="fa fa-check"></i><b>6.4</b> Global Cleanup</a></li>
+<li class="chapter" data-level="6.5" data-path="ch6.html"><a href="ch6.html#chunk-cleanup"><i class="fa fa-check"></i><b>6.5</b> Chunk Cleanup</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="ch6.html"><a href="ch6.html#sasproctime"><i class="fa fa-check"></i><b>6.5.1</b> SASproctime</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch6.html"><a href="ch6.html#sasecho"><i class="fa fa-check"></i><b>6.5.2</b> SASecho</a></li>
+<li class="chapter" data-level="6.5.3" data-path="ch6.html"><a href="ch6.html#sasnotes"><i class="fa fa-check"></i><b>6.5.3</b> SASnotes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch7.html"><a href="ch7.html"><i class="fa fa-check"></i><b>7</b> SAS LaTeX</a></li>
+<li class="chapter" data-level="8" data-path="ch8.html"><a href="ch8.html"><i class="fa fa-check"></i><b>8</b> SAS National Language Support</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ch8.html"><a href="ch8.html#intro-1"><i class="fa fa-check"></i><b>8.1</b> Intro</a></li>
+<li class="chapter" data-level="8.2" data-path="ch8.html"><a href="ch8.html#setup-1"><i class="fa fa-check"></i><b>8.2</b> Setup</a></li>
+<li class="chapter" data-level="8.3" data-path="ch8.html"><a href="ch8.html#default-language"><i class="fa fa-check"></i><b>8.3</b> Default Language</a></li>
+<li class="chapter" data-level="8.4" data-path="ch8.html"><a href="ch8.html#french"><i class="fa fa-check"></i><b>8.4</b> French</a></li>
+<li class="chapter" data-level="8.5" data-path="ch8.html"><a href="ch8.html#chinese"><i class="fa fa-check"></i><b>8.5</b> Chinese</a></li>
+<li class="chapter" data-level="8.6" data-path="ch8.html"><a href="ch8.html#documentation"><i class="fa fa-check"></i><b>8.6</b> Documentation</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch9.html"><a href="ch9.html"><i class="fa fa-check"></i><b>9</b> Saving Intermediate SAS files</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ch9.html"><a href="ch9.html#saving-sas-files"><i class="fa fa-check"></i><b>9.1</b> Saving SAS files</a></li>
+<li class="chapter" data-level="9.2" data-path="ch9.html"><a href="ch9.html#saving-markdown-and-latex-files"><i class="fa fa-check"></i><b>9.2</b> Saving Markdown and LaTeX files</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch10.html"><a href="ch10.html"><i class="fa fa-check"></i><b>10</b> SpinSAS</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ch10.html"><a href="ch10.html#special-markup"><i class="fa fa-check"></i><b>10.1</b> Special Markup</a></li>
+<li class="chapter" data-level="10.2" data-path="ch10.html"><a href="ch10.html#semi-colons"><i class="fa fa-check"></i><b>10.2</b> Semi-colons</a></li>
+<li class="chapter" data-level="10.3" data-path="ch10.html"><a href="ch10.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="10.4" data-path="ch10.html"><a href="ch10.html#processing"><i class="fa fa-check"></i><b>10.4</b> Processing</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">SASmarkdown</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ch5" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> SAS Logs<a href="ch5.html#ch5" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>SAS is unusual software in that it generates two distinct output
+streams. In addition to the typical tables and graphs (in a variety
+of formats, including text and html), SAS echos
+your code and writes notes and messages in a separate log file. Most
+software directs all of this into just one document.</p>
+<p>From time to time it is useful to show the reader what they
+will find in a log file. How do we get <code>knitr</code> to include that?</p>
+<p>There are several approaches we could take here, depending on just what we
+need to show the reader. If we would like to show the log in place of the
+code (since it echos the code...), we can use the <code>saslog</code> engine.</p>
+<div id="set-up-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Set up<a href="ch5.html#set-up-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Set up your document.</p>
+<pre class="r"><code>library(SASmarkdown)</code></pre>
+</div>
+<div id="using-the-saslog-engine" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Using the <code>saslog</code> engine<a href="ch5.html#using-the-saslog-engine" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To show the reader the log in place of a code block, use the <code>saslog</code> engine.</p>
+<pre><code>```{saslog} 
+proc means data=sashelp.class;
+run;
+```</code></pre>
+<p>In your final document this looks like:</p>
+<pre class="saslog"><code>2          proc means data=sashelp.class;
+3          run;
+
+NOTE: There were 19 observations read from the data set SASHELP.CLASS.
+NOTE: The PROCEDURE MEANS printed page 1.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+</code></pre>
+<pre><code>                            The MEANS Procedure
+
+ Variable    N           Mean        Std Dev        Minimum        Maximum
+ -------------------------------------------------------------------------
+ Age        19     13.3157895      1.4926722     11.0000000     16.0000000
+ Height     19     62.3368421      5.1270752     51.3000000     72.0000000
+ Weight     19    100.0263158     22.7739335     50.5000000    150.0000000
+ -------------------------------------------------------------------------</code></pre>
+<p>Cleaning up and making the log more readable is the topic of the <a href="ch6.html#ch6">next chapter</a>.</p>
+</div>
+<div id="using-the-sashtmllog-and-sashtml5log-engines" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Using the <code>sashtmllog</code> and <code>sashtml5log</code> engines<a href="ch5.html#using-the-sashtmllog-and-sashtml5log-engines" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can have similar results with HTML output.</p>
+<pre><code>```{sashtmllog} 
+proc means data=sashelp.class;
+run;
+```</code></pre>
+<p>In your final document this looks like:</p>
+<pre class="sashtmllog"><code>6          proc means data=sashelp.class;
+7          run;
+
+NOTE: There were 19 observations read from the data set SASHELP.CLASS.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           1.67 seconds
+      cpu time            0.00 seconds
+      
+</code></pre>
+<div class="branch">
+<a name="IDX"></a>
+<div>
+<div align="center">
+<!--BEGINTABLE-->
+<table class="table" cellspacing="0" cellpadding="7" rules="groups" frame="hsides" summary="Procedure Means: Summary statistics">
+<colgroup>
+<col>
+</colgroup>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="l b header" scope="col">
+Variable
+</th>
+<th class="r b header" scope="col">
+N
+</th>
+<th class="r b header" scope="col">
+Mean
+</th>
+<th class="r b header" scope="col">
+Std Dev
+</th>
+<th class="r b header" scope="col">
+Minimum
+</th>
+<th class="r b header" scope="col">
+Maximum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="l stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<th class="l data top_stacked_value">
+Age
+</th>
+</tr>
+<tr>
+<th class="l data middle_stacked_value">
+Height
+</th>
+</tr>
+<tr>
+<th class="l data bottom_stacked_value">
+Weight
+</th>
+</tr>
+</table>
+</th>
+<td class="r stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<td class="r data top_stacked_value">
+19
+</td>
+</tr>
+<tr>
+<td class="r data middle_stacked_value">
+19
+</td>
+</tr>
+<tr>
+<td class="r data bottom_stacked_value">
+19
+</td>
+</tr>
+</table>
+</td>
+<td class="r stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<td class="r data top_stacked_value">
+13.3157895
+</td>
+</tr>
+<tr>
+<td class="r data middle_stacked_value">
+62.3368421
+</td>
+</tr>
+<tr>
+<td class="r data bottom_stacked_value">
+100.0263158
+</td>
+</tr>
+</table>
+</td>
+<td class="r stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<td class="r data top_stacked_value">
+1.4926722
+</td>
+</tr>
+<tr>
+<td class="r data middle_stacked_value">
+5.1270752
+</td>
+</tr>
+<tr>
+<td class="r data bottom_stacked_value">
+22.7739335
+</td>
+</tr>
+</table>
+</td>
+<td class="r stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<td class="r data top_stacked_value">
+11.0000000
+</td>
+</tr>
+<tr>
+<td class="r data middle_stacked_value">
+51.3000000
+</td>
+</tr>
+<tr>
+<td class="r data bottom_stacked_value">
+50.5000000
+</td>
+</tr>
+</table>
+</td>
+<td class="r stacked_cell data">
+<table width="100%" border="0" cellpadding="7" cellspacing="0">
+<tr>
+<td class="r data top_stacked_value">
+16.0000000
+</td>
+</tr>
+<tr>
+<td class="r data middle_stacked_value">
+72.0000000
+</td>
+</tr>
+<tr>
+<td class="r data bottom_stacked_value">
+150.0000000
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--ENDTABLE-->
+</div>
+</div>
+<br>
+</div>
+</div>
+<div id="sas-error-messages" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> SAS ERROR messages<a href="ch5.html#sas-error-messages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>SAS does not always exit with an error when it encounters problems, but
+when it does, you should see the log in your document instead of the code.</p>
+<div id="semantic-and-execution-errors" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Semantic and Execution Errors<a href="ch5.html#semantic-and-execution-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Semantic errors (typos etc.) and execution errors (e.g. the data
+set you call does not exist) cause SAS to return an error
+status when SAS finishes. This will automatically cause
+SASmarkdown to switch from the <code>sas</code> engine to the <code>saslog</code>
+engine.</p>
+<p>In this example, trying to use WORK data without any data set there,
+SAS produces an ERROR, and no output is produced.)</p>
+<pre><code>```{sas procerror} 
+proc means data=cars;
+run;
+```</code></pre>
+<p>Which produces:</p>
+<pre class="sas"><code>2          proc means data=cars;
+ERROR: File WORK.CARS.DATA does not exist.
+3          run;
+
+NOTE: The SAS System stopped processing this step because of errors.
+NOTE: PROCEDURE MEANS used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+ERROR: Errors printed on page 1.</code></pre>
+</div>
+<div id="mathematical-errors" class="section level3 hasAnchor" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> Mathematical Errors<a href="ch5.html#mathematical-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Division by zero produces error flags within the DATA step, but does
+<strong>not</strong> cause SAS to return an error code when it finishes. The <code>sas</code>
+engine gives us the usual output.</p>
+<p>To see the DATA step ERROR, explicitly switch to the <code>saslog</code> engine.</p>
+<pre><code>```{saslog divzero} 
+data class;
+  set sashelp.class(obs=5);
+  age0 = age/0;
+  keep age age0;
+  run;
+
+proc print data=class;
+run;
+```</code></pre>
+<p>which produces both the log and the PROC PRINT output.</p>
+<pre class="saslog"><code>2          data class;
+3              set sashelp.class(obs=5);
+4              age0 = age/0;
+5              keep age age0;
+6              run;
+
+NOTE: Division by zero detected at line 4 column 15.
+Name=Alfred Sex=M Age=14 Height=69 Weight=112.5 age0=. _ERROR_=1 _N_=1
+NOTE: Division by zero detected at line 4 column 15.
+Name=Alice Sex=F Age=13 Height=56.5 Weight=84 age0=. _ERROR_=1 _N_=2
+NOTE: Division by zero detected at line 4 column 15.
+Name=Barbara Sex=F Age=13 Height=65.3 Weight=98 age0=. _ERROR_=1 _N_=3
+NOTE: Division by zero detected at line 4 column 15.
+Name=Carol Sex=F Age=14 Height=62.8 Weight=102.5 age0=. _ERROR_=1 _N_=4
+NOTE: Division by zero detected at line 4 column 15.
+Name=Henry Sex=M Age=14 Height=63.5 Weight=102.5 age0=. _ERROR_=1 _N_=5
+NOTE: Mathematical operations could not be performed at the following 
+      places. The results of the operations have been set to missing 
+      values.
+      Each place is given by: (Number of times) at (Line):(Column).
+      5 at 4:15   
+NOTE: There were 5 observations read from the data set SASHELP.CLASS.
+NOTE: The data set WORK.CLASS has 5 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+7          
+8          proc print data=class;
+9          run;
+
+NOTE: There were 5 observations read from the data set WORK.CLASS.
+NOTE: The PROCEDURE PRINT printed page 1.
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.01 seconds
+      
+</code></pre>
+<pre><code>                            Obs    Age    age0
+
+                             1      14      . 
+                             2      13      . 
+                             3      13      . 
+                             4      14      . 
+                             5      14      . </code></pre>
+<p>The same results are produced with the <code>html</code> and <code>htmllog</code> or
+the <code>html5</code> and <code>html5log</code> engines.</p>
+<p><em>Written using</em></p>
+<ul>
+<li><em>SASmarkdown version 0.8.0.</em></li>
+<li><em>knitr version 1.40.</em></li>
+<li><em>R version 4.2.2 (2022-10-31 ucrt).</em></li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ch4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch6.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
