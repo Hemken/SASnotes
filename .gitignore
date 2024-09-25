@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+/SASnotes/
+/_freeze/
+/.quarto/
+/quarto_style/
+places.dat
+places.key
