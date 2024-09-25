@@ -2,6 +2,7 @@
 
 ```{r, include=FALSE}
 library(SASmarkdown)
+knitr::opts_chunk$set(SASproctime=FALSE)
 ```
 
 ::: {.callout-tip}
@@ -93,15 +94,27 @@ name while `class` is the data file name.
 ### SAS Names
 
 ```{r cleanup, include=FALSE}
-try(unlink("~/SAS/class.sas7bdat"))
+win <- (Sys.info()['sysname']=="Windows")
+if (win) {
+  try(unlink("U:/SAS/class.sas7bdat"))
+  } else {
+  try(unlink("~/SAS/class.sas7bdat"))
+}
+
 ```
 
 The basic code to save a SAS data set using the SAS name is
 
-```{sas sasname, results="hide"}
-libname z "~/SAS";     /* Linstat example */
+```{sas libwin, eval=win, include=win, collectcode=win}
+libname z "U:/SAS";   /* Winstat example */
+* libname z "~/SAS";  /* Linstat example */
+```
+```{sas libunix, eval=!win, include=!win, collectcode=FALSE}
+libname z "~/SAS";    /* Linstat example */
 * libname z "U:/SAS"; /* Winstat example */
+```
 
+```{sas sasname, results="hide"}
 data z.class;
   set sashelp.class;
 run;
@@ -143,16 +156,26 @@ Any place you can use a SAS name for a data set, you could
 instead use the operating system name.  So the code that
 saves the data set, above, could have been written
 
-```{sas osname, results="hide"}
-data "~/SAS/class.sas7bdat";   /* Linstat example */
+```{sas osnamewin, eval=win, include=win, results="hide"}
+*data "~/SAS/class.sas7bdat"; /* Linstat example */
+
+data "U:/SAS/class.sas7bdat"; /* Winstat example */
+  set sashelp.class;
+run;
+```
+```{sas osnameunix, eval=!win, include=!win, results="hide"}
 *data "U:/SAS/class.sas7bdat"; /* Winstat example */
+
+data "~/SAS/class.sas7bdat";   /* Linstat example */
   set sashelp.class;
 run;
 ```
 
 And again we'll check the log.
 
-```{saslog osname, results="hide"}
+```{saslog osnamewin, eval=win, include=win, results="hide"}
+```
+```{saslog osnameunix, eval=!win, include=!win, results="hide"}
 ```
 
 ### Pros and Cons

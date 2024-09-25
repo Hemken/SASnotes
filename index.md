@@ -63,9 +63,7 @@ Saving and Using SAS Files, and the SAS Language.
 ### Subsets and Merges
 - Subsets
   -  [Variables](Subset_variables.html)
-  -  [Conditional observations](Subsets/03b-conditional%20observations.sas)
-  -  [Random observations](Subsets/03c-random%20selections.sas)
-  -  [Range of observations](Subsets/03d-range.sas)
+  -  [Conditional observations](Subset_observations.html)
 - Merges
   -  [Add variables, Concatenate, Stack data sets](Merges/set.sas)
   -  [Nuances and trouble-shooting concatenation](Merges/set%20nuances.sas)
