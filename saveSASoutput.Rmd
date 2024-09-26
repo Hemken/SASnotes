@@ -22,7 +22,7 @@ output by your SAS procedures are displayed in the *Results Viewer*
 and stored in a temporary HTML file.  This is good for day-to-day data
 exploration and code development.
 
-```default
+```sas
 proc means data=sashelp.class;
 run;
 ```
@@ -55,7 +55,7 @@ file.
 
 To save a `PROC MEANS` and a boxplot would be
 
-```default
+```sas
 ods html file="example.html" path="U:/";
 proc means data=sashelp.class;
   class sex;
@@ -68,7 +68,7 @@ run;
 ```
 
 ```{sas html-out, include=FALSE}
-ods html file="example.html" path="~/SAS/SaveSASOutput"
+ods html file="example.html" path="SASnotes/SaveSASOutput"
   gpath="";
 proc means data=sashelp.class;
   class sex;
@@ -86,7 +86,7 @@ ods html close;
 To stop writing to a file (a *destination*)
 	you close it.
 
-```default
+```sas
 ods html close;
 ```
 
@@ -102,7 +102,7 @@ for the table headers, and a default color scheme
 for graphs.  This is *style*.
 You can change the style.
     
-```default
+```sas
 ods html file="example-styled.html" style=journal;
 
 proc means data=sashelp.class;
@@ -117,7 +117,7 @@ ods html close;
 ```
 
 ```{sas style, include=FALSE}
-ods html file="~/SAS/example-styled.html" 
+ods html file="SASnotes/SaveSASOutput/example-styled.html" 
   gpath="" style=journal;
 
 proc means data=sashelp.class;
@@ -165,7 +165,7 @@ great for archiving a project as well.
 Here, the `file` option
 includes any directory (rather than using `path`).
 	
-```default
+```sas
 ods listing file="U:/example.lst";
 /* optionally, use better form characters */
 options formchar="|----|+|---+=|-/\<>*";
@@ -202,7 +202,7 @@ Output window if you omit the `file` option.  This can be noticeably
 faster than other forms of output, but
 cannot show you graphs.;
 
-```default
+```sas
 ods listing;
 proc means data=sashelp.class;
 run;
@@ -216,7 +216,7 @@ documents, there is no `gpath`
 option because graphs are included in the primary
 file.
 
-```default
+```sas
 ods pdf file="U:/example.pdf"; /* Adobe PDF format */
 ods word file="U:/example.docx"; /* MS-Word format */
 
@@ -264,7 +264,7 @@ simultaneously.  If you check the Results pane
 	you will find that SAS added the PROC MEANs
 	table to several files!
 
-```default
+```sas
 ods listing;
 ods rtf file="u:\example.rtf"; /* MS-Word format */
 ods pdf file="u:\example.pdf";
@@ -291,7 +291,7 @@ table (or which ERROR message) matches which specific PROC.
 To do this, you must have listing output turned on, and redirect both your
 output and your log to a single file.
 
-```default
+```sas
 ods listing;
 proc printto print="singlefile.txt" log="singlefile.txt";
 run;
@@ -300,4 +300,4 @@ proc printto; /*Send your output and log back to their default windows*/
 run;
 ```
 
-Last Revised: 7/10/2024
+Last Revised: 9/26/2024

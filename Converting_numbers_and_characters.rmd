@@ -6,6 +6,11 @@ library(SASmarkdown)
 
 SAS has fundamentally two data types:  `NUMERIC` AND `CHARACTER`.  On occasion
 you may have data stored as one type that you wish to use as the other type.
+That is, you may have a character string such as "50000" that represents an
+annual income, and you may wish to calculate $ln(income)$.  Or you may have
+a numeric value such as 53706 (a US zip code) which is actually a category
+label.  This could be stored more efficiently as a character value since
+you will not be doing math with it.
 
 In a DATA step, SAS may make the conversion for you (*dynamic* type conversion),
 but this will produce notes in the log.  Although these notes can largely be
@@ -50,7 +55,7 @@ data example;
 We can use the `input` [function](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/lefunctionsref/p19en16vskd2vhn1vwmxpxnglxxs.htm)
 (note that this is distinct from the
 `input` *statement* used to read data from text files) to make an
-explicit conversion, and avoid the note.
+explicit conversion, and avoid the notes.
 
 This takes the form
 

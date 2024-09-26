@@ -54,6 +54,7 @@ Saving and Using SAS Files, and the SAS Language.
 - [Variable Labels](variable_labels.html)
 - [SAS Formats](Formats.html)
 - [User-defined Formats (Value Labels)](4-19_SAS_user_formats.html)
+- [Informats to Encode and Order Character Values](4-19_SAS_user_informats.html)
 - [Types of SAS Errors](Error_types.html)
 
 ### Reading Data into SAS
@@ -90,7 +91,7 @@ Saving and Using SAS Files, and the SAS Language.
     lsmeans](Output%20data/collecting%20lsmeans.sas)
 
 ## Common Statistical Procedures
--   [Frequencies and Crosstabs](BasicStats/procfreq.sas)
+-   [Frequencies and Crosstabs](BasicStats/procfreq.html)
 -   [Means](BasicStats/procmeans.sas)
 -   [Weighted Means](BasicStats/procmeansweighted.sas)
 -   [Correlations](BasicStats/proccorr.sas)

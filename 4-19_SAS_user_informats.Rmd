@@ -1,0 +1,88 @@
+# Using Informats to Encode and Reorder Character Values
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+Where the values in a character variable represent category
+labels, it is sometimes helpful to encode this data as a
+formatted numeric variable.
+
+Consider the `smoking_status` variable in the `Heart` example
+data set.  This variable is a character variable.
+The values are shown in a frequency table.  The values are
+shown in alphabetic order, but they form an ordinal scale
+that is most easily understand in "Light" to "Very Heavy"
+order, or vice versa.
+
+```{sas freq}
+proc freq data=sashelp.heart;
+  tables smoking_status / nocum;
+run;
+```
+
+It will be easiest to have these categories show up in
+order in our output if the values are encoded numerically,
+1 to 5 (or 0 to 4).
+
+## Recoding Numerically
+We could recode these data numerically in either of two ways.
+You are probably already familiar with the use of [IF/THEN-ELSE](4-18_If-Then-Else.html)
+in DATA steps, and that's a perfectly reasonable approach to this
+task.
+
+Another approach is to use an *informat*.  The use of [SAS informats](Converting_numbers_and_characters.html) is discussed
+elsewhere.  Just as you can create [your own formats](4-19_SAS_user_formats.html),
+you can create your own informats.  In fact, you use the
+same PROC FORMAT for both - you probably should use a format
+with the resulting numeric data, anyway.  The difference is that an
+informat is created with an INVALUE statement.
+
+```{sas informats, collectcode=TRUE}
+proc format;
+	invalue smok "Non-smoker" = 1
+		"Light (1-5)"         = 2
+		"Moderate (6-15)"     = 3
+		"Heavy (16-25)"       = 4
+		"Very Heavy (> 25)"   = 5;
+	value smok 1 = "Non-smoker"
+		2 = "Light (1-5)"
+		3 = "Moderate (6-15)"
+		4 = "Heavy (16-25)"
+		5 = "Very Heavy (> 25)";
+run;
+```
+
+> If you create pairs of format/informats, you can give
+both the same name (just like SAS does).  SAS will know
+which to use based on the context in which it is called.
+
+Informats can only be used in DATA steps, with INPUT functions
+or INPUT statements.  In this DATA step, the character values
+in `smoking_status` are converted to numeric values in
+`smoking_rate`, and then these numeric values are formatted
+to show us what the numeric categories mean.
+
+```{sas data, collectcode=TRUE}
+data heart;
+	set sashelp.heart;
+	smoking_rate = input(smoking_status, smok.);
+	format smoking_rate smok.;
+run;
+```
+
+> The key conversion step here is accomplished with
+the INPUT function, `INPUT(variable, informat.)`
+  
+```{sas contents}
+ods select variables;
+proc contents data=heart(keep=smoking_status smoking_rate);
+run;
+```
+```{sas freqagain}
+proc freq data=heart;
+  tables smoking_rate / nocum;
+run;
+```
+
+Last Revised: 9/26/2024
