@@ -1,0 +1,108 @@
+# Using R from SAS
+
+```{r setup, include=FALSE}
+library(SASmarkdown)
+```
+
+SAS can call R to pass data directly back and forth and to capture R output. 
+R can only call SAS in batch mode.
+
+What follows, and more is documented in the [SAS/IML 13.2 User's Guide](http://support.sas.com/documentation/cdl/en/imlug/67502/HTML/default/viewer.htm#imlug_r_toc.htm).
+
+## Setup in SAS
+
+SAS requires two configuration options in order to communicate 
+with R.  First the `RLANG` option must be set when SAS is started.  This
+may be set either in a [custom configuration](custom_configuration.html) file or on the SAS command line.
+
+You can check that this is working with
+
+```{saslog rlang}
+proc options option=rlang;
+run;
+```
+
+and checking the log.
+
+Second, SAS needs an R_HOME environment variable to point it to the correct,
+available version of R.  
+
+The acceptable versions of R depend upon which version of SAS
+you are running.  See Rick Wicklin's [DO loop blog](http://blogs.sas.com/content/iml/2013/09/16/what-versions-of-r-are-supported-by-sas/), which he keeps up to date.  
+
+> On the SSCC servers, the available version of R is R-4.4.1
+which is too recent for
+our version of SAS, which is SAS 9.4 TS1M8.  There are also issues
+with the change in how R imports character variables.  So currently
+this does not seem to work on SSCC computers.
+
+The most
+reliable way to set R_HOME is to include the statement
+
+```{sas r_home, collectcode=TRUE}
+options set=R_HOME='C:\Program Files\R\R-4.2.3';
+```
+
+within your SAS command file.
+
+## Sending SAS data to R
+
+SAS can pass data to an R session, and ask R for an analysis.  All
+communication with R is done via SAS\'s `PROC IML`.  Note
+here that capitalization matters in R, and that (depending on the R
+version) character variables
+are automatically converted to factors.  In this example, then,
+it is important that the variable names be capitalized (and that I
+have removed character variables from the data set)!
+
+```{sas exportdata, eval=FALSE}
+data class;
+	set sashelp.class;
+	female = (sex = 'F');
+	drop _character_;
+	run;
+
+proc iml;
+  call ExportDataSetToR("class", "dframe" );
+  submit / R;
+    R.version.string
+    names(dframe)
+    lm(Weight ~ Height + Age + female, data=dframe)
+  endsubmit;
+run;
+```
+
+## Loading a package in R
+
+You can load packages in R in the usual way, so long as the package is installed
+and in a location where R will find it.  In this example, we can have R
+load the `MASS` package, run a linear model with one of it\'s data sets,
+and send the default R output back to SAS.
+```{sas loadpkg, eval=FALSE}
+proc iml;
+  submit / R;
+    library(MASS, lib.loc=.Library)
+    # use a data frame from MASS
+    lm(VitC ~ Cult + Date + HeadWt, data=cabbages)
+  endsubmit;
+```
+
+## Importing a data frame from R
+
+R matrices and data frames may be brought back into SAS as well, for any
+manipulation you might want to do in SAS.  Here, we just grab the `cabbages`
+data frame from R and show that SAS\'s PROC GLM \"agrees\" with R\'s
+`lm` command (once you realize they have different reference categories).
+```{sas import, eval=FALSE}
+proc iml;
+  submit / R;
+  library(MASS, lib.loc=.Library)
+  endsubmit;
+  call ImportDataSetFromR("cabbages", "cabbages");
+run;
+
+proc glm data=cabbages;
+    class Cult Date;
+    model VitC = Cult Date HeadWt / solution;
+run;
+```

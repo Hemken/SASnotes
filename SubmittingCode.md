@@ -1,8 +1,4 @@
----
-title: "Submitting SAS Commands"
-author: "Doug Hemken"
-date: today
----
+# Submitting SAS Commands
 
 ## Submitting code
 Once you have written your SAS code in the Editor,

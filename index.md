@@ -45,7 +45,7 @@ Saving and Using SAS Files, and the SAS Language.
 - [Converting Numeric/Character Types](Converting_numbers_and_characters.html)
 - [Creating and Using Indictators for Many Categories](4-2_SAS_Indicator_Variables.html)
 - [Working with Logical Values](Logical_data.html)
-- [Conditional Processing:  IF-THEN/ELSE](4-18_If-Then_Else.html)
+- [Conditional Processing:  IF-THEN/ELSE](4-18_If-Then-Else.html)
 - [Statement groups and Iterations:  DO/END](4-18_Do_groups_and_loops.html)
 - [Iterating over variables:  Variable Arrays](4-5_SAS_Arrays.html)
 - [Repeated and Duplicate Observations](duplicates.html)
