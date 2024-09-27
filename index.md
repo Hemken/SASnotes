@@ -27,7 +27,7 @@ Saving and Using SAS Files, and the SAS Language.
   - [Saving SAS Data](saveSASdata.html)
   - [Data Set Options](data_set_options.html)
   - [Saving SAS Output](saveSASoutput.html)
-  - [SAS Procedure Graphs](4-21_Simple_SAS_Graphs_with_ODS.html)
+  - [Saving SAS Graphs](4-21_Simple_SAS_Graphs_with_ODS.html)
 
 ## Working with Large Data Sets
 - [SAS Efficiencies](4-3_SAS_Efficiencies.html)
@@ -97,19 +97,22 @@ Saving and Using SAS Files, and the SAS Language.
 -   [Correlations](BasicStats/proccorr.sas)
 -   [Regression](BasicStats/procreg.sas)
 
-## [Graphics](Graphs/SAS%20Graphics.pdf)
+## Graphics
+- [Common Plots with SGPLOT and statistical procedures](Graphs/sgplots_stat_procs.html)
+- [Saving SAS Graphs](4-21_Simple_SAS_Graphs_with_ODS.html)
+
 - [Three graphics systems](Graphs/Three%20Graphics%20Systems.sas)
 - [Finding graphics commands](Graphs/Statistical%20graphics%20examples.sas)
-- Twoway Plots
+- Twoway Plot Examples
   -   [proc sgplot](Graphs/sgplot%20forbes.sas)
   -   [proc gplot](Graphs/gplot%20forbes.sas)
-- [Categorical Charts](Graphs/Statistical%20graphics%20examples.sas)
+- [Categorical Chart Examples](Graphs/Statistical%20graphics%20examples.sas)
   -   [proc sgplot](Graphs/sgplot%20pie%20sales.sas)
   -   [proc gchart](Graphs/gchart%20pie%20sales.sas)
 
 ## Macros
-- [Let (Macro variables)](Macros/M1.sas)
-- [Simple Macros](Macros/M2.sas)
+- [Macro variables (%Let)](Macros/SAS_Macros_1.html)
+- [Simple Macro Programs](Macros/M2macros.html)
 - [Macros with parameters](Macros/M3.sas)
 - [Macro flow](Macros/M4.sas)
 
