@@ -4,8 +4,16 @@
 library(SASmarkdown)
 ```
 
+Over the many decades SAS has developed three distinct collections
+of graphics commands.  The latest - and the most fully featured -
+is usually called *ODS Graphics* (Ouput Delivery System).
+
+ODS graphics can be used in two ways.  One is through PROC SGPLOT
+and several related ODS procedures.  Another is through the graphics
+options built into most statistical procedures.
+
 Using ODS graphics, many statistical procedures
-automatically create the graphs that are most commonly needed for a
+*automatically* create the graphs that are most commonly needed for a
 particular analysis.  In addition, many more procedures have
 options to produce plots related to their analysis.
 
@@ -17,6 +25,11 @@ You can use ODS to:
     graphics.
 
 ODS for tables of statistical output is documented in [Saving SAS Output Files](saveSASoutput.html).
+
+## Designing Your Own Plots and Charts
+See [Common SAS Plots](Graphs/sgplots_stat_procs.html) for a quick start to
+using PROC SGPLOT.  This will also illustrate how many of the statistical
+procedures can be used to produce the same (or nearly the same) graphs.
 
 ## Automatic Graphics
 
@@ -154,21 +167,17 @@ somewhat different visual appearance. Of the SAS-supplied styles, SAS
 recommends four for use with ODS Graphics: ANALYSIS, DEFAULT, JOURNAL,
 and STATISTICAL. In the example below, the JOURNAL style is specified:
 
-    ods latex style=journal; 
-    ods graphics on;
+```sas
+ods latex style=journal; 
 
-    proc reg data=Class;
-       model Weight = Height;
-    quit;
+proc reg data=Class;
+   model Weight = Height;
+quit;
 
-    ods graphics off;
-    ods latex close;
+ods latex close;
+```
 
-The output below illustrates our favorite style - journal:
+Once you start using ODS you will find that you need details
+not contained in this overview document: see [SAS\'s comprehensive ODS user guide](https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/grstatproc/titlepage.htm).
 
-Once you start using ODS you will quickly find that you need information
-not contained in this overview document. SAS\'s comprehensive user guide
-to ODS can be found online at
-[http://support.sas.com/documentation/onlinedoc/91pdf/sasdoc_91/base_ods_7032.pdf.](http://support.sas.com/documentation/onlinedoc/91pdf/sasdoc_91/base_ods_7032.pdf)
-
-Last Revised: 7/13/2024
+Last Revised: 9/27/2024
